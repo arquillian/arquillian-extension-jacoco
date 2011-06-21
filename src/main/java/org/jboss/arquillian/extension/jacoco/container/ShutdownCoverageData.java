@@ -14,15 +14,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.framework.jacoco.container;
+package org.jboss.arquillian.extension.jacoco.container;
 
 import java.io.FileOutputStream;
 
 import org.jacoco.core.data.ExecutionDataWriter;
 import org.jacoco.core.runtime.IRuntime;
-import org.jboss.arquillian.spi.Context;
-import org.jboss.arquillian.spi.event.suite.EventHandler;
-import org.jboss.arquillian.spi.event.suite.SuiteEvent;
+import org.jboss.arquillian.core.api.Instance;
+import org.jboss.arquillian.core.api.annotation.Inject;
+import org.jboss.arquillian.core.api.annotation.Observes;
+import org.jboss.arquillian.test.spi.event.suite.AfterSuite;
 
 /**
  * StartCoverageData
@@ -30,14 +31,14 @@ import org.jboss.arquillian.spi.event.suite.SuiteEvent;
  * @author <a href="mailto:aslak@redhat.com">Aslak Knutsen</a>
  * @version $Revision: $
  */
-public class ShutdownCoverageData implements EventHandler<SuiteEvent>
+public class ShutdownCoverageData
 {
-   /* (non-Javadoc)
-    * @see org.jboss.arquillian.spi.event.suite.EventHandler#callback(org.jboss.arquillian.spi.Context, java.lang.Object)
-    */
-   public void callback(Context context, SuiteEvent event) throws Exception
+   @Inject
+   private Instance<IRuntime> runtimeInst;
+   
+   public void shutdownRuntime(@Observes AfterSuite event) throws Exception
    {
-      IRuntime runtime = context.get(IRuntime.class);
+      IRuntime runtime = runtimeInst.get();
       if(runtime != null)
       {
          FileOutputStream coverageFile = null;

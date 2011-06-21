@@ -14,35 +14,34 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.framework.jacoco.test;
+package org.jboss.arquillian.extension.jacoco.container;
 
-import javax.ejb.Stateless;
+import java.util.UUID;
 
+import org.jacoco.core.runtime.IRuntime;
+import org.jboss.arquillian.core.api.InstanceProducer;
+import org.jboss.arquillian.core.api.annotation.Inject;
+import org.jboss.arquillian.core.api.annotation.Observes;
+import org.jboss.arquillian.test.spi.annotation.SuiteScoped;
+import org.jboss.arquillian.test.spi.event.suite.BeforeSuite;
 
 /**
- * CoverageTestBean
+ * StartCoverageData
  *
  * @author <a href="mailto:aslak@redhat.com">Aslak Knutsen</a>
  * @version $Revision: $
  */
-@Stateless
-public class CoverageBean 
+public class StartCoverageData 
 {
-   public void test(Boolean value) 
+   @Inject @SuiteScoped
+   private InstanceProducer<IRuntime> runtimeInst;
+   
+   public void createRuntime(@Observes BeforeSuite event) throws Exception
    {
-      String test = "test";
-      if(value)
-      {
-         if(test.length() == 4)
-         {
-            long start = System.currentTimeMillis();
-            test = String.valueOf(start);
-         }
-      } 
-      else
-      {
-         long start = System.currentTimeMillis();
-         test = String.valueOf(start);
-      }
+      IRuntime runtime = ArquillianRuntime.getInstance();
+      runtime.setSessionId(UUID.randomUUID().toString());
+      runtime.startup();
+      
+      runtimeInst.set(runtime);
    }
 }

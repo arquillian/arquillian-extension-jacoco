@@ -14,11 +14,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.framework.jacoco.client;
+package org.jboss.arquillian.extension.jacoco.client;
 
-import org.jboss.arquillian.framework.jacoco.container.RuntimeContextAppender;
-import org.jboss.arquillian.spi.AuxiliaryArchiveAppender;
-import org.jboss.arquillian.spi.SuiteContextAppender;
+import org.jboss.arquillian.container.test.spi.RemoteLoadableExtension;
+import org.jboss.arquillian.container.test.spi.client.deployment.AuxiliaryArchiveAppender;
+import org.jboss.arquillian.extension.jacoco.container.JacocoRemoteExtension;
+import org.jboss.arquillian.extension.jacoco.container.StartCoverageData;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
@@ -31,9 +32,7 @@ import org.jboss.shrinkwrap.api.spec.JavaArchive;
  */
 public class JacocoArchiveAppender implements AuxiliaryArchiveAppender
 {
-   /* (non-Javadoc)
-    * @see org.jboss.arquillian.spi.AuxiliaryArchiveAppender#createAuxiliaryArchive()
-    */
+   @Override
    public Archive<?> createAuxiliaryArchive()
    {
       return ShrinkWrap.create(JavaArchive.class, "arquillian-jacoco.jar")
@@ -41,9 +40,9 @@ public class JacocoArchiveAppender implements AuxiliaryArchiveAppender
                         true, 
                         org.jacoco.core.JaCoCo.class.getPackage(),
                         org.objectweb.asm.ClassReader.class.getPackage(),
-                        org.jboss.arquillian.framework.jacoco.container.StartCoverageData.class.getPackage())
-                  .addServiceProvider(
-                        SuiteContextAppender.class, 
-                        RuntimeContextAppender.class);
+                        StartCoverageData.class.getPackage())
+                  .addAsServiceProvider(
+                        RemoteLoadableExtension.class, 
+                        JacocoRemoteExtension.class);
    }
 }

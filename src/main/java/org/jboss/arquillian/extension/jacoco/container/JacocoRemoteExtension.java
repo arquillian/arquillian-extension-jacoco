@@ -14,32 +14,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.framework.jacoco.container;
+package org.jboss.arquillian.extension.jacoco.container;
 
-import java.util.UUID;
-
-import org.jacoco.core.runtime.IRuntime;
-import org.jboss.arquillian.spi.Context;
-import org.jboss.arquillian.spi.event.suite.EventHandler;
-import org.jboss.arquillian.spi.event.suite.SuiteEvent;
+import org.jboss.arquillian.container.test.spi.RemoteLoadableExtension;
 
 /**
- * StartCoverageData
+ * 
  *
  * @author <a href="mailto:aslak@redhat.com">Aslak Knutsen</a>
  * @version $Revision: $
  */
-public class StartCoverageData implements EventHandler<SuiteEvent>
+public class JacocoRemoteExtension implements RemoteLoadableExtension
 {
-   /* (non-Javadoc)
-    * @see org.jboss.arquillian.spi.event.suite.EventHandler#callback(org.jboss.arquillian.spi.Context, java.lang.Object)
-    */
-   public void callback(Context context, SuiteEvent event) throws Exception
+   @Override
+   public void register(ExtensionBuilder builder)
    {
-      IRuntime runtime = ArquillianRuntime.getInstance();
-      runtime.setSessionId(UUID.randomUUID().toString());
-      runtime.startup();
-      
-      context.add(IRuntime.class, runtime);
+      builder.observer(StartCoverageData.class)
+             .observer(ShutdownCoverageData.class);
    }
 }

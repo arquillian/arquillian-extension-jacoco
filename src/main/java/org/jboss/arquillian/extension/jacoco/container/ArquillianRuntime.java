@@ -14,13 +14,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.framework.jacoco.container;
+package org.jboss.arquillian.extension.jacoco.container;
 
 import org.jacoco.core.data.ExecutionDataStore;
 import org.jacoco.core.data.IExecutionDataVisitor;
 import org.jacoco.core.data.ISessionInfoVisitor;
 import org.jacoco.core.data.SessionInfo;
-import org.jacoco.core.instr.InstrSupport;
+import org.jacoco.core.internal.instr.InstrSupport;
 import org.jacoco.core.runtime.IRuntime;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
@@ -176,9 +176,9 @@ public class ArquillianRuntime implements IRuntime
       // stack[0]: [Ljava/lang/Object;
       
       // 2. Invoke ArquillianRuntime:
-      mv.visitMethodInsn(Opcodes.INVOKESTATIC, "org/jboss/arquillian/framework/jacoco/container/ArquillianRuntime",
+      mv.visitMethodInsn(Opcodes.INVOKESTATIC, "org/jboss/arquillian/extension/jacoco/container/ArquillianRuntime",
             "getInstance", 
-            "()Lorg/jboss/arquillian/framework/jacoco/container/ArquillianRuntime;");
+            "()Lorg/jboss/arquillian/extension/jacoco/container/ArquillianRuntime;");
 
       // stack[2]: LArquillianRuntime;
       // stack[1]: [Ljava/lang/Object;
@@ -191,7 +191,7 @@ public class ArquillianRuntime implements IRuntime
       // stack[0]: [Ljava/lang/Object;
       
       // 3. Invoke ArquillianRuntime swapExecutionData, gets the boolean[] in Object[0]:
-      mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "org/jboss/arquillian/framework/jacoco/container/ArquillianRuntime",
+      mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "org/jboss/arquillian/extension/jacoco/container/ArquillianRuntime",
             "swapExecutionData",
             "([Ljava/lang/Object;)V");
       

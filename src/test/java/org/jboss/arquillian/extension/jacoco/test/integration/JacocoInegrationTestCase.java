@@ -14,17 +14,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.framework.jacoco.test.integration;
+package org.jboss.arquillian.extension.jacoco.test.integration;
 
 import javax.ejb.EJB;
 
 import junit.framework.Assert;
 
-import org.jboss.arquillian.api.Deployment;
-import org.jboss.arquillian.framework.jacoco.test.CoverageBean;
+import org.jboss.arquillian.container.test.api.Deployment;
+import org.jboss.arquillian.extension.jacoco.test.CoverageBean;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -34,6 +35,7 @@ import org.junit.runner.RunWith;
  * @author <a href="mailto:aslak@redhat.com">Aslak Knutsen</a>
  * @version $Revision: $
  */
+@Ignore
 @RunWith(Arquillian.class)
 public class JacocoInegrationTestCase
 {

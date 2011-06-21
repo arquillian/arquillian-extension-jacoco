@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.framework.jacoco.client;
+package org.jboss.arquillian.extension.jacoco.client;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -23,7 +23,7 @@ import java.io.InputStream;
 
 import org.jacoco.core.instr.Instrumenter;
 import org.jacoco.core.runtime.IRuntime;
-import org.jboss.arquillian.framework.jacoco.container.ArquillianRuntime;
+import org.jboss.arquillian.extension.jacoco.container.ArquillianRuntime;
 import org.jboss.shrinkwrap.api.asset.Asset;
 
 /**

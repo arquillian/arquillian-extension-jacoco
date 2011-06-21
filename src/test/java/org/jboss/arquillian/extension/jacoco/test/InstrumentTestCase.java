@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.framework.jacoco.test;
+package org.jboss.arquillian.extension.jacoco.test;
 
 import java.io.InputStream;
 import java.io.PrintWriter;
@@ -23,13 +23,13 @@ import java.util.Map;
 
 import junit.framework.Assert;
 
-import org.jacoco.core.analysis.ClassCoverage;
+import org.jacoco.core.analysis.Analyzer;
 import org.jacoco.core.analysis.CoverageBuilder;
+import org.jacoco.core.analysis.IClassCoverage;
 import org.jacoco.core.data.ExecutionDataStore;
-import org.jacoco.core.instr.Analyzer;
 import org.jacoco.core.instr.Instrumenter;
 import org.jacoco.core.runtime.IRuntime;
-import org.jboss.arquillian.framework.jacoco.container.ArquillianRuntime;
+import org.jboss.arquillian.extension.jacoco.container.ArquillianRuntime;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.objectweb.asm.ClassReader;
@@ -87,15 +87,15 @@ public class InstrumentTestCase
 
       // Together with the original class definition we can calculate coverage
       // information:
-      final CoverageBuilder coverageBuilder = new CoverageBuilder(executionData);
-      final Analyzer analyzer = new Analyzer(coverageBuilder);
+      final CoverageBuilder coverageBuilder = new CoverageBuilder();
+      final Analyzer analyzer = new Analyzer(executionData, coverageBuilder);
       analyzer.analyzeClass(getTargetClass(targetName));
 
       Assert.assertNotNull(coverageBuilder.getClasses());
       Assert.assertEquals(1, coverageBuilder.getClasses().size());
 
       // Let's dump some metrics and line coverage information:
-      for (final ClassCoverage cc : coverageBuilder.getClasses())
+      for (final IClassCoverage cc : coverageBuilder.getClasses())
       {
          Assert.assertEquals(0, cc.getInstructionCounter().getMissedCount());
          Assert.assertEquals(0, cc.getLineCounter().getMissedCount());

@@ -14,13 +14,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.framework.jacoco.client;
+package org.jboss.arquillian.extension.jacoco.client;
 
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.jboss.arquillian.spi.ApplicationArchiveProcessor;
-import org.jboss.arquillian.spi.TestClass;
+import org.jboss.arquillian.container.test.spi.client.deployment.ApplicationArchiveProcessor;
+import org.jboss.arquillian.test.spi.TestClass;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ArchivePath;
 import org.jboss.shrinkwrap.api.Filters;

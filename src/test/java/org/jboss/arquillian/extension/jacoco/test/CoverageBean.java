@@ -14,27 +14,35 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.framework.jacoco.container;
+package org.jboss.arquillian.extension.jacoco.test;
 
-import org.jboss.arquillian.spi.Context;
-import org.jboss.arquillian.spi.SuiteContextAppender;
-import org.jboss.arquillian.spi.event.suite.AfterSuite;
-import org.jboss.arquillian.spi.event.suite.BeforeSuite;
+import javax.ejb.Stateless;
+
 
 /**
- * SuiteContextAppender
+ * CoverageTestBean
  *
  * @author <a href="mailto:aslak@redhat.com">Aslak Knutsen</a>
  * @version $Revision: $
  */
-public class RuntimeContextAppender implements SuiteContextAppender
+@Stateless
+public class CoverageBean 
 {
-   /* (non-Javadoc)
-    * @see org.jboss.arquillian.spi.SuiteContextAppender#append(org.jboss.arquillian.spi.Context)
-    */
-   public void append(Context context)
+   public void test(Boolean value) 
    {
-      context.register(BeforeSuite.class, new StartCoverageData());
-      context.register(AfterSuite.class, new ShutdownCoverageData());
+      String test = "test";
+      if(value)
+      {
+         if(test.length() == 4)
+         {
+            long start = System.currentTimeMillis();
+            test = String.valueOf(start);
+         }
+      } 
+      else
+      {
+         long start = System.currentTimeMillis();
+         test = String.valueOf(start);
+      }
    }
 }
