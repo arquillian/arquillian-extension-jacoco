@@ -17,8 +17,6 @@
 package org.jboss.arquillian.extension.jacoco.client;
 
 import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.InputStream;
 
 import org.jacoco.core.instr.Instrumenter;
@@ -27,7 +25,9 @@ import org.jboss.arquillian.extension.jacoco.container.ArquillianRuntime;
 import org.jboss.shrinkwrap.api.asset.Asset;
 
 /**
- * InstrumenterAsset
+ * Instrument the underlying Class using the Jacoco Runtime.
+ * 
+ * Since the Class is instrumented before deployment, we remove the need for a JavaAgent at runtime.
  *
  * @author <a href="mailto:aslak@redhat.com">Aslak Knutsen</a>
  * @version $Revision: $
@@ -36,9 +36,6 @@ public class InstrumenterAsset implements Asset
 {
    private Asset asset;
    
-   /**
-    * 
-    */
    public InstrumenterAsset(Asset asset)
    {
       this.asset = asset;
@@ -54,11 +51,6 @@ public class InstrumenterAsset implements Asset
          IRuntime runtime = ArquillianRuntime.getInstance();
          Instrumenter instrumenter = new Instrumenter(runtime);
          byte[] instrumented = instrumenter.instrument(asset.openStream());
-         File folder = new File("target/org/jboss/arquillian/framework/jacoco/test/");
-         folder.mkdirs();
-         FileOutputStream output = new FileOutputStream(new File(folder, "CoverageTestBean.class"));
-         output.write(instrumented);
-         output.close();
          
          return new ByteArrayInputStream(instrumented);
       }

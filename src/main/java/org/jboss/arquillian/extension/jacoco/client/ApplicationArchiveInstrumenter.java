@@ -27,19 +27,15 @@ import org.jboss.shrinkwrap.api.Filters;
 import org.jboss.shrinkwrap.api.Node;
 
 /**
- * ApplicationArchiveInstrumenter
+ * Instrument all Classes found in the User defined @Deployment.
  *
  * @author <a href="mailto:aslak@redhat.com">Aslak Knutsen</a>
  * @version $Revision: $
  */
 public class ApplicationArchiveInstrumenter implements ApplicationArchiveProcessor
 {
-   /* (non-Javadoc)
-    * @see org.jboss.arquillian.spi.ApplicationArchiveProcessor#process(org.jboss.shrinkwrap.api.Archive, org.jboss.arquillian.spi.TestClass)
-    */
    public void process(Archive<?> applicationArchive, TestClass testClass)
    {
-
       Map<ArchivePath, Node> classes = applicationArchive.getContent(Filters.include(".*\\.class"));
       for (Entry<ArchivePath, Node> entry : classes.entrySet())
       {
@@ -48,5 +44,4 @@ public class ApplicationArchiveInstrumenter implements ApplicationArchiveProcess
                entry.getKey());
       }
    }
-
 }
