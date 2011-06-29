@@ -1,17 +1,53 @@
 package org.jboss.arquillian.extension.jacoco.container;
 
-import org.jboss.arquillian.container.test.impl.client.deployment.command.AbstractCommand;
+import java.io.Serializable;
 
-public class CoverageDataCommand<ByteArrayOutputStream> extends AbstractCommand<ByteArrayOutputStream> {
+import org.jboss.arquillian.container.test.spi.command.Command;
 
-    /**
-     * Generated id
-     */
-    private static final long serialVersionUID = -4105223045546010016L;
+public class CoverageDataCommand implements Command<String>, Serializable
+{
+   private static final long serialVersionUID = 1L;
 
-    public CoverageDataCommand(ByteArrayOutputStream coverageData) {
-        super();
-        this.setResult(coverageData);
-    }
+   private byte[] coverageDate;
+   private String result;
+   private Throwable failure;
+   
+   
+   public CoverageDataCommand(byte[] coverageData)
+   {
+      this.coverageDate = coverageData;
+   }
+
+   /**
+    * @return the coverageDate
+    */
+   public byte[] getCoverageDate()
+   {
+      return coverageDate;
+   }
+
+   @Override
+   public void setResult(String result)
+   {
+      this.result = result;
+   }
+   
+   @Override
+   public String getResult()
+   {
+      return result;
+   }
+   
+   @Override
+   public void setThrowable(Throwable throwable)
+   {
+      this.failure = throwable;
+   }
+   
+   @Override
+   public Throwable getThrowable()
+   {
+      return failure;
+   }
 
 }

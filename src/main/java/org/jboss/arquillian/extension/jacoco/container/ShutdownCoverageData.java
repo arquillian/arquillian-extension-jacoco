@@ -24,6 +24,7 @@ import org.jboss.arquillian.container.test.spi.command.CommandService;
 import org.jboss.arquillian.core.api.Instance;
 import org.jboss.arquillian.core.api.annotation.Inject;
 import org.jboss.arquillian.core.api.annotation.Observes;
+import org.jboss.arquillian.core.spi.ServiceLoader;
 import org.jboss.arquillian.test.spi.event.suite.AfterSuite;
 
 /**
@@ -37,7 +38,7 @@ public class ShutdownCoverageData {
     private Instance<IRuntime> runtimeInst;
 
     @Inject
-    private Instance<CommandService> commandService;
+    private Instance<ServiceLoader> serviceLoader;
 
     public void writeCoverageData(@Observes AfterSuite arqEvent) throws Exception {
         IRuntime runtime = runtimeInst.get();
@@ -58,7 +59,22 @@ public class ShutdownCoverageData {
                 }
             }
 
-            commandService.get().execute(new CoverageDataCommand<ByteArrayOutputStream>(coverageOutputStream));
+            getCommandService().execute(new CoverageDataCommand(coverageOutputStream.toByteArray()));
         }
+    }
+
+    private CommandService getCommandService()
+    {
+       ServiceLoader loader = serviceLoader.get();
+       if(loader == null)
+       {
+          throw new IllegalStateException("No " + ServiceLoader.class.getName() + " found in context");
+       }
+       CommandService service = loader.onlyOne(CommandService.class);
+       if(service == null)
+       {
+          throw new IllegalStateException("No " + CommandService.class.getName() + " found in context");
+       }
+       return service;
     }
 }

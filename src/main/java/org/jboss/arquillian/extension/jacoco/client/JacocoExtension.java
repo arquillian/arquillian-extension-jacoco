@@ -34,6 +34,8 @@ public class JacocoExtension implements LoadableExtension
    {
       builder.service(AuxiliaryArchiveAppender.class, JacocoArchiveAppender.class)
              .service(ApplicationArchiveProcessor.class, ApplicationArchiveInstrumenter.class);
+      
+      builder.observer(CoverageDataReceiver.class);
    }
 
 }
