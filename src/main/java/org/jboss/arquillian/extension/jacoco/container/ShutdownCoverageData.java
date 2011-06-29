@@ -16,10 +16,11 @@
  */
 package org.jboss.arquillian.extension.jacoco.container;
 
-import java.io.FileOutputStream;
+import java.io.ByteArrayOutputStream;
 
 import org.jacoco.core.data.ExecutionDataWriter;
 import org.jacoco.core.runtime.IRuntime;
+import org.jboss.arquillian.container.test.spi.command.CommandService;
 import org.jboss.arquillian.core.api.Instance;
 import org.jboss.arquillian.core.api.annotation.Inject;
 import org.jboss.arquillian.core.api.annotation.Observes;
@@ -27,44 +28,37 @@ import org.jboss.arquillian.test.spi.event.suite.AfterSuite;
 
 /**
  * StartCoverageData
- *
+ * 
  * @author <a href="mailto:aslak@redhat.com">Aslak Knutsen</a>
  * @version $Revision: $
  */
-public class ShutdownCoverageData
-{
-   @Inject
-   private Instance<IRuntime> runtimeInst;
-   
-   public void shutdownRuntime(@Observes AfterSuite event) throws Exception
-   {
-      IRuntime runtime = runtimeInst.get();
-      if(runtime != null)
-      {
-         FileOutputStream coverageFile = null;
-         try
-         {
-            coverageFile = new FileOutputStream(
-                  "/home/aslak/dev/source/testing/arquillian/frameworks/jacoco/target/coverage.data");
-   
-            ExecutionDataWriter writer = new ExecutionDataWriter(coverageFile);
-            runtime.collect(writer, writer, true);
-         } 
-         finally 
-         {
-            runtime.shutdown();
-            if(coverageFile != null)
-            {
-               try
-               {
-                  coverageFile.close();
-               }
-               catch (Exception e) 
-               {
-                  throw new RuntimeException("Could not close coverage file", e);
-               }
+public class ShutdownCoverageData {
+    @Inject
+    private Instance<IRuntime> runtimeInst;
+
+    @Inject
+    private Instance<CommandService> commandService;
+
+    public void writeCoverageData(@Observes AfterSuite arqEvent) throws Exception {
+        IRuntime runtime = runtimeInst.get();
+        if (runtime != null) {
+            ByteArrayOutputStream coverageOutputStream = null;
+            try {
+                coverageOutputStream = new ByteArrayOutputStream();
+                ExecutionDataWriter writer = new ExecutionDataWriter(coverageOutputStream);
+                runtime.collect(writer, writer, true);
+            } finally {
+                runtime.shutdown();
+                if (coverageOutputStream != null) {
+                    try {
+                        coverageOutputStream.close();
+                    } catch (Exception e) {
+                        throw new RuntimeException("Could not close coverage file", e);
+                    }
+                }
             }
-         }
-      }
-   }
+
+            commandService.get().execute(new CoverageDataCommand<ByteArrayOutputStream>(coverageOutputStream));
+        }
+    }
 }

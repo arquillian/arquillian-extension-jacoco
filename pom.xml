@@ -24,7 +24,7 @@
     <properties>
 
         <!-- Versioning -->
-        <version.arquillian_core>1.0.0.CR1-SNAPSHOT</version.arquillian_core>
+        <version.arquillian_core>1.0.0.CR1</version.arquillian_core>
         <version.sonar_jacoco>0.5</version.sonar_jacoco>
         <version.jacoco>0.5.2.20110519202509</version.jacoco>
         <version.asm>3.2</version.asm>
@@ -49,6 +49,22 @@
                 <enabled>false</enabled>
             </snapshots>
         </repository>
+        
+        <repository>
+          <id>jboss-public-repository-group</id>
+          <name>JBoss Public Maven Repository Group</name>
+          <url>http://repository.jboss.org/nexus/content/groups/public/</url>
+          <layout>default</layout>
+          <releases>
+            <enabled>true</enabled>
+            <updatePolicy>never</updatePolicy>
+          </releases>
+          <snapshots>
+            <enabled>true</enabled>
+            <updatePolicy>never</updatePolicy>
+          </snapshots>
+        </repository>
+        
     </repositories>
 
     <dependencyManagement>
@@ -107,10 +123,12 @@
             <artifactId>arquillian-junit-container</artifactId>
             <scope>test</scope>
         </dependency>
-        <dependency>
+        
+		<dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <scope>test</scope>
+			<version>4.8.2</version>
         </dependency>
 
         <dependency>

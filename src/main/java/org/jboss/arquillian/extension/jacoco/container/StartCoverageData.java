@@ -33,15 +33,16 @@ import org.jboss.arquillian.test.spi.event.suite.BeforeSuite;
  */
 public class StartCoverageData 
 {
-   @Inject @SuiteScoped
-   private InstanceProducer<IRuntime> runtimeInst;
-   
-   public void createRuntime(@Observes BeforeSuite event) throws Exception
-   {
-      IRuntime runtime = ArquillianRuntime.getInstance();
-      runtime.setSessionId(UUID.randomUUID().toString());
-      runtime.startup();
-      
-      runtimeInst.set(runtime);
-   }
+    @Inject
+    @SuiteScoped
+    private InstanceProducer<IRuntime> runtimeInst;
+
+    public void createRuntime(@Observes BeforeSuite event) throws Exception
+    {
+        IRuntime runtime = ArquillianRuntime.getInstance();
+        runtime.setSessionId(UUID.randomUUID().toString());
+        runtime.startup();
+
+        runtimeInst.set(runtime);
+    }
 }

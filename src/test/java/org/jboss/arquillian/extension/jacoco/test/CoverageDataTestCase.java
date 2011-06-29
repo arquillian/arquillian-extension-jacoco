@@ -138,7 +138,7 @@ public class CoverageDataTestCase
 //
 //   private static void visitLeafs(final IReportVisitor visitor, final Collection<? extends ICoverageNode> leafs,
 //         final ISourceFileLocator sourceFileLocator) throws IOException
-//   {
+//   {c
 //      for (final ICoverageNode l : leafs)
 //      {
 //         // Ignore Arquillian Client side methods
