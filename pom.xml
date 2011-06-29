@@ -24,7 +24,7 @@
     <properties>
 
         <!-- Versioning -->
-        <version.arquillian_core>1.0.0.CR1</version.arquillian_core>
+        <version.arquillian_core>1.0.0.Final-SNAPSHOT</version.arquillian_core>
         <version.sonar_jacoco>0.5</version.sonar_jacoco>
         <version.jacoco>0.5.2.20110519202509</version.jacoco>
         <version.asm>3.2</version.asm>
