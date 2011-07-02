@@ -25,6 +25,7 @@ import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ArchivePath;
 import org.jboss.shrinkwrap.api.Filters;
 import org.jboss.shrinkwrap.api.Node;
+import org.jboss.shrinkwrap.api.asset.Asset;
 
 /**
  * Instrument all Classes found in the User defined @Deployment.
@@ -39,8 +40,10 @@ public class ApplicationArchiveInstrumenter implements ApplicationArchiveProcess
       Map<ArchivePath, Node> classes = applicationArchive.getContent(Filters.include(".*\\.class"));
       for (Entry<ArchivePath, Node> entry : classes.entrySet())
       {
+         Asset original = entry.getValue().getAsset();
+         applicationArchive.delete(entry.getKey());
          applicationArchive.add(
-               new InstrumenterAsset(entry.getValue().getAsset()), 
+               new InstrumenterAsset(original), 
                entry.getKey());
       }
    }

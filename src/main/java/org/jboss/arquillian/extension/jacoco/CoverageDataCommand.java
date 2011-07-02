@@ -1,4 +1,4 @@
-package org.jboss.arquillian.extension.jacoco.container;
+package org.jboss.arquillian.extension.jacoco;
 
 import java.io.Serializable;
 

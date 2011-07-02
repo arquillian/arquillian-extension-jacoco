@@ -25,8 +25,9 @@
 
         <!-- Versioning -->
         <version.arquillian_core>1.0.0.Final-SNAPSHOT</version.arquillian_core>
+        <version.arquillian_jboss>1.0.0.CR1</version.arquillian_jboss>
         <version.sonar_jacoco>0.5</version.sonar_jacoco>
-        <version.jacoco>0.5.2.20110519202509</version.jacoco>
+        <version.jacoco>0.5.3-SNAPSHOT</version.jacoco>
         <version.asm>3.2</version.asm>
 
         <!-- test -->
@@ -49,22 +50,22 @@
                 <enabled>false</enabled>
             </snapshots>
         </repository>
-        
+
         <repository>
-          <id>jboss-public-repository-group</id>
-          <name>JBoss Public Maven Repository Group</name>
-          <url>http://repository.jboss.org/nexus/content/groups/public/</url>
-          <layout>default</layout>
-          <releases>
-            <enabled>true</enabled>
-            <updatePolicy>never</updatePolicy>
-          </releases>
-          <snapshots>
-            <enabled>true</enabled>
-            <updatePolicy>never</updatePolicy>
-          </snapshots>
+            <id>jboss-public-repository-group</id>
+            <name>JBoss Public Maven Repository Group</name>
+            <url>http://repository.jboss.org/nexus/content/groups/public/</url>
+            <layout>default</layout>
+            <releases>
+                <enabled>true</enabled>
+                <updatePolicy>never</updatePolicy>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>never</updatePolicy>
+            </snapshots>
         </repository>
-        
+
     </repositories>
 
     <dependencyManagement>
@@ -96,14 +97,6 @@
             <version>${version.jacoco}</version>
             <scope>provided</scope>
         </dependency>
-        <!-- 
-        <dependency>
-            <groupId>org.jacoco</groupId>
-            <artifactId>jacoco-report</artifactId>
-            <version>${version.jacoco}</version>
-            <scope>provided</scope>
-        </dependency>
-        -->
         <dependency>
             <groupId>asm</groupId>
             <artifactId>asm</artifactId>
@@ -116,19 +109,25 @@
             <version>${version.asm}</version>
             <scope>provided</scope>
         </dependency>
-        
+
         <!-- Test -->
         <dependency>
             <groupId>org.jboss.arquillian.junit</groupId>
             <artifactId>arquillian-junit-container</artifactId>
             <scope>test</scope>
         </dependency>
-        
-		<dependency>
+        <dependency>
+            <groupId>org.jboss.arquillian.protocol</groupId>
+            <artifactId>arquillian-protocol-servlet</artifactId>
+            <version>${version.arquillian_core}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <scope>test</scope>
-			<version>4.8.2</version>
+            <version>4.8.2</version>
         </dependency>
 
         <dependency>
@@ -166,7 +165,7 @@
                         <artifactId>maven-surefire-plugin</artifactId>
                         <configuration>
                             <excludes>
-                                <exclude>org/jboss/arquillian/framework/jacoco/test/integration/*</exclude>
+                                <exclude>org/jboss/arquillian/extension/jacoco/test/integration/*</exclude>
                             </excludes>
                         </configuration>
                     </plugin>
@@ -179,7 +178,7 @@
                 <dependency>
                     <groupId>org.jboss.arquillian.container</groupId>
                     <artifactId>arquillian-jbossas-remote-6</artifactId>
-                    <version>${project.version}</version>
+                    <version>${version.arquillian_jboss}</version>
                 </dependency>
                 <dependency>
                     <groupId>org.jboss.jbossas</groupId>
@@ -189,6 +188,29 @@
                     <scope>test</scope>
                 </dependency>
             </dependencies>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.jacoco</groupId>
+                        <artifactId>jacoco-maven-plugin</artifactId>
+                        <version>${version.jacoco}</version>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>prepare-agent</goal>
+                                </goals>
+                            </execution>
+                            <execution>
+                                <id>report</id>
+                                <phase>prepare-package</phase>
+                                <goals>
+                                    <goal>report</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
         </profile>
     </profiles>
 </project>

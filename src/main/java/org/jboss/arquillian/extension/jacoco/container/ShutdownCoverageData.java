@@ -25,6 +25,7 @@ import org.jboss.arquillian.core.api.Instance;
 import org.jboss.arquillian.core.api.annotation.Inject;
 import org.jboss.arquillian.core.api.annotation.Observes;
 import org.jboss.arquillian.core.spi.ServiceLoader;
+import org.jboss.arquillian.extension.jacoco.CoverageDataCommand;
 import org.jboss.arquillian.test.spi.event.suite.AfterSuite;
 
 /**

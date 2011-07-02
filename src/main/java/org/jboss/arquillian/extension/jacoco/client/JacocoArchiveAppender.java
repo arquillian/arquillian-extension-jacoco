@@ -18,6 +18,7 @@ package org.jboss.arquillian.extension.jacoco.client;
 
 import org.jboss.arquillian.container.test.spi.RemoteLoadableExtension;
 import org.jboss.arquillian.container.test.spi.client.deployment.AuxiliaryArchiveAppender;
+import org.jboss.arquillian.extension.jacoco.CoverageDataCommand;
 import org.jboss.arquillian.extension.jacoco.container.JacocoRemoteExtension;
 import org.jboss.arquillian.extension.jacoco.container.StartCoverageData;
 import org.jboss.shrinkwrap.api.Archive;
@@ -41,6 +42,7 @@ public class JacocoArchiveAppender implements AuxiliaryArchiveAppender
                         org.jacoco.core.JaCoCo.class.getPackage(),
                         org.objectweb.asm.ClassReader.class.getPackage(),
                         StartCoverageData.class.getPackage())
+                  .addPackage(CoverageDataCommand.class.getPackage())
                   .addAsServiceProvider(
                         RemoteLoadableExtension.class, 
                         JacocoRemoteExtension.class);
