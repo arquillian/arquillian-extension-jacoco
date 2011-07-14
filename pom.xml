@@ -24,7 +24,7 @@
     <properties>
 
         <!-- Versioning -->
-        <version.arquillian_core>1.0.0.Final-SNAPSHOT</version.arquillian_core>
+        <version.arquillian_core>1.0.0.CR2</version.arquillian_core>
         <version.arquillian_jboss>1.0.0.CR1</version.arquillian_jboss>
         <version.jacoco>0.5.2.20110519202509</version.jacoco>
         <version.asm>3.2</version.asm>
