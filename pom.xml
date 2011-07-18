@@ -25,7 +25,7 @@
         <!-- Versioning -->
         <version.arquillian_core>1.0.0.CR2</version.arquillian_core>
         <version.arquillian_jboss>1.0.0.CR1</version.arquillian_jboss>
-        <version.jacoco>0.5.2.20110519202509</version.jacoco>
+        <version.jacoco>0.5.3.201107060350</version.jacoco>
         <version.asm>3.2</version.asm>
 
         <!-- test -->
@@ -39,37 +39,6 @@
         <maven.compiler.source>1.5</maven.compiler.source>
 
     </properties>
-
-    <repositories>
-        <repository>
-            <!-- for jacoco -->
-            <id>sonar</id>
-            <name>Sonar</name>
-            <url>http://repository.sonarsource.org/content/repositories/sonar</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>false</enabled>
-            </snapshots>
-        </repository>
-
-        <repository>
-            <id>jboss-public-repository-group</id>
-            <name>JBoss Public Maven Repository Group</name>
-            <url>http://repository.jboss.org/nexus/content/groups/public/</url>
-            <layout>default</layout>
-            <releases>
-                <enabled>true</enabled>
-                <updatePolicy>never</updatePolicy>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-                <updatePolicy>never</updatePolicy>
-            </snapshots>
-        </repository>
-
-    </repositories>
 
     <dependencyManagement>
         <dependencies>
@@ -109,18 +78,6 @@
             <version>${version.jacoco}</version>
             <scope>provided</scope>
         </dependency>
-        <dependency>
-            <groupId>asm</groupId>
-            <artifactId>asm</artifactId>
-            <version>${version.asm}</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>asm</groupId>
-            <artifactId>asm-commons</artifactId>
-            <version>${version.asm}</version>
-            <scope>provided</scope>
-        </dependency>
 
         <!-- Test -->
         <dependency>
@@ -152,7 +109,6 @@
             <version>${version.ejb3}</version>
             <scope>test</scope>
         </dependency>
-
         <dependency>
             <groupId>asm</groupId>
             <artifactId>asm-util</artifactId>
@@ -160,6 +116,7 @@
             <type>jar</type>
             <scope>test</scope>
         </dependency>
+
     </dependencies>
 
     <profiles>
