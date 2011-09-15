@@ -23,7 +23,7 @@
     <properties>
 
         <!-- Versioning -->
-        <version.arquillian_core>1.0.0.CR2</version.arquillian_core>
+        <version.arquillian_core>1.0.0.Final-SNAPSHOT</version.arquillian_core>
         <version.arquillian_jboss>1.0.0.CR1</version.arquillian_jboss>
         <version.jacoco>0.5.3.201107060350</version.jacoco>
         <version.asm>3.2</version.asm>
@@ -157,6 +157,28 @@
             </dependencies>
             <build>
                 <plugins>
+                    <plugin>
+                        <!-- Copy the test-classes to classes/ so we get reports from them also -->
+                        <artifactId>maven-resources-plugin</artifactId>
+                        <version>2.5</version>
+                        <executions>
+                            <execution>
+                                <id>jacoco-copy-test-classes</id>
+                                <phase>process-test-classes</phase>
+                                <goals>
+                                    <goal>copy-resources</goal>
+                                </goals>
+                                <configuration>
+                                    <outputDirectory>${basedir}/target/classes</outputDirectory>
+                                    <resources>
+                                        <resource>
+                                            <directory>target/test-classes</directory>
+                                        </resource>
+                                    </resources>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
                     <plugin>
                         <groupId>org.jacoco</groupId>
                         <artifactId>jacoco-maven-plugin</artifactId>
