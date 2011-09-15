@@ -26,6 +26,8 @@ import org.jboss.shrinkwrap.api.ArchivePath;
 import org.jboss.shrinkwrap.api.Filters;
 import org.jboss.shrinkwrap.api.Node;
 import org.jboss.shrinkwrap.api.asset.Asset;
+import org.jboss.shrinkwrap.api.asset.ArchiveAsset;
+
 
 /**
  * Instrument all Classes found in the User defined @Deployment.
@@ -35,16 +37,32 @@ import org.jboss.shrinkwrap.api.asset.Asset;
  */
 public class ApplicationArchiveInstrumenter implements ApplicationArchiveProcessor
 {
+   private void processArchive(Archive<?> archive) 
+   {
+       Map<ArchivePath, Node> classes = archive.getContent(Filters.include(".*\\.class"));
+       for (Entry<ArchivePath, Node> entry : classes.entrySet())
+       {
+          Asset original = entry.getValue().getAsset();
+          archive.delete(entry.getKey());
+          archive.add(
+                new InstrumenterAsset(original), 
+                entry.getKey());
+       }
+       
+       // Process sub-archives recursively
+       Map<ArchivePath, Node> jars = archive.getContent();
+       for (Entry<ArchivePath, Node> entry : jars.entrySet())
+       {
+           Asset asset = entry.getValue().getAsset();
+           if (asset instanceof ArchiveAsset) {
+               Archive<?> subArchive = ((ArchiveAsset)asset).getArchive();
+               processArchive(subArchive);
+           }
+       }
+   }
+    
    public void process(Archive<?> applicationArchive, TestClass testClass)
    {
-      Map<ArchivePath, Node> classes = applicationArchive.getContent(Filters.include(".*\\.class"));
-      for (Entry<ArchivePath, Node> entry : classes.entrySet())
-      {
-         Asset original = entry.getValue().getAsset();
-         applicationArchive.delete(entry.getKey());
-         applicationArchive.add(
-               new InstrumenterAsset(original), 
-               entry.getKey());
-      }
+      processArchive(applicationArchive);
    }
 }
