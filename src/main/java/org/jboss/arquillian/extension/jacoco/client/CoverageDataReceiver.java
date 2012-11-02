@@ -30,11 +30,11 @@ public class CoverageDataReceiver
          SessionInfoStore sessionStore = new SessionInfoStore();
          
          read(new ByteArrayInputStream(coverageDataCommandEvent.getCoverageDate()), dataStore, sessionStore);
-         
+
          File targetDirectory = new File(TARGET_FOLDER);
          targetDirectory.mkdirs();
          File targetFile = new File(targetDirectory, TARGET_FILE);
-         
+
          if(targetFile.exists())
          {
             // append to existing data set, each @Test come back as a single stream
@@ -42,7 +42,7 @@ public class CoverageDataReceiver
          }
 
          write(new FileOutputStream(targetFile), dataStore, sessionStore);
-         
+
          coverageDataCommandEvent.setResult("SUCCESS");
 
       }
@@ -104,5 +104,5 @@ public class CoverageDataReceiver
             }
          }
       }
-   }
+    }
 }

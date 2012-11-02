@@ -18,13 +18,9 @@ package org.jboss.arquillian.extension.jacoco.test;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.Reader;
-import java.util.Collection;
 
 import org.jacoco.core.analysis.Analyzer;
 import org.jacoco.core.analysis.CoverageBuilder;
-import org.jacoco.core.analysis.ICoverageNode;
 import org.jacoco.core.data.ExecutionData;
 import org.jacoco.core.data.ExecutionDataReader;
 import org.jacoco.core.data.ExecutionDataStore;

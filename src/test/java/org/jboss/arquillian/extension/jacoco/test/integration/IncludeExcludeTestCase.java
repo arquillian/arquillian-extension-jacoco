@@ -23,46 +23,55 @@ import junit.framework.Assert;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.container.test.api.RunAsClient;
 import org.jboss.arquillian.extension.jacoco.test.CoverageChecker;
+import org.jboss.arquillian.extension.jacoco.test.ImplicitNoCoverageBean;
+import org.jboss.arquillian.extension.jacoco.test.excluded.ExplicitNoCoverageBean;
 import org.jboss.arquillian.extension.jacoco.test.included.CoverageBean;
 import org.jboss.arquillian.junit.Arquillian;
-import org.jboss.arquillian.junit.InSequence;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 /**
- * JacocoInegrationTestCase
- *
- * @author <a href="mailto:aslak@redhat.com">Aslak Knutsen</a>
- * @version $Revision: $
+ * @author Lukas Krejci
  */
 @RunWith(Arquillian.class)
-public class JacocoInegrationTestCase
+public class IncludeExcludeTestCase
 {
    @Deployment
-   public static JavaArchive createDeployment() 
+   public static JavaArchive createDeployment()
    {
-      return ShrinkWrap.create(JavaArchive.class, "test.jar")
-                     .addClasses(CoverageBean.class, JacocoInegrationTestCase.class);
+      return ShrinkWrap.create(JavaArchive.class, "test.jar").addClasses(
+            CoverageBean.class, ExplicitNoCoverageBean.class,
+            ImplicitNoCoverageBean.class, IncludeExcludeTestCase.class);
    }
-   
+
    @EJB
-   private CoverageBean bean;
-   
-   @Test @InSequence(0)
+   private ExplicitNoCoverageBean noCoverageBean1;
+
+   @EJB
+   private ImplicitNoCoverageBean noCoverageBean2;
+
+   @Test
    public void shouldBeAbleToGenerateSomeTestCoverage() throws Exception
    {
-      Assert.assertNotNull(bean);
-      
-      bean.test(true);
+      Assert.assertNotNull(noCoverageBean1);
+      Assert.assertNotNull(noCoverageBean2);
+
+      noCoverageBean1.test(true);
+      noCoverageBean2.test(true);
    }
-   
-   @Test @RunAsClient @InSequence(1)
+
+   @Test
+   @RunAsClient
    public void checkCoverageData() throws Exception
    {
-      Assert.assertTrue(
-            "There was no coverage data collected for CoverageBean class even though there should have been.",
-            CoverageChecker.hasCoverageData(CoverageBean.class));
+      Assert.assertFalse(
+            "There was coverage data collected for ExplicitNoCoverageBean class even though there shouldn't have been.",
+            CoverageChecker.hasCoverageData(ExplicitNoCoverageBean.class));
+
+      Assert.assertFalse(
+            "There was coverage data collected for ImplicitNoCoverageBean class even though there shouldn't have been.",
+            CoverageChecker.hasCoverageData(ImplicitNoCoverageBean.class));
    }
 }

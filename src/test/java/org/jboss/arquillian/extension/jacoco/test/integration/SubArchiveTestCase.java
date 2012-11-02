@@ -21,7 +21,9 @@ import javax.ejb.EJB;
 import junit.framework.Assert;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.extension.jacoco.test.CoverageBean;
+import org.jboss.arquillian.container.test.api.RunAsClient;
+import org.jboss.arquillian.extension.jacoco.test.CoverageChecker;
+import org.jboss.arquillian.extension.jacoco.test.included.SubCoverageBean;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
@@ -41,18 +43,28 @@ public class SubArchiveTestCase
    public static WebArchive createDeployment()
    {
       return ShrinkWrap.create(WebArchive.class, "test.war")
+                  .addClass(SubArchiveTestCase.class)
                   .addAsLibrary(
                           ShrinkWrap.create(JavaArchive.class, "test.jar")
-                              .addClasses(CoverageBean.class));
+                              .addClasses(SubCoverageBean.class));
    }
 
    @EJB
-   private CoverageBean bean;
+   private SubCoverageBean bean;
 
    @Test
    public void shouldBeAbleToGenerateSomeTestCoverage() throws Exception
    {
       Assert.assertNotNull(bean);
       bean.test(false);
+   }
+
+   @Test
+   @RunAsClient
+   public void checkCoverageData() throws Exception
+   {
+      Assert.assertTrue(
+            "There was no coverage data collected for CoverageBean class even though there should have been.",
+            CoverageChecker.hasCoverageData(SubCoverageBean.class));
    }
 }
