@@ -23,19 +23,22 @@ import org.jboss.arquillian.core.spi.LoadableExtension;
 
 /**
  * JacocoExtension
- *
+ * 
  * @author <a href="mailto:aslak@redhat.com">Aslak Knutsen</a>
  * @version $Revision: $
  */
-public class JacocoExtension implements LoadableExtension 
+public class JacocoExtension implements LoadableExtension
 {
    @Override
    public void register(ExtensionBuilder builder)
    {
-      builder.service(AuxiliaryArchiveAppender.class, JacocoArchiveAppender.class)
-             .service(ApplicationArchiveProcessor.class, ApplicationArchiveInstrumenter.class);
-      
-      builder.observer(CoverageDataReceiver.class);
+      builder.service(AuxiliaryArchiveAppender.class,
+            JacocoArchiveAppender.class).service(
+            ApplicationArchiveProcessor.class,
+            ApplicationArchiveInstrumenter.class);
+
+      builder.observer(CoverageDataReceiver.class).observer(
+            JacocoConfigurator.class);
    }
 
 }
