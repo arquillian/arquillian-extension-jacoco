@@ -21,13 +21,10 @@ package org.jboss.arquillian.extension.jacoco.client;
 import java.util.Map;
 
 import org.jboss.arquillian.config.descriptor.api.ArquillianDescriptor;
-import org.jboss.arquillian.core.api.Instance;
 import org.jboss.arquillian.core.api.InstanceProducer;
 import org.jboss.arquillian.core.api.annotation.ApplicationScoped;
 import org.jboss.arquillian.core.api.annotation.Inject;
 import org.jboss.arquillian.core.api.annotation.Observes;
-import org.jboss.arquillian.core.spi.EventContext;
-import org.jboss.arquillian.test.spi.event.suite.BeforeSuite;
 
 /**
  * @author Lukas Krejci
@@ -41,16 +38,11 @@ public class JacocoConfigurator
    @ApplicationScoped
    private InstanceProducer<JacocoConfiguration> configurationProvider;
 
-   @Inject
-   private Instance<ArquillianDescriptor> arquillianDescriptor;
-
-   public void configure(@Observes EventContext<BeforeSuite> ctx)
+   public void configure(@Observes ArquillianDescriptor desc)
    {
-      Map<String, String> config = arquillianDescriptor.get()
-            .extension(EXTENSION_NAME).getExtensionProperties();
+      Map<String, String> config = desc.extension(EXTENSION_NAME)
+            .getExtensionProperties();
 
       configurationProvider.set(JacocoConfiguration.fromMap(config));
-
-      ctx.proceed();
    }
 }
