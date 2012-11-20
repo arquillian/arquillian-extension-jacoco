@@ -29,37 +29,40 @@ import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.container.test.api.RunAsClient;
 import org.jboss.arquillian.extension.jacoco.test.CoverageBean;
 import org.jboss.arquillian.extension.jacoco.test.CoverageChecker;
+import org.jboss.arquillian.extension.jacoco.test.excluded.NoCoverageBean;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 
 /**
- * JacocoInegrationTestCase
- *
- * @author <a href="mailto:aslak@redhat.com">Aslak Knutsen</a>
- * @version $Revision: $
+ * @author Lukas Krejci
  */
 @RunWith(Arquillian.class)
-public class JacocoInegrationTestCase
+public class IncludeExcludeTestCase
 {
    @Deployment
-   public static JavaArchive createDeployment() 
+   public static JavaArchive createDeployment()
    {
-      return ShrinkWrap.create(JavaArchive.class, "test.jar")
-                     .addClasses(CoverageBean.class);
+      return ShrinkWrap.create(JavaArchive.class, "test.jar").addClasses(
+            CoverageBean.class, NoCoverageBean.class);
    }
-   
+
    @EJB
-   private CoverageBean bean;
-   
+   private CoverageBean coverageBean;
+
+   @EJB
+   private NoCoverageBean noCoverageBean;
+
    @Test
    public void shouldBeAbleToGenerateSomeTestCoverage() throws Exception
    {
-      Assert.assertNotNull(bean);
-      
-      bean.test(true);
+      Assert.assertNotNull(coverageBean);
+      Assert.assertNotNull(noCoverageBean);
+
+      coverageBean.test(true);
+      noCoverageBean.test(true);
    }
-   
+
    @Test
    @RunAsClient
    public void checkCoverageData() throws Exception
@@ -68,5 +71,10 @@ public class JacocoInegrationTestCase
             "There was no coverage data collected for CoverageBean class even though there should have been.",
             CoverageChecker.hasCoverageData(new File("target" + File.separator
                   + "jacoco-custom.exec"), CoverageBean.class));
+
+      Assert.assertFalse(
+            "There was coverage data collected for CoverageBean class even though there shouldn't have been.",
+            CoverageChecker.hasCoverageData(new File("target" + File.separator
+                  + "jacoco-custom.exec"), NoCoverageBean.class));
    }
 }

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<arquillian
+  xmlns="http://jboss.org/schema/arquillian"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="
+        http://jboss.org/schema/arquillian
+        http://jboss.org/schema/arquillian/arquillian_1_0.xsd">
+
+  <extension qualifier="jacoco">
+    <property name="destFile">jacoco-custom.exec</property>
+    <property name="includes">org.jboss.arquillian.extension.jacoco.test.*</property>
+    <property name="excludes">org.jboss.arquillian.extension.jacoco.test.integration.*;org.jboss.arquillian.extension.jacoco.test.excluded.*</property>
+  </extension>
+        
+</arquillian>
