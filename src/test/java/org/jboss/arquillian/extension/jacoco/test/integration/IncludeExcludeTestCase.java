@@ -27,9 +27,10 @@ import org.junit.runner.RunWith;
 
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.container.test.api.RunAsClient;
-import org.jboss.arquillian.extension.jacoco.test.CoverageBean;
 import org.jboss.arquillian.extension.jacoco.test.CoverageChecker;
-import org.jboss.arquillian.extension.jacoco.test.excluded.NoCoverageBean;
+import org.jboss.arquillian.extension.jacoco.test.ImplicitNoCoverageBean;
+import org.jboss.arquillian.extension.jacoco.test.excluded.ExplicitNoCoverageBean;
+import org.jboss.arquillian.extension.jacoco.test.included.CoverageBean;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
@@ -44,23 +45,29 @@ public class IncludeExcludeTestCase
    public static JavaArchive createDeployment()
    {
       return ShrinkWrap.create(JavaArchive.class, "test.jar").addClasses(
-            CoverageBean.class, NoCoverageBean.class);
+            CoverageBean.class, ExplicitNoCoverageBean.class,
+            ImplicitNoCoverageBean.class);
    }
 
    @EJB
    private CoverageBean coverageBean;
 
    @EJB
-   private NoCoverageBean noCoverageBean;
+   private ExplicitNoCoverageBean noCoverageBean1;
+
+   @EJB
+   private ImplicitNoCoverageBean noCoverageBean2;
 
    @Test
    public void shouldBeAbleToGenerateSomeTestCoverage() throws Exception
    {
       Assert.assertNotNull(coverageBean);
-      Assert.assertNotNull(noCoverageBean);
+      Assert.assertNotNull(noCoverageBean1);
+      Assert.assertNotNull(noCoverageBean2);
 
       coverageBean.test(true);
-      noCoverageBean.test(true);
+      noCoverageBean1.test(true);
+      noCoverageBean2.test(true);
    }
 
    @Test
@@ -73,8 +80,13 @@ public class IncludeExcludeTestCase
                   + "jacoco-custom.exec"), CoverageBean.class));
 
       Assert.assertFalse(
-            "There was coverage data collected for CoverageBean class even though there shouldn't have been.",
+            "There was coverage data collected for ExplicitNoCoverageBean class even though there shouldn't have been.",
             CoverageChecker.hasCoverageData(new File("target" + File.separator
-                  + "jacoco-custom.exec"), NoCoverageBean.class));
+                  + "jacoco-custom.exec"), ExplicitNoCoverageBean.class));
+
+      Assert.assertFalse(
+            "There was coverage data collected for ImplicitNoCoverageBean class even though there shouldn't have been.",
+            CoverageChecker.hasCoverageData(new File("target" + File.separator
+                  + "jacoco-custom.exec"), ImplicitNoCoverageBean.class));
    }
 }

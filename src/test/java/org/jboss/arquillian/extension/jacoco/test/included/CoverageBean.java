@@ -14,14 +14,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.extension.jacoco.test;
+package org.jboss.arquillian.extension.jacoco.test.included;
 
 import javax.ejb.Stateless;
 
 
 /**
- * CoverageTestBean
- *
+ * This bean is explicitly mentioned in the "includes" of jacoco configuration
+ * in the the arquillian.xml and therefore is instrumented with code coverage.
+ * 
  * @author <a href="mailto:aslak@redhat.com">Aslak Knutsen</a>
  * @version $Revision: $
  */

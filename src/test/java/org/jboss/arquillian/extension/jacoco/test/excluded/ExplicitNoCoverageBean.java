@@ -19,10 +19,14 @@ package org.jboss.arquillian.extension.jacoco.test.excluded;
 import javax.ejb.Stateless;
 
 /**
+ * This bean is mentioned in the "excludes" of the jacoco configuration in
+ * arquillian.xml and therefore is explicitly not included in the code coverage
+ * instrumentation.
+ * 
  * @author Lukas Krejci
  */
 @Stateless
-public class NoCoverageBean
+public class ExplicitNoCoverageBean
 {
    public void test(Boolean value)
    {
