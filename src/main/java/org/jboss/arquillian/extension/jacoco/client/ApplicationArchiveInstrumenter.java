@@ -16,9 +16,6 @@
  */
 package org.jboss.arquillian.extension.jacoco.client;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -29,7 +26,6 @@ import org.jboss.arquillian.test.spi.TestClass;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ArchivePath;
 import org.jboss.shrinkwrap.api.Filter;
-import org.jboss.shrinkwrap.api.Filters;
 import org.jboss.shrinkwrap.api.Node;
 import org.jboss.shrinkwrap.api.asset.ArchiveAsset;
 import org.jboss.shrinkwrap.api.asset.Asset;
@@ -49,29 +45,6 @@ public class ApplicationArchiveInstrumenter implements
 {
    @Inject
    private Instance<JacocoConfiguration> config;
-
-   private static class AndFilter<T> implements Filter<T>
-   {
-      private Collection<Filter<T>> filters;
-
-      AndFilter(Collection<Filter<T>> filters)
-      {
-         this.filters = filters;
-      }
-
-      @Override
-      public boolean include(T object)
-      {
-         for (Filter<T> f : filters)
-         {
-            if (!f.include(object))
-            {
-               return false;
-            }
-         }
-         return true;
-      }
-   }
 
    private void processArchive(Archive<?> archive, Filter<ArchivePath> filter)
    {
@@ -99,54 +72,6 @@ public class ApplicationArchiveInstrumenter implements
 
    public void process(Archive<?> applicationArchive, TestClass testClass)
    {
-      processArchive(applicationArchive, composeFilter());
-   }
-
-   private Filter<ArchivePath> composeFilter()
-   {
-      List<Filter<ArchivePath>> filters = new ArrayList<Filter<ArchivePath>>();
-      filters.add(Filters.include(".*\\.class"));
-
-      for (String include : getIncludes())
-      {
-         filters.add(Filters.include(include));
-      }
-
-      for (String exclude : getExcludes())
-      {
-         filters.add(Filters.exclude(exclude));
-      }
-
-      return new AndFilter<ArchivePath>(filters);
-   }
-
-   private List<String> getIncludes()
-   {
-      return convertToRegexps(config.get().getIncludes());
-   }
-
-   private List<String> getExcludes()
-   {
-      return convertToRegexps(config.get().getExcludes());
-   }
-
-   private List<String> convertToRegexps(List<String> patterns)
-   {
-      if (patterns.isEmpty())
-      {
-         return patterns;
-      } else
-      {
-         ArrayList<String> ret = new ArrayList<String>(patterns.size());
-         for (String regexp : patterns)
-         {
-            regexp = regexp.replace(".", "\\/").replace("*", ".*")
-                  .replace('?', '.');
-
-            ret.add(".*" + regexp + "\\.class");
-         }
-
-         return ret;
-      }
+      processArchive(applicationArchive, config.get().getClassFilter());
    }
 }
