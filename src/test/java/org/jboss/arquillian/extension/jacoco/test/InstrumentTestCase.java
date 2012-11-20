@@ -30,6 +30,8 @@ import org.jacoco.core.data.ExecutionDataStore;
 import org.jacoco.core.instr.Instrumenter;
 import org.jacoco.core.runtime.IRuntime;
 import org.jboss.arquillian.extension.jacoco.container.ArquillianRuntime;
+import org.jboss.arquillian.extension.jacoco.test.included.CoverageBean;
+
 import org.junit.Ignore;
 import org.junit.Test;
 import org.objectweb.asm.ClassReader;

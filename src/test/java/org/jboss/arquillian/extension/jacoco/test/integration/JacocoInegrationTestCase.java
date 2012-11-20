@@ -16,17 +16,22 @@
  */
 package org.jboss.arquillian.extension.jacoco.test.integration;
 
+import java.io.File;
+
 import javax.ejb.EJB;
 
 import junit.framework.Assert;
 
+import org.junit.Test;
+import org.junit.runner.RunWith;
+
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.extension.jacoco.test.CoverageBean;
+import org.jboss.arquillian.container.test.api.RunAsClient;
+import org.jboss.arquillian.extension.jacoco.test.CoverageChecker;
+import org.jboss.arquillian.extension.jacoco.test.included.CoverageBean;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
-import org.junit.Test;
-import org.junit.runner.RunWith;
 
 /**
  * JacocoInegrationTestCase
@@ -55,4 +60,13 @@ public class JacocoInegrationTestCase
       bean.test(true);
    }
    
+   @Test
+   @RunAsClient
+   public void checkCoverageData() throws Exception
+   {
+      Assert.assertTrue(
+            "There was no coverage data collected for CoverageBean class even though there should have been.",
+            CoverageChecker.hasCoverageData(new File("target" + File.separator
+                  + "jacoco-custom.exec"), CoverageBean.class));
+   }
 }

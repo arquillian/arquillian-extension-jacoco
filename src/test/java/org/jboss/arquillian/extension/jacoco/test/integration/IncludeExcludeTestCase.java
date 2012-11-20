@@ -1,6 +1,6 @@
 /*
  * JBoss, Home of Professional Open Source
- * Copyright 2011, Red Hat Middleware LLC, and individual contributors
+ * Copyright 2009, Red Hat Middleware LLC, and individual contributors
  * by the @authors tag. See the copyright.txt in the distribution for a
  * full listing of individual contributors.
  *
@@ -28,37 +28,46 @@ import org.junit.runner.RunWith;
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.container.test.api.RunAsClient;
 import org.jboss.arquillian.extension.jacoco.test.CoverageChecker;
+import org.jboss.arquillian.extension.jacoco.test.ImplicitNoCoverageBean;
+import org.jboss.arquillian.extension.jacoco.test.excluded.ExplicitNoCoverageBean;
 import org.jboss.arquillian.extension.jacoco.test.included.CoverageBean;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
-import org.jboss.shrinkwrap.api.spec.WebArchive;
 
 /**
- * SubArchiveTestCase
- *
- * @author <a href="mailto:maschmid@redhat.com">Marek Schmidt</a>
+ * @author Lukas Krejci
  */
 @RunWith(Arquillian.class)
-public class SubArchiveTestCase
+public class IncludeExcludeTestCase
 {
    @Deployment
-   public static WebArchive createDeployment()
+   public static JavaArchive createDeployment()
    {
-      return ShrinkWrap.create(WebArchive.class, "test.war")
-                  .addAsLibrary(
-                          ShrinkWrap.create(JavaArchive.class, "test.jar")
-                              .addClasses(CoverageBean.class));
+      return ShrinkWrap.create(JavaArchive.class, "test.jar").addClasses(
+            CoverageBean.class, ExplicitNoCoverageBean.class,
+            ImplicitNoCoverageBean.class);
    }
 
    @EJB
-   private CoverageBean bean;
+   private CoverageBean coverageBean;
+
+   @EJB
+   private ExplicitNoCoverageBean noCoverageBean1;
+
+   @EJB
+   private ImplicitNoCoverageBean noCoverageBean2;
 
    @Test
    public void shouldBeAbleToGenerateSomeTestCoverage() throws Exception
    {
-      Assert.assertNotNull(bean);
-      bean.test(false);
+      Assert.assertNotNull(coverageBean);
+      Assert.assertNotNull(noCoverageBean1);
+      Assert.assertNotNull(noCoverageBean2);
+
+      coverageBean.test(true);
+      noCoverageBean1.test(true);
+      noCoverageBean2.test(true);
    }
 
    @Test
@@ -69,5 +78,15 @@ public class SubArchiveTestCase
             "There was no coverage data collected for CoverageBean class even though there should have been.",
             CoverageChecker.hasCoverageData(new File("target" + File.separator
                   + "jacoco-custom.exec"), CoverageBean.class));
+
+      Assert.assertFalse(
+            "There was coverage data collected for ExplicitNoCoverageBean class even though there shouldn't have been.",
+            CoverageChecker.hasCoverageData(new File("target" + File.separator
+                  + "jacoco-custom.exec"), ExplicitNoCoverageBean.class));
+
+      Assert.assertFalse(
+            "There was coverage data collected for ImplicitNoCoverageBean class even though there shouldn't have been.",
+            CoverageChecker.hasCoverageData(new File("target" + File.separator
+                  + "jacoco-custom.exec"), ImplicitNoCoverageBean.class));
    }
 }

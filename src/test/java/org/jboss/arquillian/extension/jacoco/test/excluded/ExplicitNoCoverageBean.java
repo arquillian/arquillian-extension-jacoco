@@ -14,35 +14,35 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.extension.jacoco.test;
+package org.jboss.arquillian.extension.jacoco.test.excluded;
 
 import javax.ejb.Stateless;
 
-
 /**
- * CoverageTestBean
- *
- * @author <a href="mailto:aslak@redhat.com">Aslak Knutsen</a>
- * @version $Revision: $
+ * This bean is mentioned in the "excludes" of the jacoco configuration in
+ * arquillian.xml and therefore is explicitly not included in the code coverage
+ * instrumentation.
+ * 
+ * @author Lukas Krejci
  */
 @Stateless
-public class CoverageBean 
+public class ExplicitNoCoverageBean
 {
-   public void test(Boolean value) 
+   public void test(Boolean value)
    {
       String test = "test";
-      if(value)
+      if (value)
       {
-         if(test.length() == 4)
+         if (test.length() == 4)
          {
             long start = System.currentTimeMillis();
             test = String.valueOf(start);
          }
-      } 
-      else
+      } else
       {
          long start = System.currentTimeMillis();
          test = String.valueOf(start);
       }
    }
+
 }

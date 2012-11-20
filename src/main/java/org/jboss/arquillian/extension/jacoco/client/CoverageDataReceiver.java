@@ -14,13 +14,18 @@ import org.jacoco.core.data.ExecutionDataWriter;
 import org.jacoco.core.data.IExecutionDataVisitor;
 import org.jacoco.core.data.ISessionInfoVisitor;
 import org.jacoco.core.data.SessionInfoStore;
+
+import org.jboss.arquillian.core.api.Instance;
+import org.jboss.arquillian.core.api.annotation.Inject;
 import org.jboss.arquillian.core.api.annotation.Observes;
 import org.jboss.arquillian.extension.jacoco.CoverageDataCommand;
 
 public class CoverageDataReceiver
 {
    private static final String TARGET_FOLDER = "target/";
-   private static final String TARGET_FILE = "jacoco.exec";
+
+   @Inject
+   private Instance<JacocoConfiguration> configuration;
 
    public void storeCoverageData(@Observes CoverageDataCommand coverageDataCommandEvent)
    {
@@ -33,7 +38,7 @@ public class CoverageDataReceiver
          
          File targetDirectory = new File(TARGET_FOLDER);
          targetDirectory.mkdirs();
-         File targetFile = new File(targetDirectory, TARGET_FILE);
+            File targetFile = getTargetFile(targetDirectory);
          
          if(targetFile.exists())
          {
@@ -104,5 +109,18 @@ public class CoverageDataReceiver
             }
          }
       }
-   }
+    }
+
+    private File getTargetFile(File targetDirectory) {
+        String fileName = JacocoConfiguration.DEST_FILE_DEFAULT_VALUE;
+
+        if (configuration != null) {
+            JacocoConfiguration jc = configuration.get();
+            if (jc != null) {
+                fileName = jc.getDestinationFileName();
+            }
+        }
+
+        return new File(targetDirectory, fileName);
+    }
 }

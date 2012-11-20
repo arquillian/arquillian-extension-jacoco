@@ -29,6 +29,7 @@ import org.jacoco.core.data.SessionInfoStore;
 import org.jacoco.core.instr.Instrumenter;
 import org.jacoco.core.runtime.IRuntime;
 import org.jboss.arquillian.extension.jacoco.container.ArquillianRuntime;
+import org.jboss.arquillian.extension.jacoco.test.included.CoverageBean;
 
 /**
  * Example usage of the JaCoCo core API. In this tutorial a single target class will be instrumented and executed.
