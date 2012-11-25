@@ -7,7 +7,6 @@
         http://jboss.org/schema/arquillian/arquillian_1_0.xsd">
 
   <extension qualifier="jacoco">
-    <property name="destFile">target/jacoco-custom.exec</property>
     <property name="includes">org.jboss.arquillian.extension.jacoco.test.included.*</property>
     <property name="excludes">org.jboss.arquillian.extension.jacoco.test.integration.*;org.jboss.arquillian.extension.jacoco.test.excluded.*</property>
   </extension>

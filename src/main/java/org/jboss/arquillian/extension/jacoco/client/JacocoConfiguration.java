@@ -24,6 +24,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import org.jboss.shrinkwrap.api.ArchivePath;
 import org.jboss.shrinkwrap.api.Filter;
@@ -166,5 +167,18 @@ public class JacocoConfiguration
 
          return ret;
       }
+   }
+
+   public static boolean isJacocoAgentActive()
+   {
+      try
+      {
+         UUID.class.getDeclaredField("$jacocoAccess");
+      }
+      catch (Exception e)
+      {
+         return false;
+      }
+      return true;
    }
 }

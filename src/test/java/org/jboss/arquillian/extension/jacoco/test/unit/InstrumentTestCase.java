@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.extension.jacoco.test;
+package org.jboss.arquillian.extension.jacoco.test.unit;
 
 import java.io.InputStream;
 import java.io.PrintWriter;

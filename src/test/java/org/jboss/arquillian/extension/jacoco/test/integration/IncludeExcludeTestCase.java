@@ -21,8 +21,6 @@ import javax.ejb.EJB;
 import junit.framework.Assert;
 
 import org.jboss.arquillian.container.test.api.Deployment;
-import org.jboss.arquillian.container.test.api.RunAsClient;
-import org.jboss.arquillian.extension.jacoco.test.CoverageChecker;
 import org.jboss.arquillian.extension.jacoco.test.ImplicitNoCoverageBean;
 import org.jboss.arquillian.extension.jacoco.test.excluded.ExplicitNoCoverageBean;
 import org.jboss.arquillian.extension.jacoco.test.included.CoverageBean;
@@ -60,18 +58,5 @@ public class IncludeExcludeTestCase
 
       noCoverageBean1.test(true);
       noCoverageBean2.test(true);
-   }
-
-   @Test
-   @RunAsClient
-   public void checkCoverageData() throws Exception
-   {
-      Assert.assertFalse(
-            "There was coverage data collected for ExplicitNoCoverageBean class even though there shouldn't have been.",
-            CoverageChecker.hasCoverageData(ExplicitNoCoverageBean.class));
-
-      Assert.assertFalse(
-            "There was coverage data collected for ImplicitNoCoverageBean class even though there shouldn't have been.",
-            CoverageChecker.hasCoverageData(ImplicitNoCoverageBean.class));
    }
 }
