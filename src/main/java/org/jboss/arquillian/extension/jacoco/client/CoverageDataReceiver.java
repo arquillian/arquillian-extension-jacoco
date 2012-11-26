@@ -27,9 +27,7 @@ public class CoverageDataReceiver
 
          read(new ByteArrayInputStream(coverageDataCommandEvent.getCoverageDate()), dataStore, sessionStore);
 
-         if(JacocoConfiguration.isJacocoAgentActive()) {
-            copyToAgentExecutionStore(dataStore);
-         }
+         copyToAgentExecutionStore(dataStore);
 
          coverageDataCommandEvent.setResult("SUCCESS");
       }

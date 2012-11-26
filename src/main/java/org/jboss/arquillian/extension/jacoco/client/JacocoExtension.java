@@ -32,11 +32,14 @@ public class JacocoExtension implements LoadableExtension
    @Override
    public void register(ExtensionBuilder builder)
    {
-      builder.service(AuxiliaryArchiveAppender.class, JacocoArchiveAppender.class)
-            .service(ApplicationArchiveProcessor.class, ApplicationArchiveInstrumenter.class);
+      if(JacocoConfiguration.isJacocoAgentActive())
+      {
+         builder.service(AuxiliaryArchiveAppender.class, JacocoArchiveAppender.class)
+               .service(ApplicationArchiveProcessor.class, ApplicationArchiveInstrumenter.class);
 
-      builder.observer(CoverageDataReceiver.class)
-             .observer(JacocoConfigurator.class);
+         builder.observer(CoverageDataReceiver.class)
+                .observer(JacocoConfigurator.class);
+      }
    }
 
 }
