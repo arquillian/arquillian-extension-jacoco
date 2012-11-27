@@ -15,7 +15,7 @@
     <!-- Artifact Configuration -->
     <groupId>org.jboss.arquillian.extension</groupId>
     <artifactId>arquillian-jacoco</artifactId>
-    <version>1.0.0.Final-SNAPSHOT</version>
+    <version>1.0.0.Alpha4</version>
     <name>Arquillian Extension Jacoco</name>
     <description>Jacoco integration to add code coverage to Arquillian</description>
 
