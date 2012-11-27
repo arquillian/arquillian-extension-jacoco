@@ -206,27 +206,6 @@
             <build>
                 <plugins>
                     <plugin>
-                        <!-- Copy the test-classes to classes/ so we get reports from them also -->
-                        <artifactId>maven-resources-plugin</artifactId>
-                        <executions>
-                            <execution>
-                                <id>jacoco-copy-test-classes</id>
-                                <phase>process-test-classes</phase>
-                                <goals>
-                                    <goal>copy-resources</goal>
-                                </goals>
-                                <configuration>
-                                    <outputDirectory>${basedir}/target/classes</outputDirectory>
-                                    <resources>
-                                        <resource>
-                                            <directory>target/test-classes</directory>
-                                        </resource>
-                                    </resources>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-                    <plugin>
                         <groupId>org.jacoco</groupId>
                         <artifactId>jacoco-maven-plugin</artifactId>
                         <version>${version.jacoco}</version>
