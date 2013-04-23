@@ -23,13 +23,16 @@
     <properties>
         <!-- Versioning -->
         <version.arquillian_core>1.0.0.Final</version.arquillian_core>
-        <version.jacoco>0.6.0.201210061924</version.jacoco>
+        <version.jacoco>0.6.2.201302030002</version.jacoco>
         <version.asm>3.3.1</version.asm>
 
         <!-- test -->
         <version.jbossas>7.1.1.Final</version.jbossas>
         <version.cdi-api>1.0-SP4</version.cdi-api>
         <version.ejb3>1.0.2.Final</version.ejb3>
+
+        <version.arquillian-glassfish>1.0.0.CR3</version.arquillian-glassfish>
+        <version.glassfish>3.1</version.glassfish>
 
         <!-- override from parent -->
         <maven.compiler.argument.target>1.5</maven.compiler.argument.target>
@@ -195,6 +198,23 @@
                     <artifactId>jboss-as-arquillian-container-remote</artifactId>
                     <version>${version.jbossas}</version>
                     <scope>test</scope>
+                </dependency>
+            </dependencies>
+        </profile>
+        <profile>
+            <id>glassfish-embedded</id>
+            <dependencies>
+                <dependency>
+                    <groupId>org.jboss.arquillian.container</groupId>
+                    <artifactId>arquillian-glassfish-embedded-3.1</artifactId>
+                    <version>${version.arquillian-glassfish}</version>
+                    <scope>test</scope>
+                </dependency>
+                <dependency>
+                    <groupId>org.glassfish.extras</groupId>
+                    <artifactId>glassfish-embedded-all</artifactId>
+                    <version>${version.glassfish}</version>
+                    <scope>provided</scope>
                 </dependency>
             </dependencies>
         </profile>

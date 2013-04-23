@@ -65,7 +65,7 @@ public final class CoverageChecker
             public void visitClassExecution(ExecutionData data)
             {
                String binaryName = convertToBinaryName(data.getName());
-               for(boolean hit : data.getData())
+               for(boolean hit : data.getProbes())
                {
                   if(hit) // make sure the Bean has recorded a hit
                   {

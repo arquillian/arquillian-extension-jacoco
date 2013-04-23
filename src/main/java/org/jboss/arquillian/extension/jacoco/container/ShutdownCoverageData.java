@@ -42,7 +42,7 @@ public class ShutdownCoverageData {
     private Instance<ServiceLoader> serviceLoader;
 
     public void writeCoverageData(@Observes AfterSuite arqEvent) throws Exception {
-        IRuntime runtime = runtimeInst.get();
+        ArquillianRuntime runtime = (ArquillianRuntime)runtimeInst.get();
         if (runtime != null) {
             ByteArrayOutputStream coverageOutputStream = null;
             try {

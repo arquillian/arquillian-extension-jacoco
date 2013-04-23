@@ -22,6 +22,7 @@ import org.jacoco.core.data.ISessionInfoVisitor;
 import org.jacoco.core.data.SessionInfo;
 import org.jacoco.core.internal.instr.InstrSupport;
 import org.jacoco.core.runtime.IRuntime;
+import org.jacoco.core.runtime.RuntimeData;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 
@@ -85,7 +86,7 @@ public class ArquillianRuntime implements IRuntime
       final int probecount = ((Integer) args[2]).intValue();
       synchronized (store)
       {
-         args[0] = store.get(classid, name, probecount).getData();
+         args[0] = store.get(classid, name, probecount).getProbes();
       }
    }
 
@@ -118,6 +119,12 @@ public class ArquillianRuntime implements IRuntime
     * @see org.jacoco.core.runtime.IRuntime#startup()
     */
    public void startup() throws Exception
+   {
+      setStartTimeStamp();
+   }
+
+   @Override
+   public void startup(RuntimeData arg0) throws Exception
    {
       setStartTimeStamp();
    }

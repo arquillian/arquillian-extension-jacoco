@@ -39,7 +39,7 @@ public class StartCoverageData
 
     public void createRuntime(@Observes BeforeSuite event) throws Exception
     {
-        IRuntime runtime = ArquillianRuntime.getInstance();
+        ArquillianRuntime runtime = ArquillianRuntime.getInstance();
         runtime.setSessionId(UUID.randomUUID().toString());
         runtime.startup();
 

@@ -61,7 +61,7 @@ public class InstrumentTestCase
    {
       final String targetName = CoverageBean.class.getName();
 
-      IRuntime runtime = ArquillianRuntime.getInstance();
+      ArquillianRuntime runtime = ArquillianRuntime.getInstance();
 
       final Instrumenter instr = new Instrumenter(runtime);
       final byte[] instrumented = instr.instrument(getTargetClass(targetName));
