@@ -16,12 +16,9 @@
  */
 package org.jboss.arquillian.extension.jacoco.container;
 
-import org.jacoco.core.data.ExecutionDataStore;
-import org.jacoco.core.data.IExecutionDataVisitor;
-import org.jacoco.core.data.ISessionInfoVisitor;
-import org.jacoco.core.data.SessionInfo;
 import org.jacoco.core.internal.instr.InstrSupport;
 import org.jacoco.core.runtime.IRuntime;
+import org.jacoco.core.runtime.RuntimeData;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 
@@ -43,19 +40,14 @@ public class ArquillianRuntime implements IRuntime
       }
       return runtime;
    }
-
-   private String sessionId;
-
-   private ExecutionDataStore store;
-
-   private long startTimeStamp;
+   
+    private RuntimeData runtimeData;
 
    /**
     * 
     */
    private ArquillianRuntime()
    {
-      store = new ExecutionDataStore();
    }
 
    /**
@@ -83,43 +75,23 @@ public class ArquillianRuntime implements IRuntime
       final Long classid = (Long) args[0];
       final String name = (String) args[1];
       final int probecount = ((Integer) args[2]).intValue();
-      synchronized (store)
+      synchronized (runtimeData)
       {
-         args[0] = store.get(classid, name, probecount).getData();
+         args[0] = runtimeData.getExecutionData(classid, name, probecount).getProbes();
       }
    }
 
-   /**
-    * Subclasses need to call this method in their {@link #startup()}
-    * implementation to record the timestamp of session startup.
-    */
-   protected final void setStartTimeStamp()
+   RuntimeData getRuntimeData() 
    {
-      startTimeStamp = System.currentTimeMillis();
+       return runtimeData;
    }
-
-   /* (non-Javadoc)
-    * @see org.jacoco.core.runtime.IRuntime#setSessionId(java.lang.String)
-    */
-   public void setSessionId(String id)
-   {
-      this.sessionId = id;
-   }
-
-   /* (non-Javadoc)
-    * @see org.jacoco.core.runtime.IRuntime#getSessionId()
-    */
-   public String getSessionId()
-   {
-      return sessionId;
-   }
-
+   
    /* (non-Javadoc)
     * @see org.jacoco.core.runtime.IRuntime#startup()
     */
-   public void startup() throws Exception
+   public void startup(RuntimeData rd) throws Exception
    {
-      setStartTimeStamp();
+       this.runtimeData = rd;
    }
 
    /* (non-Javadoc)
@@ -130,35 +102,11 @@ public class ArquillianRuntime implements IRuntime
    }
 
    /* (non-Javadoc)
-    * @see org.jacoco.core.runtime.IRuntime#collect(org.jacoco.core.data.IExecutionDataVisitor, org.jacoco.core.data.ISessionInfoVisitor, boolean)
-    */
-   public void collect(IExecutionDataVisitor executionDataVisitor, ISessionInfoVisitor sessionInfoVisitor, boolean reset)
-   {
-      synchronized (store)
-      {
-         if (sessionInfoVisitor != null)
-         {
-            final SessionInfo info = new SessionInfo(sessionId, startTimeStamp, System.currentTimeMillis());
-            sessionInfoVisitor.visitSessionInfo(info);
-         }
-         store.accept(executionDataVisitor);
-         if (reset)
-         {
-            reset();
-         }
-      }
-   }
-
-   /* (non-Javadoc)
     * @see org.jacoco.core.runtime.IRuntime#reset()
     */
    public void reset()
    {
-      synchronized (store)
-      {
-         store.reset();
-         setStartTimeStamp();
-      }
+       runtimeData.reset();
    }
 
    /* (non-Javadoc)
