@@ -43,18 +43,18 @@ public class CoverageDataReceiver
       Field f = UUID.class.getDeclaredField("$jacocoAccess");
       Object executor = f.get(null);
 
-      Method m = executor.getClass().getDeclaredMethod("getExecutionData", new Class[] {Object[].class});
+      Method m = executor.getClass().getDeclaredMethod("getProbes", new Class[] {Object[].class});
       m.setAccessible(true);
       for (ExecutionData data : dataStore.getContents())
       {
-         Object[] probeData = new Object[] { data.getId(), data.getName(), data.getData().length };
+         Object[] probeData = new Object[] { data.getId(), data.getName(), data.getProbes().length };
          m.invoke(executor, new Object[] { probeData });
          boolean[] resultData = (boolean[]) probeData[0];
-         for (int i = 0; i < data.getData().length; i++)
+         for (int i = 0; i < data.getProbes().length; i++)
          {
             if (!resultData[i])
             {
-               resultData[i] = data.getData()[i];
+               resultData[i] = data.getProbes()[i];
             }
          }
       }

@@ -27,8 +27,10 @@ import org.jacoco.core.analysis.Analyzer;
 import org.jacoco.core.analysis.CoverageBuilder;
 import org.jacoco.core.analysis.IClassCoverage;
 import org.jacoco.core.data.ExecutionDataStore;
+import org.jacoco.core.data.ISessionInfoVisitor;
+import org.jacoco.core.data.SessionInfo;
 import org.jacoco.core.instr.Instrumenter;
-import org.jacoco.core.runtime.IRuntime;
+import org.jacoco.core.runtime.RuntimeData;
 import org.jboss.arquillian.extension.jacoco.container.ArquillianRuntime;
 import org.jboss.arquillian.extension.jacoco.test.included.CoverageBean;
 
@@ -61,14 +63,14 @@ public class InstrumentTestCase
    {
       final String targetName = CoverageBean.class.getName();
 
-      IRuntime runtime = ArquillianRuntime.getInstance();
+      ArquillianRuntime runtime = ArquillianRuntime.getInstance();
 
       final Instrumenter instr = new Instrumenter(runtime);
       final byte[] instrumented = instr.instrument(getTargetClass(targetName));
-
-      // Now we're ready to run our instrumented class and need to startup the
-      // runtime first:
-      runtime.startup();
+       // Now we're ready to run our instrumented class and need to startup the
+       // runtime first:
+      RuntimeData rd = new RuntimeData();
+      runtime.startup(rd);
 
       // In this tutorial we use a special class loader to directly load the
       // instrumented class definition from a byte[] instances.
@@ -83,8 +85,12 @@ public class InstrumentTestCase
 
       // At the end of test execution we collect execution data and shutdown
       // the runtime:
+      final ISessionInfoVisitor noopVisitor = new ISessionInfoVisitor() {
+          @Override
+          public void visitSessionInfo(SessionInfo info) {}
+      };
       final ExecutionDataStore executionData = new ExecutionDataStore();
-      runtime.collect(executionData, null, false);
+      rd.collect(executionData, noopVisitor, false);
       runtime.shutdown();
 
       // Together with the original class definition we can calculate coverage

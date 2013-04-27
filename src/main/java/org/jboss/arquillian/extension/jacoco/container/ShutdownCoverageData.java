@@ -42,13 +42,13 @@ public class ShutdownCoverageData {
     private Instance<ServiceLoader> serviceLoader;
 
     public void writeCoverageData(@Observes AfterSuite arqEvent) throws Exception {
-        IRuntime runtime = runtimeInst.get();
+        ArquillianRuntime runtime = (ArquillianRuntime) runtimeInst.get();
         if (runtime != null) {
             ByteArrayOutputStream coverageOutputStream = null;
             try {
                 coverageOutputStream = new ByteArrayOutputStream();
                 ExecutionDataWriter writer = new ExecutionDataWriter(coverageOutputStream);
-                runtime.collect(writer, writer, true);
+                runtime.getRuntimeData().collect(writer, writer, true);
             } finally {
                 runtime.shutdown();
                 if (coverageOutputStream != null) {

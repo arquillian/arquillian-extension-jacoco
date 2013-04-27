@@ -19,6 +19,7 @@ package org.jboss.arquillian.extension.jacoco.container;
 import java.util.UUID;
 
 import org.jacoco.core.runtime.IRuntime;
+import org.jacoco.core.runtime.RuntimeData;
 import org.jboss.arquillian.core.api.InstanceProducer;
 import org.jboss.arquillian.core.api.annotation.Inject;
 import org.jboss.arquillian.core.api.annotation.Observes;
@@ -40,8 +41,9 @@ public class StartCoverageData
     public void createRuntime(@Observes BeforeSuite event) throws Exception
     {
         IRuntime runtime = ArquillianRuntime.getInstance();
-        runtime.setSessionId(UUID.randomUUID().toString());
-        runtime.startup();
+        RuntimeData runtimeData = new RuntimeData();
+        runtimeData.setSessionId(UUID.randomUUID().toString());
+        runtime.startup(runtimeData);
 
         runtimeInst.set(runtime);
     }
