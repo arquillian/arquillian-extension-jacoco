@@ -31,6 +31,7 @@ import org.jacoco.core.data.ISessionInfoVisitor;
 import org.jacoco.core.data.SessionInfo;
 import org.jacoco.core.instr.Instrumenter;
 import org.jacoco.core.runtime.RuntimeData;
+import org.jboss.arquillian.extension.jacoco.client.InstrumenterAsset;
 import org.jboss.arquillian.extension.jacoco.container.ArquillianRuntime;
 import org.jboss.arquillian.extension.jacoco.test.included.CoverageBean;
 
@@ -66,7 +67,7 @@ public class InstrumentTestCase
       ArquillianRuntime runtime = ArquillianRuntime.getInstance();
 
       final Instrumenter instr = new Instrumenter(runtime);
-      final byte[] instrumented = instr.instrument(getTargetClass(targetName));
+      final byte[] instrumented = instr.instrument(getTargetClass(targetName), InstrumenterAsset.EX_STRING);
        // Now we're ready to run our instrumented class and need to startup the
        // runtime first:
       RuntimeData rd = new RuntimeData();
@@ -97,7 +98,7 @@ public class InstrumentTestCase
       // information:
       final CoverageBuilder coverageBuilder = new CoverageBuilder();
       final Analyzer analyzer = new Analyzer(executionData, coverageBuilder);
-      analyzer.analyzeClass(getTargetClass(targetName));
+      analyzer.analyzeClass(getTargetClass(targetName), InstrumenterAsset.EX_STRING);
 
       Assert.assertNotNull(coverageBuilder.getClasses());
       Assert.assertEquals(1, coverageBuilder.getClasses().size());

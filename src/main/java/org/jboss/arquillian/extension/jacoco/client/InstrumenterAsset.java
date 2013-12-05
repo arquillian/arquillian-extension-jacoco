@@ -36,6 +36,8 @@ public class InstrumenterAsset implements Asset
 {
    private Asset asset;
    
+   public static final String EX_STRING = "arquillian";
+
    public InstrumenterAsset(Asset asset)
    {
       this.asset = asset;
@@ -50,7 +52,7 @@ public class InstrumenterAsset implements Asset
       {
          IRuntime runtime = ArquillianRuntime.getInstance();
          Instrumenter instrumenter = new Instrumenter(runtime);
-         byte[] instrumented = instrumenter.instrument(asset.openStream());
+         byte[] instrumented = instrumenter.instrument(asset.openStream(), EX_STRING);
          
          return new ByteArrayInputStream(instrumented);
       }
