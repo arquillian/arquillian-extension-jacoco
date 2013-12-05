@@ -3,3 +3,7 @@ language: java
 jdk:
   - openjdk7
   - oraclejdk7
+env:
+  - PROFILE=unit
+  - PROFILE=integration,managed
+script: mvn test -B -P${PROFILE}
