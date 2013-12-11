@@ -16,6 +16,7 @@
  */
 package org.jboss.arquillian.extension.jacoco.container;
 
+import java.util.UUID;
 import org.jacoco.core.internal.instr.InstrSupport;
 import org.jacoco.core.runtime.IRuntime;
 import org.jacoco.core.runtime.RuntimeData;
@@ -48,6 +49,8 @@ public class ArquillianRuntime implements IRuntime
     */
    private ArquillianRuntime()
    {
+        runtimeData = new RuntimeData();
+        runtimeData.setSessionId(UUID.randomUUID().toString());
    }
 
    /**
