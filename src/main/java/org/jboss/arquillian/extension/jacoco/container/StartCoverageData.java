@@ -17,9 +17,7 @@
 package org.jboss.arquillian.extension.jacoco.container;
 
 
-import java.util.UUID;
 import org.jacoco.core.runtime.IRuntime;
-import org.jacoco.core.runtime.RuntimeData;
 import org.jboss.arquillian.core.api.InstanceProducer;
 import org.jboss.arquillian.core.api.annotation.Inject;
 import org.jboss.arquillian.core.api.annotation.Observes;
