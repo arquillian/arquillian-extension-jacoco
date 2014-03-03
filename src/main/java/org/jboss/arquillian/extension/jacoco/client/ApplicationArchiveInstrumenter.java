@@ -26,9 +26,10 @@ import org.jboss.arquillian.test.spi.TestClass;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ArchivePath;
 import org.jboss.shrinkwrap.api.Filter;
+import org.jboss.shrinkwrap.api.Filters;
 import org.jboss.shrinkwrap.api.Node;
-import org.jboss.shrinkwrap.api.asset.ArchiveAsset;
 import org.jboss.shrinkwrap.api.asset.Asset;
+import org.jboss.shrinkwrap.api.spec.JavaArchive;
 
 /**
  * Instrument all Classes (or their subset if found in the User defined
@@ -58,15 +59,13 @@ public class ApplicationArchiveInstrumenter implements
       }
 
       // Process sub-archives recursively
-      Map<ArchivePath, Node> jars = archive.getContent();
+      Map<ArchivePath, Node> jars = archive.getContent(Filters.include(".*\\.(jar|war|rar|ear)$"));
       for (Entry<ArchivePath, Node> entry : jars.entrySet())
       {
-         Asset asset = entry.getValue().getAsset();
-         if (asset instanceof ArchiveAsset)
-         {
-            Archive<?> subArchive = ((ArchiveAsset) asset).getArchive();
-            processArchive(subArchive, filter);
-         }
+         // Should have used genericArchive, but with GenericArchive we need
+         // to specify a ArchiveFormat and that trigger this SHRINKWRAP-474
+         JavaArchive subArchive = archive.getAsType(JavaArchive.class, entry.getKey());
+         processArchive(subArchive, filter);
       }
    }
 

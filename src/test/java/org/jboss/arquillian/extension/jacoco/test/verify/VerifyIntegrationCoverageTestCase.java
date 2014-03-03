@@ -5,6 +5,7 @@ import junit.framework.Assert;
 import org.jboss.arquillian.extension.jacoco.test.ImplicitNoCoverageBean;
 import org.jboss.arquillian.extension.jacoco.test.excluded.ExplicitNoCoverageBean;
 import org.jboss.arquillian.extension.jacoco.test.included.CoverageBean;
+import org.jboss.arquillian.extension.jacoco.test.included.ImportedSubArchive;
 import org.jboss.arquillian.extension.jacoco.test.included.SubCoverageBean;
 import org.junit.Test;
 
@@ -41,5 +42,12 @@ public class VerifyIntegrationCoverageTestCase
       Assert.assertTrue(
             "There was no coverage data collected for SubCoverageBean class even though there should have been.",
             CoverageChecker.hasCoverageData(SubCoverageBean.class));
+   }
+
+   @Test
+   public void verifyImportedSubArchiveTestCaseCoverageData() throws Exception {
+      Assert.assertTrue(
+              "There was no coverage data collected for ImportedSubArchive class even though there should have been.",
+              CoverageChecker.hasCoverageData(ImportedSubArchive.class));
    }
 }
