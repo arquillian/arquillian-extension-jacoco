@@ -197,10 +197,4 @@ public class ArquillianRuntime implements IRuntime
       mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Integer", "valueOf", "(I)Ljava/lang/Integer;");
       mv.visitInsn(Opcodes.AASTORE);
    }
-
-   @Override
-   public void disconnect(Class<?> type) throws Exception
-   {
-      throw new UnsupportedOperationException();
-   }
 }
