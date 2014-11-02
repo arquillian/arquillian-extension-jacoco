@@ -21,8 +21,6 @@ import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
 
-import junit.framework.Assert;
-
 import org.jacoco.core.analysis.Analyzer;
 import org.jacoco.core.analysis.CoverageBuilder;
 import org.jacoco.core.analysis.IClassCoverage;
@@ -35,10 +33,11 @@ import org.jboss.arquillian.extension.jacoco.client.InstrumenterAsset;
 import org.jboss.arquillian.extension.jacoco.container.ArquillianRuntime;
 import org.jboss.arquillian.extension.jacoco.test.included.CoverageBean;
 
+import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.objectweb.asm.ClassReader;
-import org.objectweb.asm.util.TraceClassVisitor;
+import org.jboss.arquillian.org.objectweb.asm.ClassReader;
+import org.jboss.arquillian.org.objectweb.asm.util.TraceClassVisitor;
 
 /**
  * Verify that the instrumentation works as expected.

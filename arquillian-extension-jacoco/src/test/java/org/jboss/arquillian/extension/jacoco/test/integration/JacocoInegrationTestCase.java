@@ -21,6 +21,7 @@ import javax.ejb.EJB;
 import junit.framework.Assert;
 
 import org.jboss.arquillian.container.test.api.Deployment;
+import org.jboss.arquillian.extension.jacoco.test.enterprise.WebServiceCoverageBean;
 import org.jboss.arquillian.extension.jacoco.test.included.CoverageBean;
 import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -41,11 +42,14 @@ public class JacocoInegrationTestCase
    public static JavaArchive createDeployment() throws Exception
    {
 	   return ShrinkWrap.create(JavaArchive.class, "test.jar")
-                     .addClasses(CoverageBean.class, JacocoInegrationTestCase.class);
+                     .addClasses(CoverageBean.class, WebServiceCoverageBean.class, JacocoInegrationTestCase.class);
    }
    
    @EJB
    private CoverageBean bean;
+
+   @EJB
+   private WebServiceCoverageBean webServiceCoverageBean;
    
    @Test
    public void shouldBeAbleToGenerateSomeTestCoverage() throws Exception
@@ -53,5 +57,13 @@ public class JacocoInegrationTestCase
       Assert.assertNotNull(bean);
       
       bean.test(true);
+   }
+
+   @Test
+   public void ableToInjectWebService() throws Exception
+   {
+      Assert.assertNotNull(webServiceCoverageBean);
+
+      webServiceCoverageBean.doGreet("bob");
    }
 }

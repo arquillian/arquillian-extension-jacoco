@@ -20,8 +20,8 @@ import java.util.UUID;
 import org.jacoco.core.internal.instr.InstrSupport;
 import org.jacoco.core.runtime.IRuntime;
 import org.jacoco.core.runtime.RuntimeData;
-import org.objectweb.asm.MethodVisitor;
-import org.objectweb.asm.Opcodes;
+import org.jboss.arquillian.org.objectweb.asm.MethodVisitor;
+import org.jboss.arquillian.org.objectweb.asm.Opcodes;
 
 /**
  * ArquillianRuntime

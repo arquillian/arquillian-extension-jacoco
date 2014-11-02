@@ -38,9 +38,9 @@ public class JacocoArchiveAppender implements AuxiliaryArchiveAppender
    {
       return ShrinkWrap.create(JavaArchive.class, "arquillian-jacoco.jar")
                   .addPackages(
-                        true, 
-                        org.jacoco.core.JaCoCo.class.getPackage(),
-                        org.objectweb.asm.ClassReader.class.getPackage(),
+                        true,
+                          org.jacoco.core.JaCoCo.class.getPackage(),
+                          org.jboss.arquillian.org.objectweb.asm.ClassReader.class.getPackage(),
                         StartCoverageData.class.getPackage())
                   .addPackage(CoverageDataCommand.class.getPackage())
                   .addAsServiceProvider(
