@@ -23,7 +23,7 @@
     <properties>
         <!-- Versioning -->
         <version.arquillian_core>1.1.5.Final</version.arquillian_core>
-        <version.jacoco>0.7.2.201409121644</version.jacoco>
+        <version.jacoco>0.7.4.201502262128</version.jacoco>
 
         <!-- test -->
         <version.wildfly>8.2.0.Final</version.wildfly>
