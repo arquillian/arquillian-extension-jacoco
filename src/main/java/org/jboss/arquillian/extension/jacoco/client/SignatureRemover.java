@@ -41,7 +41,7 @@ public class SignatureRemover
 
     public void removeManifestDigests(Archive<?> archive)
     {
-        Map<ArchivePath, Node> manifests = archive.getContent(Filters.include("META-INF\\/MANIFEST\\.MF"));
+        Map<ArchivePath, Node> manifests = getManifestFiles(archive);
         for (Entry<ArchivePath, Node> entry : manifests.entrySet()) {
             Asset original = entry.getValue().getAsset();
             archive.delete(entry.getKey());
@@ -52,10 +52,14 @@ public class SignatureRemover
     public Map<ArchivePath, Node> getSignatureFiles(Archive<?> archive)
     {
         return archive.getContent(//
-                // This is copied from Jacoco SignatureRemover
+                // This is adapted from Jacoco SignatureRemover
                 Filters.include("/META-INF/[^/]*\\.SF|" //
                         + "/META-INF/[^/]*\\.DSA|" //
                         + "/META-INF/[^/]*\\.RSA|" //
                         + "/META-INF/SIG-[^/]*"));
+    }
+    
+    public Map<ArchivePath, Node> getManifestFiles(Archive<?> archive) {
+        return archive.getContent(Filters.include("/META-INF/MANIFEST\\.MF"));
     }
 }

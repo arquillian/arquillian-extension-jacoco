@@ -20,6 +20,7 @@ import java.io.InputStream;
 import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.jar.Manifest;
 
 import junit.framework.Assert;
 
@@ -139,15 +140,21 @@ public class InstrumentTestCase
         Assert.assertNotNull("Can't find Jacoco artifact from POM", jacocoArtifact);
         JavaArchive jacocoArchive = ShrinkWrap.createFromZipFile(JavaArchive.class, jacocoArtifact.asFile());
         SignatureRemover signatureRemover = new SignatureRemover();
-        
+
         Map<ArchivePath, Node> signatureFiles = signatureRemover.getSignatureFiles(jacocoArchive);
         Assert.assertTrue("Original Jacoco archive should be signed. Signatures found: " + signatureFiles.size(),
                 signatureFiles.size() > 0);
+        Manifest mf =
+                new Manifest(signatureRemover.getManifestFiles(jacocoArchive).values().iterator().next().getAsset().openStream());
+        int originalEntries = mf.getEntries().size();
 
         signatureRemover.removeSignatures(jacocoArchive);
         signatureFiles = signatureRemover.getSignatureFiles(jacocoArchive);
         Assert.assertTrue("Processed Jacoco archive should not be signed. Signatures found: " + signatureFiles.size(),
                 signatureFiles.size() == 0);
+        mf = new Manifest(signatureRemover.getManifestFiles(jacocoArchive).values().iterator().next().getAsset().openStream());
+        int processedEntries = mf.getEntries().size();
+        Assert.assertTrue("Processed Jacoco archive should not have digests in Manifest", originalEntries != processedEntries);
     }
    
    /**
