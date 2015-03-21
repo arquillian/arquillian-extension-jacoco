@@ -47,11 +47,10 @@ public class ApplicationArchiveInstrumenter implements
    @Inject
    private Instance<JacocoConfiguration> config;
 
-   @Inject
-   private SignatureRemover signatureRemover;
-
    private void processArchive(Archive<?> archive, Filter<ArchivePath> filter)
    {
+      SignatureRemover signatureRemover = new SignatureRemover();
+
       Map<ArchivePath, Node> classes = archive.getContent(filter);
 
       for (Entry<ArchivePath, Node> entry : classes.entrySet())
