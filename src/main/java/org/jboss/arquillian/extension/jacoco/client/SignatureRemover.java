@@ -32,12 +32,7 @@ public class SignatureRemover
     public void removeSignatureFiles(Archive<?> archive)
     {
         // Remove signatures files if any
-        Map<ArchivePath, Node> signatureFiles = archive.getContent(//
-                // This is copied from Jacoco SignatureRemover
-                Filters.include("META-INF/[^/]*\\.SF|" //
-                        + "META-INF/[^/]*\\.DSA|" //
-                        + "META-INF/[^/]*\\.RSA|" //
-                        + "META-INF/SIG-[^/]*"));
+        Map<ArchivePath, Node> signatureFiles = getSignatureFiles(archive);
         for (Entry<ArchivePath, Node> entry : signatureFiles.entrySet()) {
             // We don't want these at all - remove
             archive.delete(entry.getKey());
@@ -52,5 +47,15 @@ public class SignatureRemover
             archive.delete(entry.getKey());
             archive.add(new ManifestAsset(original), entry.getKey());
         }
+    }
+
+    public Map<ArchivePath, Node> getSignatureFiles(Archive<?> archive)
+    {
+        return archive.getContent(//
+                // This is copied from Jacoco SignatureRemover
+                Filters.include("/META-INF/[^/]*\\.SF|" //
+                        + "/META-INF/[^/]*\\.DSA|" //
+                        + "/META-INF/[^/]*\\.RSA|" //
+                        + "/META-INF/SIG-[^/]*"));
     }
 }
