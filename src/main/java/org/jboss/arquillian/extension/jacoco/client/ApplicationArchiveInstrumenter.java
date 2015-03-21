@@ -49,6 +49,8 @@ public class ApplicationArchiveInstrumenter implements
 
    private void processArchive(Archive<?> archive, Filter<ArchivePath> filter)
    {
+      SignatureRemover signatureRemover = new SignatureRemover();
+
       Map<ArchivePath, Node> classes = archive.getContent(filter);
 
       for (Entry<ArchivePath, Node> entry : classes.entrySet())
@@ -57,7 +59,7 @@ public class ApplicationArchiveInstrumenter implements
          archive.delete(entry.getKey());
          archive.add(new InstrumenterAsset(original), entry.getKey());
       }
-
+      signatureRemover.removeSignatures(archive);
       // Process sub-archives recursively
       Map<ArchivePath, Node> jars = archive.getContent(Filters.include(".*\\.(jar|war|rar|ear)$"));
       for (Entry<ArchivePath, Node> entry : jars.entrySet())
