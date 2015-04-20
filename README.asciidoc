@@ -1,0 +1,82 @@
+== Arquillian Jacoco Extension
+
+Automagic Remote InContainer Codecoverage
+
+=== Usage
+
+==== Maven pom.xml
+
+Add the following to your pom.xml:
+
+
+Set the versions to use:
+
+[source, xml]
+----
+...
+<properties>
+   <version.jacoco>0.7.4.201502262128</version.jacoco>
+   <version.arquillian_jacoco>1.0.0.Alpha8</version.arquillian_jacoco>
+</properties>
+...
+----
+
+Configure the Jacoco Maven plugin and depend on the Arquillian Jacoco Extension:
+
+[source, xml]
+----
+...
+<profile>
+   <id>jacoco</id>
+   <dependencies>
+      <dependency>
+         <groupId>org.jacoco</groupId>
+         <artifactId>org.jacoco.core</artifactId>
+         <version>${version.jacoco}</version>
+         <scope>test</scope>
+      </dependency>
+      <dependency>
+         <groupId>org.jboss.arquillian.extension</groupId>
+         <artifactId>arquillian-jacoco</artifactId>
+         <version>${version.arquillian_jacoco}</version>
+         <scope>test</scope>
+      </dependency>
+   </dependencies>
+   <build>
+      <plugins>
+         <plugin>
+            <groupId>org.jacoco</groupId>
+            <artifactId>jacoco-maven-plugin</artifactId>
+            <version>${version.jacoco}</version>
+            <executions>
+               <execution>
+                  <goals>
+                     <goal>prepare-agent</goal>
+                  </goals>
+               </execution>
+               <execution>
+                  <id>report</id>
+                  <phase>prepare-package</phase>
+                  <goals>
+                     <goal>report</goal>
+                  </goals>
+               </execution>
+            </executions>
+         </plugin>
+      </plugins>
+   </build>
+</profile>
+----
+
+Activate this profile on command line by using the -P flag:
+
+[source, console]
+----
+mvn test -Pjacoco
+----
+
+
+==== Sonar
+
+When using the Arquillian Jacoco Extension with Sonar you only need to depend on the Arquillian Jacoco Extension. Sonar will handle the setup of Jacoco for you.
+
