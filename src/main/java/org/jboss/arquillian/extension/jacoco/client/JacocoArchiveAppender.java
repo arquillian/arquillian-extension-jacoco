@@ -18,6 +18,8 @@ package org.jboss.arquillian.extension.jacoco.client;
 
 import org.jboss.arquillian.container.test.spi.RemoteLoadableExtension;
 import org.jboss.arquillian.container.test.spi.client.deployment.AuxiliaryArchiveAppender;
+import org.jboss.arquillian.core.api.Instance;
+import org.jboss.arquillian.core.api.annotation.Inject;
 import org.jboss.arquillian.extension.jacoco.CoverageDataCommand;
 import org.jboss.arquillian.extension.jacoco.container.JacocoRemoteExtension;
 import org.jboss.arquillian.extension.jacoco.container.StartCoverageData;
@@ -33,18 +35,32 @@ import org.jboss.shrinkwrap.api.spec.JavaArchive;
  */
 public class JacocoArchiveAppender implements AuxiliaryArchiveAppender
 {
+
+   @Inject
+   private Instance<JacocoConfiguration> config;
+
+   // Test only...
+   public void setConfig(Instance<JacocoConfiguration> config) {
+      this.config = config;
+   }
+
    @Override
    public Archive<?> createAuxiliaryArchive()
    {
-      return ShrinkWrap.create(JavaArchive.class, "arquillian-jacoco.jar")
+      final JavaArchive ret = ShrinkWrap.create(JavaArchive.class, "arquillian-jacoco.jar")
                   .addPackages(
                         true, 
                         org.jacoco.core.JaCoCo.class.getPackage(),
-                        org.objectweb.asm.ClassReader.class.getPackage(),
                         StartCoverageData.class.getPackage())
                   .addPackage(CoverageDataCommand.class.getPackage())
                   .addAsServiceProvider(
                         RemoteLoadableExtension.class, 
                         JacocoRemoteExtension.class);
+
+      if (config.get().isAppendAsmLibrary()) {
+          ret.addPackages(true, org.objectweb.asm.ClassReader.class.getPackage());
+      }
+
+      return ret;
    }
 }
