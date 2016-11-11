@@ -1,12 +1,11 @@
 package org.jboss.arquillian.extension.jacoco.test.verify;
 
-import junit.framework.Assert;
-
 import org.jboss.arquillian.extension.jacoco.test.ImplicitNoCoverageBean;
 import org.jboss.arquillian.extension.jacoco.test.excluded.ExplicitNoCoverageBean;
 import org.jboss.arquillian.extension.jacoco.test.included.CoverageBean;
 import org.jboss.arquillian.extension.jacoco.test.included.ImportedSubArchive;
 import org.jboss.arquillian.extension.jacoco.test.included.SubCoverageBean;
+import org.junit.Assert;
 import org.junit.Test;
 
 /*
