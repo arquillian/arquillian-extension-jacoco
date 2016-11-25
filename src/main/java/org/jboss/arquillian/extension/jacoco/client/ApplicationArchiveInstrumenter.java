@@ -47,6 +47,10 @@ public class ApplicationArchiveInstrumenter implements
    @Inject
    private Instance<JacocoConfiguration> config;
 
+   public void setConfig(Instance<JacocoConfiguration> config) {
+      this.config = config;
+   }
+
    private void processArchive(Archive<?> archive, Filter<ArchivePath> filter)
    {
       SignatureRemover signatureRemover = new SignatureRemover();
@@ -67,7 +71,11 @@ public class ApplicationArchiveInstrumenter implements
          // Should have used genericArchive, but with GenericArchive we need
          // to specify a ArchiveFormat and that trigger this SHRINKWRAP-474
          JavaArchive subArchive = archive.getAsType(JavaArchive.class, entry.getKey());
-         processArchive(subArchive, filter);
+         // If Archive contains dir name included as [.ear|.war|.rar|.ear] then
+         // subarchive is getting as null - ARQ-1931
+         if (subArchive != null) {
+            processArchive(subArchive, filter);
+         }
       }
    }
 
