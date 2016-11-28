@@ -9,7 +9,7 @@ import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class AxuiliaryArchiveAppenderTestCase {
+public class AuxiliaryArchiveAppenderTestCase {
 
 	@Test
 	public void shouldPackageJacocoByDefault() throws Exception {

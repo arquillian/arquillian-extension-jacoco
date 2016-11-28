@@ -18,6 +18,8 @@ package org.jboss.arquillian.extension.jacoco.client;
 
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.jboss.arquillian.container.test.spi.client.deployment.ApplicationArchiveProcessor;
 import org.jboss.arquillian.core.api.Instance;
@@ -47,9 +49,7 @@ public class ApplicationArchiveInstrumenter implements
    @Inject
    private Instance<JacocoConfiguration> config;
 
-   public void setConfig(Instance<JacocoConfiguration> config) {
-      this.config = config;
-   }
+   private static final Logger LOGGER = Logger.getLogger(ApplicationArchiveInstrumenter.class.getName());
 
    private void processArchive(Archive<?> archive, Filter<ArchivePath> filter)
    {
@@ -71,13 +71,14 @@ public class ApplicationArchiveInstrumenter implements
          // Should have used genericArchive, but with GenericArchive we need
          // to specify a ArchiveFormat and that trigger this SHRINKWRAP-474
          JavaArchive subArchive = archive.getAsType(JavaArchive.class, entry.getKey());
-         // If Archive contains dir name included as [.ear|.war|.rar|.ear] then
+         // If Archive contains dir path included as [.ear|.war|.rar|.ear] then
          // subarchive is getting as null - ARQ-1931
-         if (subArchive != null) {
+         if (subArchive == null) {
+            LOGGER.log(Level.WARNING, String.format("directory path %s contains .ear | .war | .rar | .jar", entry.getValue()));
+         } else
             processArchive(subArchive, filter);
          }
       }
-   }
 
    public void process(Archive<?> applicationArchive, TestClass testClass)
    {
