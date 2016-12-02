@@ -1,7 +1,5 @@
 package org.jboss.arquillian.extension.jacoco.test.unit;
 
-import java.util.HashMap;
-
 import org.jboss.arquillian.core.api.Instance;
 import org.jboss.arquillian.extension.jacoco.client.JacocoArchiveAppender;
 import org.jboss.arquillian.extension.jacoco.client.JacocoConfiguration;
@@ -9,46 +7,56 @@ import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class AuxiliaryArchiveAppenderTestCase {
+import java.util.HashMap;
 
-	@Test
-	public void shouldPackageJacocoByDefault() throws Exception {
-		JavaArchive archive = createArchive(JacocoConfiguration.fromMap(new HashMap<String, String>()));
-		Assert.assertTrue(archive.contains("org/jacoco/core/JaCoCo.class"));
-		Assert.assertTrue(archive.contains("org/objectweb/asm/ClassReader.class"));
-	}
+public class AuxiliaryArchiveAppenderTestCase
+{
 
-	@Test
-	public void shouldNotPackageASMIfConfigOptionSet() throws Exception {
-		HashMap<String, String> config = new HashMap<String, String>();
-		config.put("appendAsmLibrary", "false");
+   @Test
+   public void shouldPackageJacocoByDefault() throws Exception
+   {
+      JavaArchive archive = createArchive(JacocoConfiguration.fromMap(new HashMap<String, String>()));
+      Assert.assertTrue(archive.contains("org/jacoco/core/JaCoCo.class"));
+      Assert.assertTrue(archive.contains("org/objectweb/asm/ClassReader.class"));
+   }
 
-		JavaArchive archive = createArchive(JacocoConfiguration.fromMap(config));
-		Assert.assertTrue(archive.contains("org/jacoco/core/JaCoCo.class"));
-		Assert.assertFalse(archive.contains("org/objectweb/asm/ClassReader.class"));
-	}
+   @Test
+   public void shouldNotPackageASMIfConfigOptionSet() throws Exception
+   {
+      HashMap<String, String> config = new HashMap<String, String>();
+      config.put("appendAsmLibrary", "false");
 
-	private JavaArchive createArchive(JacocoConfiguration configuration) {
-		return createAppender(configuration).createAuxiliaryArchive().as(JavaArchive.class);
-	}
+      JavaArchive archive = createArchive(JacocoConfiguration.fromMap(config));
+      Assert.assertTrue(archive.contains("org/jacoco/core/JaCoCo.class"));
+      Assert.assertFalse(archive.contains("org/objectweb/asm/ClassReader.class"));
+   }
 
-	private JacocoArchiveAppender createAppender(JacocoConfiguration configuration) {
-		JacocoArchiveAppender appender = new JacocoArchiveAppender();
-		appender.setConfig(new DummyInstance<JacocoConfiguration>(configuration));
-		return appender;
-	}
+   private JavaArchive createArchive(JacocoConfiguration configuration)
+   {
+      return createAppender(configuration).createAuxiliaryArchive().as(JavaArchive.class);
+   }
 
-	private static class DummyInstance<T> implements Instance<T> {
+   private JacocoArchiveAppender createAppender(JacocoConfiguration configuration)
+   {
+      JacocoArchiveAppender appender = new JacocoArchiveAppender();
+      appender.setConfig(new DummyInstance<JacocoConfiguration>(configuration));
+      return appender;
+   }
 
-		private T dummy;
+   private static class DummyInstance<T> implements Instance<T>
+   {
 
-		public DummyInstance(T dummy) {
-			this.dummy = dummy;
-		}
+      private T dummy;
 
-		@Override
-		public T get() {
-			return dummy;
-		}
-	}
+      public DummyInstance(T dummy)
+      {
+         this.dummy = dummy;
+      }
+
+      @Override
+      public T get()
+      {
+         return dummy;
+      }
+   }
 }

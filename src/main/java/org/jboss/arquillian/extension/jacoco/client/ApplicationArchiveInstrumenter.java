@@ -16,11 +16,6 @@
  */
 package org.jboss.arquillian.extension.jacoco.client;
 
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import org.jboss.arquillian.container.test.spi.client.deployment.ApplicationArchiveProcessor;
 import org.jboss.arquillian.core.api.Instance;
 import org.jboss.arquillian.core.api.annotation.Inject;
@@ -33,55 +28,65 @@ import org.jboss.shrinkwrap.api.Node;
 import org.jboss.shrinkwrap.api.asset.Asset;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  * Instrument all Classes (or their subset if found in the User defined
- * 
- * @Deployment.
- * 
+ *
  * @author <a href="mailto:aslak@redhat.com">Aslak Knutsen</a>
  * @author <a href="mailto:lkrejci@redhat.com">Lukas Krejci</a>
- * 
  * @version $Revision: $
+ * @Deployment.
  */
-public class ApplicationArchiveInstrumenter implements
-      ApplicationArchiveProcessor
+public class ApplicationArchiveInstrumenter implements ApplicationArchiveProcessor
 {
-   @Inject
-   private Instance<JacocoConfiguration> config;
 
    private static final Logger LOGGER = Logger.getLogger(ApplicationArchiveInstrumenter.class.getName());
 
-   private void processArchive(Archive<?> archive, Filter<ArchivePath> filter)
-   {
-      SignatureRemover signatureRemover = new SignatureRemover();
-
-      Map<ArchivePath, Node> classes = archive.getContent(filter);
-
-      for (Entry<ArchivePath, Node> entry : classes.entrySet())
-      {
-         Asset original = entry.getValue().getAsset();
-         archive.delete(entry.getKey());
-         archive.add(new InstrumenterAsset(original), entry.getKey());
-      }
-      signatureRemover.removeSignatures(archive);
-      // Process sub-archives recursively
-      Map<ArchivePath, Node> jars = archive.getContent(Filters.include(".*\\.(jar|war|rar|ear)$"));
-      for (Entry<ArchivePath, Node> entry : jars.entrySet())
-      {
-         // Should have used genericArchive, but with GenericArchive we need
-         // to specify a ArchiveFormat and that trigger this SHRINKWRAP-474
-         JavaArchive subArchive = archive.getAsType(JavaArchive.class, entry.getKey());
-         // If Archive contains dir path included as [.ear|.war|.rar|.ear] then
-         // subarchive is getting as null - ARQ-1931
-         if (subArchive == null) {
-            LOGGER.log(Level.WARNING, String.format("directory path %s contains .ear | .war | .rar | .jar", entry.getValue()));
-         } else
-            processArchive(subArchive, filter);
-         }
-      }
+   @Inject
+   private Instance<JacocoConfiguration> config;
 
    public void process(Archive<?> applicationArchive, TestClass testClass)
    {
       processArchive(applicationArchive, config.get().getClassFilter());
+   }
+
+   private void processArchive(Archive<?> archive, Filter<ArchivePath> filter)
+   {
+
+      instrument(archive, archive.getContent(filter));
+      new SignatureRemover().removeSignatures(archive);
+
+      // Process sub-archives recursively
+      final Map<ArchivePath, Node> jars = archive.getContent(Filters.include(".*\\.(jar|war|rar|ear)$"));
+      for (Entry<ArchivePath, Node> entry : jars.entrySet())
+      {
+         // Should have used genericArchive, but with GenericArchive we need
+         // to specify a ArchiveFormat and that trigger this SHRINKWRAP-474
+         final JavaArchive subArchive = archive.getAsType(JavaArchive.class, entry.getKey());
+         if (subArchive == null)
+         {
+            // If Archive contains dir path suffixed with [.ear|.war|.rar|.ear] then
+            // corresponding subarchive asset is null - ARQ-1931
+            LOGGER.log(Level.WARNING, String.format("directory path %s contains .ear | .war | .rar | .jar", entry.getValue()));
+         }
+         else
+         {
+            processArchive(subArchive, filter);
+         }
+      }
+   }
+
+   private void instrument(Archive<?> archive, Map<ArchivePath, Node> classes)
+   {
+      for (Entry<ArchivePath, Node> entry : classes.entrySet())
+      {
+         final Asset original = entry.getValue().getAsset();
+         archive.delete(entry.getKey());
+         archive.add(new InstrumenterAsset(original), entry.getKey());
+      }
    }
 }
