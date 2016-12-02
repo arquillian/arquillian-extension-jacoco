@@ -1,7 +1,7 @@
 package org.jboss.arquillian.extension.jacoco.test.unit;
 
 import org.jboss.arquillian.core.api.Instance;
-import org.jboss.arquillian.extension.jacoco.client.ApplicationArchiveInstrumenter;
+import org.jboss.arquillian.extension.jacoco.client.JaCoCoApplicationArchiveProcessor;
 import org.jboss.arquillian.extension.jacoco.client.JacocoConfiguration;
 import org.jboss.arquillian.test.spi.TestClass;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
@@ -36,10 +36,10 @@ public class ApplicationArchiveInstrumenterTest
             .addAsManifestResource(EmptyAsset.INSTANCE, "application.xml")
             .addAsManifestResource(EmptyAsset.INSTANCE, "dir.ear/pom.properties");
 
-      ApplicationArchiveInstrumenter applicationArchiveInstrumenter = new ApplicationArchiveInstrumenter();
-      setDefaultValueIfConfigIsNull(applicationArchiveInstrumenter);
+      JaCoCoApplicationArchiveProcessor jaCoCoApplicationArchiveProcessor = new JaCoCoApplicationArchiveProcessor();
+      setDefaultValueIfConfigIsNull(jaCoCoApplicationArchiveProcessor);
 
-      Logger logger = Logger.getLogger(ApplicationArchiveInstrumenter.class.getName());
+      Logger logger = Logger.getLogger(JaCoCoApplicationArchiveProcessor.class.getName());
       Formatter formatter = new SimpleFormatter();
       ByteArrayOutputStream out = new ByteArrayOutputStream();
       Handler handler = new StreamHandler(out, formatter);
@@ -47,7 +47,7 @@ public class ApplicationArchiveInstrumenterTest
 
       try
       {
-         applicationArchiveInstrumenter.process(enterpriseArchive, new TestClass(DummyInstance.class));
+         jaCoCoApplicationArchiveProcessor.process(enterpriseArchive, new TestClass(DummyInstance.class));
 
          handler.flush();
          String logMsg = out.toString();
@@ -61,13 +61,13 @@ public class ApplicationArchiveInstrumenterTest
       }
    }
 
-   private void setDefaultValueIfConfigIsNull(ApplicationArchiveInstrumenter applicationArchiveInstrumenter) throws NoSuchFieldException, IllegalAccessException
+   private void setDefaultValueIfConfigIsNull(JaCoCoApplicationArchiveProcessor jaCoCoApplicationArchiveProcessor) throws NoSuchFieldException, IllegalAccessException
    {
-      Field field = applicationArchiveInstrumenter.getClass().getDeclaredField("config");
+      Field field = jaCoCoApplicationArchiveProcessor.getClass().getDeclaredField("config");
       field.setAccessible(true);
-      if (field.get(applicationArchiveInstrumenter) == null)
+      if (field.get(jaCoCoApplicationArchiveProcessor) == null)
       {
-         field.set(applicationArchiveInstrumenter, new DummyInstance<JacocoConfiguration>(JacocoConfiguration.fromMap(new HashMap<String, String>())));
+         field.set(jaCoCoApplicationArchiveProcessor, new DummyInstance<JacocoConfiguration>(JacocoConfiguration.fromMap(new HashMap<String, String>())));
       }
    }
 

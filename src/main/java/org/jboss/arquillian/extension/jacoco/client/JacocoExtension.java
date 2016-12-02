@@ -35,7 +35,7 @@ public class JacocoExtension implements LoadableExtension
       if(JacocoConfiguration.isJacocoAgentActive())
       {
          builder.service(AuxiliaryArchiveAppender.class, JacocoArchiveAppender.class)
-               .service(ApplicationArchiveProcessor.class, ApplicationArchiveInstrumenter.class);
+               .service(ApplicationArchiveProcessor.class, JaCoCoApplicationArchiveProcessor.class);
 
          builder.observer(CoverageDataReceiver.class)
                 .observer(JacocoConfigurator.class);

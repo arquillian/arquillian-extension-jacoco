@@ -41,10 +41,10 @@ import java.util.logging.Logger;
  * @version $Revision: $
  * @Deployment.
  */
-public class ApplicationArchiveInstrumenter implements ApplicationArchiveProcessor
+public class JaCoCoApplicationArchiveProcessor implements ApplicationArchiveProcessor
 {
 
-   private static final Logger LOGGER = Logger.getLogger(ApplicationArchiveInstrumenter.class.getName());
+   private static final Logger LOGGER = Logger.getLogger(JaCoCoApplicationArchiveProcessor.class.getName());
 
    @Inject
    private Instance<JacocoConfiguration> config;
