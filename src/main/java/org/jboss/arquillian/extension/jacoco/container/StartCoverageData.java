@@ -36,7 +36,7 @@ public class StartCoverageData
     @SuiteScoped
     private InstanceProducer<IRuntime> runtimeInst;
 
-    public void createRuntime(@Observes BeforeSuite event) throws Exception
+    public void createRuntime(@Observes BeforeSuite event)
     {
         IRuntime runtime = ArquillianRuntime.getInstance();
         runtimeInst.set(runtime);

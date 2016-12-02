@@ -32,13 +32,13 @@ import java.io.InputStream;
  * @author <a href="mailto:aslak@redhat.com">Aslak Knutsen</a>
  * @version $Revision: $
  */
-public class InstrumenterAsset implements Asset
+public class InstrumentedAsset implements Asset
 {
    private final Asset asset;
    
    public static final String EX_STRING = "arquillian";
 
-   public InstrumenterAsset(Asset asset)
+   public InstrumentedAsset(Asset asset)
    {
       this.asset = asset;
    }

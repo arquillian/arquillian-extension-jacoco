@@ -34,7 +34,7 @@ import org.jacoco.core.data.SessionInfo;
  */
 public final class CoverageChecker
 {
-   public static final File DEFAULT_OUTPUT_FILE = new File("target" + File.separator + "jacoco.exec");
+   private static final File DEFAULT_OUTPUT_FILE = new File("target" + File.separator + "jacoco.exec");
 
    private CoverageChecker() { }
 
@@ -48,7 +48,7 @@ public final class CoverageChecker
       return hasCoverageData(jacocoDataFile, Arrays.asList(classes));
    }
 
-   public static boolean hasCoverageData(File jacocoDataFile, List<Class<?>> classes) throws IOException
+   private static boolean hasCoverageData(File jacocoDataFile, List<Class<?>> classes) throws IOException
    {
       FileInputStream fin = new FileInputStream(jacocoDataFile);
 

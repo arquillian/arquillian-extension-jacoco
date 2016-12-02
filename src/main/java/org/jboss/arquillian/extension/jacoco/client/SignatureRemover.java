@@ -15,7 +15,7 @@ import org.jboss.shrinkwrap.api.Node;
 import org.jboss.shrinkwrap.api.asset.Asset;
 
 /**
- * Signed jars must have their signatures removed. Since {@link InstrumenterAsset} only deals with classes we must actually
+ * Signed jars must have their signatures removed. Since {@link InstrumentedAsset} only deals with classes we must actually
  * perform the duties of {@link org.jacoco.core.internal.instr.SignatureRemover} ourselves
  *
  * @see org.jacoco.core.internal.instr.SignatureRemover
