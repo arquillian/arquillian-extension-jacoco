@@ -18,6 +18,10 @@
 
 package org.jboss.arquillian.extension.jacoco.client;
 
+import org.jboss.shrinkwrap.api.ArchivePath;
+import org.jboss.shrinkwrap.api.Filter;
+import org.jboss.shrinkwrap.api.Filters;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -26,23 +30,21 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import org.jboss.shrinkwrap.api.ArchivePath;
-import org.jboss.shrinkwrap.api.Filter;
-import org.jboss.shrinkwrap.api.Filters;
-
 /**
  * @author Lukas Krejci
  */
 public class JacocoConfiguration
 {
 
+   public static final Filter<ArchivePath> ALL_CLASSES = Filters.include(".*\\.class");
+
    private static final String INCLUDES_PROPERTY = "includes";
    public static final String INCLUDES_DEFAULT_VALUE = null;
    private static final String EXCLUDES_PROPERTY = "excludes";
    public static final String EXCLUDES_DEFAULT_VALUE = null;
    private static final String APPEND_ASM_LIBRARY_PROPERTY = "appendAsmLibrary";
-   private static final String APPEND_ASM_LIBRARY_DEFAULT = "true";
 
+   private static final String APPEND_ASM_LIBRARY_DEFAULT = "true";
    private static final String SEPARATOR = "\\s*;\\s*";
 
    private List<String> includes;
@@ -98,11 +100,11 @@ public class JacocoConfiguration
       ConfigMap c = new ConfigMap(map);
 
       String incls = c.get(INCLUDES_PROPERTY, INCLUDES_DEFAULT_VALUE);
-      ret.includes = incls == null ? Collections.<String> emptyList() : Arrays
+      ret.includes = incls == null ? Collections.<String>emptyList() : Arrays
             .asList(incls.split(SEPARATOR));
 
       String excls = c.get(EXCLUDES_PROPERTY, EXCLUDES_DEFAULT_VALUE);
-      ret.excludes = excls == null ? Collections.<String> emptyList() : Arrays
+      ret.excludes = excls == null ? Collections.<String>emptyList() : Arrays
             .asList(excls.split(SEPARATOR));
 
       ret.composedFilter = ret.composeFilter();
@@ -130,13 +132,13 @@ public class JacocoConfiguration
 
    public boolean isAppendAsmLibrary()
    {
-    return appendAsmLibrary;
+      return appendAsmLibrary;
    }
 
    private Filter<ArchivePath> composeFilter()
    {
       List<Filter<ArchivePath>> filters = new ArrayList<Filter<ArchivePath>>();
-      filters.add(Filters.include(".*\\.class"));
+      filters.add(ALL_CLASSES);
 
       for (String include : getIncludeRegexps())
       {
@@ -166,9 +168,10 @@ public class JacocoConfiguration
       if (patterns.isEmpty())
       {
          return patterns;
-      } else
+      }
+      else
       {
-         ArrayList<String> ret = new ArrayList<String>(patterns.size());
+         final List<String> ret = new ArrayList<String>(patterns.size());
          for (String regexp : patterns)
          {
             regexp = regexp.replace(".", "\\/").replace("*", ".*")
@@ -186,8 +189,7 @@ public class JacocoConfiguration
       try
       {
          UUID.class.getDeclaredField("$jacocoAccess");
-      }
-      catch (Exception e)
+      } catch (Exception e)
       {
          return false;
       }

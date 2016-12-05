@@ -16,13 +16,13 @@
  */
 package org.jboss.arquillian.extension.jacoco.client;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
-
 import org.jacoco.core.instr.Instrumenter;
 import org.jacoco.core.runtime.IRuntime;
 import org.jboss.arquillian.extension.jacoco.container.ArquillianRuntime;
 import org.jboss.shrinkwrap.api.asset.Asset;
+
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 
 /**
  * Instrument the underlying Class using the Jacoco Runtime.
@@ -32,13 +32,13 @@ import org.jboss.shrinkwrap.api.asset.Asset;
  * @author <a href="mailto:aslak@redhat.com">Aslak Knutsen</a>
  * @version $Revision: $
  */
-public class InstrumenterAsset implements Asset
+public class InstrumentedAsset implements Asset
 {
-   private Asset asset;
+   private final Asset asset;
    
    public static final String EX_STRING = "arquillian";
 
-   public InstrumenterAsset(Asset asset)
+   public InstrumentedAsset(Asset asset)
    {
       this.asset = asset;
    }
@@ -50,10 +50,9 @@ public class InstrumenterAsset implements Asset
    {
       try
       {
-         IRuntime runtime = ArquillianRuntime.getInstance();
-         Instrumenter instrumenter = new Instrumenter(runtime);
-         byte[] instrumented = instrumenter.instrument(asset.openStream(), EX_STRING);
-         
+         final IRuntime runtime = ArquillianRuntime.getInstance();
+         final Instrumenter instrumenter = new Instrumenter(runtime);
+         final byte[] instrumented = instrumenter.instrument(asset.openStream(), EX_STRING);
          return new ByteArrayInputStream(instrumented);
       }
       catch (Exception e) 

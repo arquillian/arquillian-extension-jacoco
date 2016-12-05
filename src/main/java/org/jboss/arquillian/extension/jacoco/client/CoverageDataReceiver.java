@@ -1,12 +1,5 @@
 package org.jboss.arquillian.extension.jacoco.client;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.util.UUID;
-
 import org.jacoco.core.data.ExecutionData;
 import org.jacoco.core.data.ExecutionDataReader;
 import org.jacoco.core.data.ExecutionDataStore;
@@ -15,6 +8,13 @@ import org.jacoco.core.data.ISessionInfoVisitor;
 import org.jacoco.core.data.SessionInfoStore;
 import org.jboss.arquillian.core.api.annotation.Observes;
 import org.jboss.arquillian.extension.jacoco.CoverageDataCommand;
+
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.util.UUID;
 
 public class CoverageDataReceiver
 {
@@ -43,7 +43,7 @@ public class CoverageDataReceiver
       Field f = UUID.class.getDeclaredField("$jacocoAccess");
       Object executor = f.get(null);
 
-      Method m = executor.getClass().getDeclaredMethod("getProbes", new Class[] {Object[].class});
+      Method m = executor.getClass().getDeclaredMethod("getProbes", Object[].class);
       m.setAccessible(true);
       for (ExecutionData data : dataStore.getContents())
       {
@@ -62,7 +62,6 @@ public class CoverageDataReceiver
 
 
    private void read(InputStream stream, IExecutionDataVisitor executionDataVisitor, ISessionInfoVisitor sessionVisitor)
-         throws IOException
    {
       ExecutionDataReader reader = new ExecutionDataReader(stream);
 

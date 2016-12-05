@@ -16,12 +16,13 @@
  */
 package org.jboss.arquillian.extension.jacoco.container;
 
-import java.util.UUID;
 import org.jacoco.core.internal.instr.InstrSupport;
 import org.jacoco.core.runtime.IRuntime;
 import org.jacoco.core.runtime.RuntimeData;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
+
+import java.util.UUID;
 
 /**
  * ArquillianRuntime
@@ -41,60 +42,59 @@ public class ArquillianRuntime implements IRuntime
       }
       return runtime;
    }
-   
-    private RuntimeData runtimeData;
+
+   private RuntimeData runtimeData;
 
    /**
-    * 
+    *
     */
    private ArquillianRuntime()
    {
-        runtimeData = new RuntimeData();
-        runtimeData.setSessionId(UUID.randomUUID().toString());
+      runtimeData = new RuntimeData();
+      runtimeData.setSessionId(UUID.randomUUID().toString());
    }
 
    /**
     * Retrieves the execution probe array for a given class. The passed
     * {@link Object} array instance is used for parameters and the return value
     * as follows. Call parameters:
-    * 
+    * <p>
     * <ul>
     * <li>args[0]: class id ({@link Long})
     * <li>args[1]: vm class name ({@link String})
     * <li>args[2]: probe count ({@link Integer})
     * </ul>
-    * 
+    * <p>
     * Return value:
-    * 
+    * <p>
     * <ul>
     * <li>args[0]: probe array (<code>boolean[]</code>)
     * </ul>
-    * 
-    * @param args
-    *            parameter array of length 3
+    *
+    * @param args parameter array of length 3
     */
    public void swapExecutionData(Object[] args)
    {
       final Long classid = (Long) args[0];
       final String name = (String) args[1];
-      final int probecount = ((Integer) args[2]).intValue();
+      final int probecount = (Integer) args[2];
       synchronized (runtimeData)
       {
          args[0] = runtimeData.getExecutionData(classid, name, probecount).getProbes();
       }
    }
 
-   RuntimeData getRuntimeData() 
+   RuntimeData getRuntimeData()
    {
-       return runtimeData;
+      return runtimeData;
    }
-   
+
    /* (non-Javadoc)
     * @see org.jacoco.core.runtime.IRuntime#startup()
     */
    public void startup(RuntimeData rd) throws Exception
    {
-       this.runtimeData = rd;
+      this.runtimeData = rd;
    }
 
    /* (non-Javadoc)
@@ -109,7 +109,7 @@ public class ArquillianRuntime implements IRuntime
     */
    public void reset()
    {
-       runtimeData.reset();
+      runtimeData.reset();
    }
 
    /* (non-Javadoc)
@@ -122,36 +122,36 @@ public class ArquillianRuntime implements IRuntime
       // stack[0]: [Ljava/lang/Object;
 
       mv.visitInsn(Opcodes.DUP);
-      
+
       // stack[1]: [Ljava/lang/Object;
       // stack[0]: [Ljava/lang/Object;
-      
+
       // 2. Invoke ArquillianRuntime:
       mv.visitMethodInsn(Opcodes.INVOKESTATIC, "org/jboss/arquillian/extension/jacoco/container/ArquillianRuntime",
-            "getInstance", 
-            "()Lorg/jboss/arquillian/extension/jacoco/container/ArquillianRuntime;");
+            "getInstance",
+            "()Lorg/jboss/arquillian/extension/jacoco/container/ArquillianRuntime;", false);
 
       // stack[2]: LArquillianRuntime;
       // stack[1]: [Ljava/lang/Object;
       // stack[0]: [Ljava/lang/Object;
-      
+
       mv.visitInsn(Opcodes.SWAP);
 
       // stack[2]: [Ljava/lang/Object;
       // stack[1]: LArquillianRuntime;
       // stack[0]: [Ljava/lang/Object;
-      
+
       // 3. Invoke ArquillianRuntime swapExecutionData, gets the boolean[] in Object[0]:
       mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "org/jboss/arquillian/extension/jacoco/container/ArquillianRuntime",
             "swapExecutionData",
-            "([Ljava/lang/Object;)V");
-      
+            "([Ljava/lang/Object;)V", false);
+
       // Stack[0]: [Ljava/lang/Object;
 
       mv.visitInsn(Opcodes.ICONST_0);
       mv.visitInsn(Opcodes.AALOAD);
       mv.visitTypeInsn(Opcodes.CHECKCAST, InstrSupport.DATAFIELD_DESC);
-      
+
       // Stack[0]: [Z;
 
       return 5;
@@ -161,18 +161,14 @@ public class ArquillianRuntime implements IRuntime
     * Generates code that creates the argument array for the
     * <code>getExecutionData()</code> method. The array instance is left on the
     * operand stack. The generated code requires a stack size of 5.
-    * 
-    * @param classid
-    *            class identifier
-    * @param classname
-    *            VM class name
-    * @param probecount
-    *            probe count for this class
-    * @param mv
-    *            visitor to emit generated code
+    *
+    * @param classid    class identifier
+    * @param classname  VM class name
+    * @param probecount probe count for this class
+    * @param mv         visitor to emit generated code
     */
    public static void generateArgumentArray(final long classid, final String classname, final int probecount,
-         final MethodVisitor mv)
+                                            final MethodVisitor mv)
    {
       mv.visitInsn(Opcodes.ICONST_3);
       mv.visitTypeInsn(Opcodes.ANEWARRAY, "java/lang/Object");
@@ -180,8 +176,8 @@ public class ArquillianRuntime implements IRuntime
       // Class Id:
       mv.visitInsn(Opcodes.DUP);
       mv.visitInsn(Opcodes.ICONST_0);
-      mv.visitLdcInsn(Long.valueOf(classid));
-      mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Long", "valueOf", "(J)Ljava/lang/Long;");
+      mv.visitLdcInsn(classid);
+      mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Long", "valueOf", "(J)Ljava/lang/Long;", false);
       mv.visitInsn(Opcodes.AASTORE);
 
       // Class Name:
@@ -194,7 +190,7 @@ public class ArquillianRuntime implements IRuntime
       mv.visitInsn(Opcodes.DUP);
       mv.visitInsn(Opcodes.ICONST_2);
       InstrSupport.push(mv, probecount);
-      mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Integer", "valueOf", "(I)Ljava/lang/Integer;");
+      mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Integer", "valueOf", "(I)Ljava/lang/Integer;", false);
       mv.visitInsn(Opcodes.AASTORE);
    }
 }

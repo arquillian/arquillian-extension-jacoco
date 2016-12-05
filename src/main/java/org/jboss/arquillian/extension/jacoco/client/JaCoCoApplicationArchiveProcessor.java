@@ -14,31 +14,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.jboss.arquillian.extension.jacoco.container;
+package org.jboss.arquillian.extension.jacoco.client;
 
-
-import org.jacoco.core.runtime.IRuntime;
-import org.jboss.arquillian.core.api.InstanceProducer;
+import org.jboss.arquillian.container.test.spi.client.deployment.ApplicationArchiveProcessor;
+import org.jboss.arquillian.core.api.Instance;
 import org.jboss.arquillian.core.api.annotation.Inject;
-import org.jboss.arquillian.core.api.annotation.Observes;
-import org.jboss.arquillian.test.spi.annotation.SuiteScoped;
-import org.jboss.arquillian.test.spi.event.suite.BeforeSuite;
+import org.jboss.arquillian.test.spi.TestClass;
+import org.jboss.shrinkwrap.api.Archive;
 
 /**
- * StartCoverageData
+ * Instrument all Classes (or their subset if found in the User defined
  *
  * @author <a href="mailto:aslak@redhat.com">Aslak Knutsen</a>
+ * @author <a href="mailto:lkrejci@redhat.com">Lukas Krejci</a>
  * @version $Revision: $
+ * @Deployment.
  */
-public class StartCoverageData 
+public class JaCoCoApplicationArchiveProcessor implements ApplicationArchiveProcessor
 {
-    @Inject
-    @SuiteScoped
-    private InstanceProducer<IRuntime> runtimeInst;
 
-    public void createRuntime(@Observes BeforeSuite event)
-    {
-        IRuntime runtime = ArquillianRuntime.getInstance();
-        runtimeInst.set(runtime);
-    }
+   @Inject
+   private Instance<JacocoConfiguration> config;
+
+   public void process(Archive<?> applicationArchive, TestClass testClass)
+   {
+      new ArchiveInstrumenter(new SignatureRemover()).processArchive(applicationArchive, config.get().getClassFilter());
+   }
+
 }
