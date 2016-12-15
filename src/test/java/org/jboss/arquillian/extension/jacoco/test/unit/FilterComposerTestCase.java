@@ -1,83 +1,80 @@
 package org.jboss.arquillian.extension.jacoco.test.unit;
 
-import org.jboss.arquillian.extension.jacoco.client.ArchiveInstrumenter;
-import org.jboss.arquillian.extension.jacoco.client.FilterComposer;
-import org.jboss.arquillian.extension.jacoco.client.JacocoConfiguration;
-import org.jboss.arquillian.extension.jacoco.client.SignatureRemover;
-import org.jboss.shrinkwrap.api.*;
-import org.jboss.shrinkwrap.api.asset.Asset;
-import org.jboss.shrinkwrap.api.asset.EmptyAsset;
-import org.jboss.shrinkwrap.api.spec.JavaArchive;
-import org.junit.Before;
+import org.jboss.arquillian.extension.jacoco.client.filter.FilterComposer;
+import org.jboss.shrinkwrap.api.ArchivePath;
+import org.jboss.shrinkwrap.api.ArchivePaths;
+import org.jboss.shrinkwrap.api.Filter;
 import org.junit.Test;
 
-import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
-import static org.mockito.Mockito.mock;
+import static org.assertj.core.api.Assertions.assertThat;
 
-/**
- * Created by hemani on 12/13/16.
- */
-public class FilterComposerTestCase {
+public class FilterComposerTestCase
+{
 
-    private SignatureRemover signatureRemover;
+   @Test
+   public void should_include_any_asset_when_no_include_and_exclude_pattern_defined() throws Exception
+   {
+      // given
+      final FilterComposer filterComposer = new FilterComposer(Collections.<String>emptyList(), Collections.<String>emptyList());
+      final Filter<ArchivePath> filter = filterComposer.composeFilter();
 
-    private ArchiveInstrumenter instrumenter;
+      // when
+      final boolean include = filter.include(ArchivePaths.create("org/arquillian/extension/jacoco/client/ManifestAsset.class"));
 
-    @Before
-    public void wire_instrumenter() {
-        this.signatureRemover = mock(SignatureRemover.class);
-        this.instrumenter = new ArchiveInstrumenter(signatureRemover);
-    }
+      // then
+      assertThat(include).isTrue();
+   }
 
+   @Test
+   public void should_include_asset_matching_include_pattern() throws Exception
+   {
+      // given
+      final List<String> includes = Arrays.asList("org.arquillian.extension.jacoco.client.*");
+      final List<String> excludes = Collections.emptyList();
+      final FilterComposer filterComposer = new FilterComposer(includes, excludes);
+      final Filter<ArchivePath> filter = filterComposer.composeFilter();
 
-    @Test
-    public void should_retrieve_contents_of_filter() throws Exception {
+      // when
+      final boolean include = filter.include(ArchivePaths.create("org/arquillian/extension/jacoco/client/ManifestAsset.class"));
 
-        // given
+      // then
+      assertThat(include).isTrue();
+   }
 
-        final JavaArchive javaArchive = ShrinkWrap.create(JavaArchive.class, "dri.jar").
-               addClass(FilterComposer.class).addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
+   @Test
+   public void should_exclude_asset_not_matching_include_pattern() throws Exception
+   {
+      // given
+      final List<String> includes = Arrays.asList("org.arquillian.extension.jacoco.client.*");
+      final List<String> excludes = Collections.emptyList();
+      final FilterComposer filterComposer = new FilterComposer(includes, excludes);
+      final Filter<ArchivePath> filter = filterComposer.composeFilter();
 
-        ArchivePath targetPath = ArchivePaths.create("org.jboss.arquillian.extension.jacoco.test.included.*");
+      // when
+      final boolean include = filter.include(ArchivePaths.create("org/arquillian/extension/jacoco/container/CoverageDataCommand.class"));
 
+      // then
+      assertThat(include).isFalse();
+   }
 
-        List<String> include = new ArrayList<String>();
-        include.add("org.jboss.arquillian.extension.jacoco.test.included.*");
+   @Test
+   public void should_include_asset_not_matching_exclude_pattern() throws Exception
+   {
+      // given
+      final List<String> excludes = Arrays.asList("org.arquillian.extension.jacoco.client.*");
+      final List<String> includes = Collections.emptyList();
+      final FilterComposer filterComposer = new FilterComposer(includes, excludes);
+      final Filter<ArchivePath> filter = filterComposer.composeFilter();
 
-        List<String> exclude = new ArrayList<String>();
-        exclude.add("org.jboss.arquillian.extension.jacoco.test.integration.*");
+      // when
+      final boolean include = filter.include(ArchivePaths.create("org/arquillian/extension/jacoco/container/CoverageDataCommand.class"));
 
-        FilterComposer composer = new FilterComposer(include, exclude);
-        Filter<ArchivePath> archivePathFilter = composer.composeFilter();
-
-        //Assert.assertTrue("should be located in " + targetPath, javaArchive.contains(targetPath));
-
-        /*
-        Map<String, String> arq_config = new LinkedHashMap();
-        arq_config.put("includes", "org.jboss.arquillian.extension.jacoco.test.included.*");
-        arq_config.put("excludes", "org.jboss.arquillian.extension.jacoco.test.integration.*;org.jboss.arquillian.extension.jacoco.test.excluded.*");
-
-        JacocoConfiguration config = JacocoConfiguration.fromMap(arq_config);
-
-        instrumenter.processArchive(javaArchive, config.getClassFilter());
-
-        // when
-        final List<Asset> classAssets = extractClassAssets(javaArchive);
-        System.out.println(classAssets);
-        assertThat(classAssets).hasSize(2).hasOnlyElementsOfType(FilterComposer.class);
-        */
-
-    }
-
-    private List<Asset> extractClassAssets(JavaArchive javaArchive) {
-        final List<Asset> classAssets = new ArrayList<Asset>();
-        for (Map.Entry<ArchivePath, Node> entry : javaArchive.getContent(JacocoConfiguration.ALL_CLASSES).entrySet()) {
-            classAssets.add(entry.getValue().getAsset());
-        }
-        return classAssets;
-    }
+      // then
+      assertThat(include).isTrue();
+   }
 
 }

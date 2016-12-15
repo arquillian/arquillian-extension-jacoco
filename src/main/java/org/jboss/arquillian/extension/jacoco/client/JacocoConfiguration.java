@@ -18,6 +18,7 @@
 
 package org.jboss.arquillian.extension.jacoco.client;
 
+import org.jboss.arquillian.extension.jacoco.client.filter.FilterComposer;
 import org.jboss.shrinkwrap.api.ArchivePath;
 import org.jboss.shrinkwrap.api.Filter;
 import org.jboss.shrinkwrap.api.Filters;
