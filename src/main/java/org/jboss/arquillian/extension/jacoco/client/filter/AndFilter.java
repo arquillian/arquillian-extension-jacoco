@@ -4,7 +4,7 @@ import org.jboss.shrinkwrap.api.Filter;
 
 import java.util.Collection;
 
-class AndFilter<T> implements Filter<T>
+public class AndFilter<T> implements Filter<T>
 {
     private Collection<Filter<T>> filters;
 

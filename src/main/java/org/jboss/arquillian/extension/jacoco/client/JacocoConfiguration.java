@@ -83,11 +83,6 @@ public class JacocoConfiguration {
         return ret;
     }
 
-
-//    public Filter<ArchivePath> getComposedFilter() {
-//        return composedFilter;
-//    }
-
     public Filter<ArchivePath> getClassFilter() {
         return composedFilter;
     }

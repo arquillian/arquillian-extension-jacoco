@@ -74,7 +74,7 @@ public class FilterComposer
          for (String regexp : patterns)
          {
             regexp = regexp.replace(".", "\\/").replace("*", ".*")
-                  .replace('?', '.').replace("\\/class", "" );
+                  .replace('?', '.');
 
             ret.add(".*" + regexp + "\\.class");
          }
@@ -82,6 +82,4 @@ public class FilterComposer
          return ret;
       }
    }
-
-
 }
