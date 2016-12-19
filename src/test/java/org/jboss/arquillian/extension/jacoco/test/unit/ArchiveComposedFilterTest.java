@@ -23,7 +23,7 @@ public class ArchiveComposedFilterTest
 {
 
    @Test
-   public void should_exclude_class_from_the_archive() throws Exception
+   public void should_exclude_class_matching_exclude_pattern_from_the_archive() throws Exception
    {
       // given
       final JavaArchive jar = ShrinkWrap.create(JavaArchive.class, "simple.jar").addClasses(CoverageDataCommand.class, ManifestAsset.class);
@@ -56,7 +56,8 @@ public class ArchiveComposedFilterTest
    {
       // given
       final JavaArchive jar = ShrinkWrap.create(JavaArchive.class, "simple.jar").addPackages(true, InstrumentedAsset.class.getPackage().getName());
-      final Filter<ArchivePath> filter = FilterComposerTestCase.createComposedFilter("org.jboss.arquillian.extension.jacoco.client.*", "org.jboss.arquillian.extension.jacoco.client.filter.*");
+      final Filter<ArchivePath> filter = FilterComposerTestCase
+              .createComposedFilter("org.jboss.arquillian.extension.jacoco.client.*", "org.jboss.arquillian.extension.jacoco.client.filter.*");
 
       // when
       final Map<ArchivePath, Node> filteredContent = jar.getContent(filter);
@@ -64,6 +65,40 @@ public class ArchiveComposedFilterTest
       // then
       assertThat(filteredContent.keySet()).contains(convertFromClass(CoverageDataReceiver.class))
               .doesNotContain(convertFromClass(FilterComposer.class), convertFromClass(AndFilter.class));
+
+   }
+
+   @Test
+   public void should_include_class_matching_any_include_pattern() throws Exception
+   {
+      // given
+      final JavaArchive jar = ShrinkWrap.create(JavaArchive.class, "simple.jar").addPackages(true, InstrumentedAsset.class.getPackage().getName());
+      final Filter<ArchivePath> filter = FilterComposerTestCase
+              .createComposedFilter("org.jboss.arquillian.extension.jacoco.client.*,org.jboss.arquillian.extension.jacoco.client.filter.*", null);
+
+      // when
+      final Map<ArchivePath, Node> filteredContent = jar.getContent(filter);
+
+      // then
+      assertThat(filteredContent.keySet())
+              .contains(convertFromClass(ManifestAsset.class),convertFromClass(FilterComposer.class), convertFromClass(AndFilter.class));
+
+   }
+
+   @Test
+   public void should_exclude_class_when_conflict_between_include_and_exclude_pattern() throws Exception
+   {
+      // given
+      final JavaArchive jar = ShrinkWrap.create(JavaArchive.class, "simple.jar").addPackages(true, InstrumentedAsset.class.getPackage().getName());
+      final Filter<ArchivePath> filter = FilterComposerTestCase
+              .createComposedFilter("org.jboss.arquillian.extension.jacoco.client.filter.*", "org.jboss.arquillian.extension.jacoco.client.*");
+
+      // when
+      final Map<ArchivePath, Node> filteredContent = jar.getContent(filter);
+
+      // then
+      assertThat(filteredContent.keySet())
+              .doesNotContain(convertFromClass(ManifestAsset.class),convertFromClass(FilterComposer.class), convertFromClass(AndFilter.class));
 
    }
 

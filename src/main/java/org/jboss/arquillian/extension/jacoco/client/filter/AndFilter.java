@@ -16,13 +16,18 @@ public class AndFilter<T> implements Filter<T>
     @Override
     public boolean include(T object)
     {
+        boolean include = false;
         for (Filter<T> f : filters)
         {
             if (!f.include(object))
             {
+                if (f.toString().contains("IncludeRegExpPaths") && include) {
+                    continue;
+                }
                 return false;
             }
-        }
+            include = true;
+         }
         return true;
     }
 }
