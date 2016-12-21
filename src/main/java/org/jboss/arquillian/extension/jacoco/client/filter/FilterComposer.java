@@ -33,8 +33,8 @@ public class FilterComposer
 
    public Filter<ArchivePath> composeFilter()
    {
-      List<Filter<ArchivePath>> includeFilter = new ArrayList<Filter<ArchivePath>>();
-      List<Filter<ArchivePath>> excludeFilter = new ArrayList<Filter<ArchivePath>>();
+      final List<Filter<ArchivePath>> includeFilter = new ArrayList<Filter<ArchivePath>>();
+      final List<Filter<ArchivePath>> excludeFilter = new ArrayList<Filter<ArchivePath>>();
 
       for (String include : getIncludeRegexps())
       {
@@ -51,7 +51,9 @@ public class FilterComposer
          includeFilter.add(ALL_CLASSES);
       }
 
-      return new CompositeFilter<ArchivePath>(includeFilter, excludeFilter);
+      final Filter<ArchivePath> notExcluded = AndFilter.and(excludeFilter);
+      final Filter<ArchivePath> included = OrFilter.or(includeFilter);
+      return AndFilter.and(notExcluded, included);
    }
 
    private List<String> getIncludeRegexps()

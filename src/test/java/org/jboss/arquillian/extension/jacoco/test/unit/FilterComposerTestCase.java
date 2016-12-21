@@ -136,14 +136,13 @@ public class FilterComposerTestCase
    public void should_exclude_any_asset_when_exclude_pattern_defines_global_exclusion() throws Exception
    {
       // given
-      final Filter<ArchivePath> filter = createComposedFilter("org.arquillian.extension.jacoco.client.*", ".*");
+      final Filter<ArchivePath> filter = createComposedFilter("org.arquillian.extension.jacoco.client.*", "*");
 
       // when
       final boolean include = filter.include(ArchivePaths.create("org/arquillian/extension/jacoco/client/ManifestAsset.class"));
 
       // then
       assertThat(include).isFalse();
-
    }
 
    @Test
@@ -187,8 +186,8 @@ public class FilterComposerTestCase
 
    public static Filter<ArchivePath> createComposedFilter(String includePattern, String excludePattern)
    {
-      List<String> excludes = splitPattern(excludePattern);
-      List<String> includes = splitPattern(includePattern);
+      final List<String> excludes = splitPattern(excludePattern);
+      final List<String> includes = splitPattern(includePattern);
       final FilterComposer filterComposer = new FilterComposer(includes, excludes);
       return filterComposer.composeFilter();
    }

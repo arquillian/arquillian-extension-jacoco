@@ -6,11 +6,7 @@ import org.jboss.arquillian.extension.jacoco.client.InstrumentedAsset;
 import org.jboss.arquillian.extension.jacoco.client.ManifestAsset;
 import org.jboss.arquillian.extension.jacoco.client.filter.AndFilter;
 import org.jboss.arquillian.extension.jacoco.client.filter.FilterComposer;
-import org.jboss.shrinkwrap.api.ArchivePath;
-import org.jboss.shrinkwrap.api.ArchivePaths;
-import org.jboss.shrinkwrap.api.Filter;
-import org.jboss.shrinkwrap.api.Node;
-import org.jboss.shrinkwrap.api.ShrinkWrap;
+import org.jboss.shrinkwrap.api.*;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.Test;
 

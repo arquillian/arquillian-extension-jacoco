@@ -2,20 +2,35 @@ package org.jboss.arquillian.extension.jacoco.client.filter;
 
 import org.jboss.shrinkwrap.api.Filter;
 
+import java.util.Arrays;
 import java.util.Collection;
 
-/**
- * Created by hemani on 12/20/16.
- */
+public class OrFilter<T> implements Filter<T> {
 
-public class OrFilter {
+    private final Collection<Filter<T>> filters;
 
-    public static <T> boolean getFilter(Collection<Filter<T>> filterPatterns, T object) {
-        if (filterPatterns.toString().contains("IncludeRegExpPaths")) {
-            return new IncludeFilter().or(filterPatterns, object);
+    public OrFilter(Collection<Filter<T>> filters) {
+        this.filters = filters;
+    }
+
+    public static <F> Filter<F> or(Filter<F> ... filters) {
+        return new OrFilter<F>(Arrays.asList(filters));
+    }
+
+    public static <F> Filter<F> or(Collection<Filter<F>> filters) {
+        return new OrFilter<F>(filters);
+    }
+
+    public boolean include(T object) {
+        if (filters.isEmpty()) {
+            return true;
         }
-        else {
-            return new ExcludeFilter().or(filterPatterns, object);
+
+        for (Filter<T> filter : filters) {
+            if (filter.include(object)) {
+                return true;
+            }
         }
+        return false;
     }
 }
