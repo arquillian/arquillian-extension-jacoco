@@ -34,7 +34,7 @@ public class JaCoCoApplicationArchiveProcessor implements ApplicationArchiveProc
 {
 
    @Inject
-   private Instance<JacocoConfiguration> config;
+   private Instance<JaCoCoConfiguration> config;
 
    public void process(Archive<?> applicationArchive, TestClass testClass)
    {

@@ -2,7 +2,7 @@ package org.jboss.arquillian.extension.jacoco.test.unit;
 
 import org.jboss.arquillian.extension.jacoco.client.ArchiveInstrumenter;
 import org.jboss.arquillian.extension.jacoco.client.InstrumentedAsset;
-import org.jboss.arquillian.extension.jacoco.client.JacocoConfiguration;
+import org.jboss.arquillian.extension.jacoco.client.JaCoCoConfiguration;
 import org.jboss.arquillian.extension.jacoco.client.ManifestAsset;
 import org.jboss.arquillian.extension.jacoco.client.SignatureRemover;
 import org.jboss.shrinkwrap.api.Archive;
@@ -55,7 +55,7 @@ public class ArchiveInstrumenterTest
             .addAsManifestResource(new StringAsset("sample content"), "dir.ear/pom.properties");
 
       // when
-      instrumenter.processArchive(enterpriseArchive, JacocoConfiguration.ALL_CLASSES);
+      instrumenter.processArchive(enterpriseArchive, JaCoCoConfiguration.ALL_CLASSES);
 
       // then
       verify(signatureRemover, times(2)).removeSignatures(any(Archive.class));
@@ -70,7 +70,7 @@ public class ArchiveInstrumenterTest
             .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
 
       // when
-      instrumenter.processArchive(javaArchive, JacocoConfiguration.ALL_CLASSES);
+      instrumenter.processArchive(javaArchive, JaCoCoConfiguration.ALL_CLASSES);
       final List<Asset> classAssets = extractClassAssets(javaArchive);
 
       // then
@@ -80,7 +80,7 @@ public class ArchiveInstrumenterTest
    private List<Asset> extractClassAssets(JavaArchive javaArchive)
    {
       final List<Asset> classAssets = new ArrayList<Asset>();
-      for (Map.Entry<ArchivePath, Node> entry : javaArchive.getContent(JacocoConfiguration.ALL_CLASSES).entrySet())
+      for (Map.Entry<ArchivePath, Node> entry : javaArchive.getContent(JaCoCoConfiguration.ALL_CLASSES).entrySet())
       {
          classAssets.add(entry.getValue().getAsset());
       }

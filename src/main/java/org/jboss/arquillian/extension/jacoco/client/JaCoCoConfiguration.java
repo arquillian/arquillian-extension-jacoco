@@ -28,7 +28,7 @@ import java.util.*;
 /**
  * @author Lukas Krejci
  */
-public class JacocoConfiguration {
+public class JaCoCoConfiguration {
 
     public static final Filter<ArchivePath> ALL_CLASSES = Filters.include(".*\\.class");
 
@@ -61,8 +61,8 @@ public class JacocoConfiguration {
         }
     }
 
-    public static JacocoConfiguration fromMap(Map<String, String> map) {
-        JacocoConfiguration ret = new JacocoConfiguration();
+    public static JaCoCoConfiguration fromMap(Map<String, String> map) {
+        JaCoCoConfiguration ret = new JaCoCoConfiguration();
 
         ConfigMap c = new ConfigMap(map);
 

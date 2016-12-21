@@ -28,19 +28,19 @@ import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 
 /**
- * JacocoArchiveAppender
+ * JaCoCoArchiveAppender
  *
  * @author <a href="mailto:aslak@redhat.com">Aslak Knutsen</a>
  * @version $Revision: $
  */
-public class JacocoArchiveAppender implements AuxiliaryArchiveAppender
+public class JaCoCoArchiveAppender implements AuxiliaryArchiveAppender
 {
 
    @Inject
-   private Instance<JacocoConfiguration> config;
+   private Instance<JaCoCoConfiguration> config;
 
    // Test only...
-   public void setConfig(Instance<JacocoConfiguration> config) {
+   public void setConfig(Instance<JaCoCoConfiguration> config) {
       this.config = config;
    }
 
