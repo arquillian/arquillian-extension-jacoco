@@ -17,7 +17,6 @@ import org.junit.Test;
 import java.util.Map;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.jboss.arquillian.extension.jacoco.test.unit.FilterComposerTestCase.createComposedFilter;
 
 public class ArchiveComposedFilterTest
 {
