@@ -3,7 +3,7 @@
  * All rights reserved.
  *
  */
-package org.jboss.arquillian.extension.jacoco.client;
+package org.jboss.arquillian.extension.jacoco.client.instrumentation;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;

@@ -2,8 +2,9 @@ package org.jboss.arquillian.extension.jacoco.test.unit;
 
 import org.jboss.arquillian.extension.jacoco.CoverageDataCommand;
 import org.jboss.arquillian.extension.jacoco.client.CoverageDataReceiver;
-import org.jboss.arquillian.extension.jacoco.client.InstrumentedAsset;
-import org.jboss.arquillian.extension.jacoco.client.ManifestAsset;
+import org.jboss.arquillian.extension.jacoco.client.JaCoCoExtension;
+import org.jboss.arquillian.extension.jacoco.client.instrumentation.InstrumentedAsset;
+import org.jboss.arquillian.extension.jacoco.client.instrumentation.ManifestAsset;
 import org.jboss.arquillian.extension.jacoco.client.filter.AndFilter;
 import org.jboss.arquillian.extension.jacoco.client.filter.FilterComposer;
 import org.jboss.shrinkwrap.api.*;
@@ -50,7 +51,7 @@ public class ArchiveComposedFilterTest
    public void should_include_class_when_matching_include_pattern() throws Exception
    {
       // given
-      final JavaArchive jar = ShrinkWrap.create(JavaArchive.class, "simple.jar").addPackages(true, InstrumentedAsset.class.getPackage().getName());
+      final JavaArchive jar = ShrinkWrap.create(JavaArchive.class, "simple.jar").addPackages(true, JaCoCoExtension.class.getPackage().getName());
       final Filter<ArchivePath> filter = FilterComposerTestCase
               .createComposedFilter("org.jboss.arquillian.extension.jacoco.client.*", "org.jboss.arquillian.extension.jacoco.client.filter.*");
 
@@ -67,7 +68,7 @@ public class ArchiveComposedFilterTest
    public void should_include_class_matching_any_include_pattern() throws Exception
    {
       // given
-      final JavaArchive jar = ShrinkWrap.create(JavaArchive.class, "simple.jar").addPackages(true, InstrumentedAsset.class.getPackage().getName());
+      final JavaArchive jar = ShrinkWrap.create(JavaArchive.class, "simple.jar").addPackages(true, JaCoCoExtension.class.getPackage().getName());
       final Filter<ArchivePath> filter = FilterComposerTestCase
               .createComposedFilter("org.jboss.arquillian.extension.jacoco.client.*,org.jboss.arquillian.extension.jacoco.client.filter.*", null);
 

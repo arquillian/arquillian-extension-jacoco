@@ -7,7 +7,7 @@ import org.jboss.shrinkwrap.api.Filters;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.jboss.arquillian.extension.jacoco.client.JaCoCoConfiguration.ALL_CLASSES;
+import static org.jboss.arquillian.extension.jacoco.client.configuration.JaCoCoConfiguration.ALL_CLASSES;
 
 public class FilterComposer
 {

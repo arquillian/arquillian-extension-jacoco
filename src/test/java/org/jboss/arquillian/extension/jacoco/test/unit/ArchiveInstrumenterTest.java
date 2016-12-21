@@ -1,10 +1,10 @@
 package org.jboss.arquillian.extension.jacoco.test.unit;
 
-import org.jboss.arquillian.extension.jacoco.client.ArchiveInstrumenter;
-import org.jboss.arquillian.extension.jacoco.client.InstrumentedAsset;
-import org.jboss.arquillian.extension.jacoco.client.JaCoCoConfiguration;
-import org.jboss.arquillian.extension.jacoco.client.ManifestAsset;
-import org.jboss.arquillian.extension.jacoco.client.SignatureRemover;
+import org.jboss.arquillian.extension.jacoco.client.instrumentation.ArchiveInstrumenter;
+import org.jboss.arquillian.extension.jacoco.client.instrumentation.InstrumentedAsset;
+import org.jboss.arquillian.extension.jacoco.client.configuration.JaCoCoConfiguration;
+import org.jboss.arquillian.extension.jacoco.client.instrumentation.ManifestAsset;
+import org.jboss.arquillian.extension.jacoco.client.instrumentation.SignatureRemover;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ArchivePath;
 import org.jboss.shrinkwrap.api.Node;

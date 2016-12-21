@@ -2,7 +2,7 @@ package org.jboss.arquillian.extension.jacoco.test.unit;
 
 import org.jboss.arquillian.core.api.Instance;
 import org.jboss.arquillian.extension.jacoco.client.JaCoCoArchiveAppender;
-import org.jboss.arquillian.extension.jacoco.client.JaCoCoConfiguration;
+import org.jboss.arquillian.extension.jacoco.client.configuration.JaCoCoConfiguration;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import org.junit.Assert;
 import org.junit.Test;

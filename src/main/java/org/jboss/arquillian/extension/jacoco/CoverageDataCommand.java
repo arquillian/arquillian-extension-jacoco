@@ -12,15 +12,11 @@ public class CoverageDataCommand implements Command<String>, Serializable
    private String result;
    private Throwable failure;
    
-   
    public CoverageDataCommand(byte[] coverageData)
    {
       this.coverageDate = coverageData;
    }
 
-   /**
-    * @return the coverageDate
-    */
    public byte[] getCoverageDate()
    {
       return coverageDate;

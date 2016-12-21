@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-package org.jboss.arquillian.extension.jacoco.client;
+package org.jboss.arquillian.extension.jacoco.client.configuration;
 
 import org.jboss.arquillian.config.descriptor.api.ArquillianDescriptor;
 import org.jboss.arquillian.core.api.InstanceProducer;
