@@ -21,6 +21,7 @@ import org.jboss.arquillian.container.test.spi.client.deployment.AuxiliaryArchiv
 import org.jboss.arquillian.core.api.Instance;
 import org.jboss.arquillian.core.api.annotation.Inject;
 import org.jboss.arquillian.extension.jacoco.CoverageDataCommand;
+import org.jboss.arquillian.extension.jacoco.client.configuration.JaCoCoConfiguration;
 import org.jboss.arquillian.extension.jacoco.container.JacocoRemoteExtension;
 import org.jboss.arquillian.extension.jacoco.container.StartCoverageData;
 import org.jboss.shrinkwrap.api.Archive;
@@ -28,19 +29,19 @@ import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
 
 /**
- * JacocoArchiveAppender
+ * JaCoCoArchiveAppender
  *
  * @author <a href="mailto:aslak@redhat.com">Aslak Knutsen</a>
  * @version $Revision: $
  */
-public class JacocoArchiveAppender implements AuxiliaryArchiveAppender
+public class JaCoCoArchiveAppender implements AuxiliaryArchiveAppender
 {
 
    @Inject
-   private Instance<JacocoConfiguration> config;
+   private Instance<JaCoCoConfiguration> config;
 
    // Test only...
-   public void setConfig(Instance<JacocoConfiguration> config) {
+   public void setConfig(Instance<JaCoCoConfiguration> config) {
       this.config = config;
    }
 

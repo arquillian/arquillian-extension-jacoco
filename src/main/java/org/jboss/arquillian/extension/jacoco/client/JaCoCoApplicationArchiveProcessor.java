@@ -19,6 +19,9 @@ package org.jboss.arquillian.extension.jacoco.client;
 import org.jboss.arquillian.container.test.spi.client.deployment.ApplicationArchiveProcessor;
 import org.jboss.arquillian.core.api.Instance;
 import org.jboss.arquillian.core.api.annotation.Inject;
+import org.jboss.arquillian.extension.jacoco.client.configuration.JaCoCoConfiguration;
+import org.jboss.arquillian.extension.jacoco.client.instrumentation.ArchiveInstrumenter;
+import org.jboss.arquillian.extension.jacoco.client.instrumentation.SignatureRemover;
 import org.jboss.arquillian.test.spi.TestClass;
 import org.jboss.shrinkwrap.api.Archive;
 
@@ -34,7 +37,7 @@ public class JaCoCoApplicationArchiveProcessor implements ApplicationArchiveProc
 {
 
    @Inject
-   private Instance<JacocoConfiguration> config;
+   private Instance<JaCoCoConfiguration> config;
 
    public void process(Archive<?> applicationArchive, TestClass testClass)
    {

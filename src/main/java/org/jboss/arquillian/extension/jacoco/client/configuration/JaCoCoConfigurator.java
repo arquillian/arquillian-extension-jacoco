@@ -16,9 +16,7 @@
  * limitations under the License.
  */
 
-package org.jboss.arquillian.extension.jacoco.client;
-
-import java.util.Map;
+package org.jboss.arquillian.extension.jacoco.client.configuration;
 
 import org.jboss.arquillian.config.descriptor.api.ArquillianDescriptor;
 import org.jboss.arquillian.core.api.InstanceProducer;
@@ -26,23 +24,25 @@ import org.jboss.arquillian.core.api.annotation.ApplicationScoped;
 import org.jboss.arquillian.core.api.annotation.Inject;
 import org.jboss.arquillian.core.api.annotation.Observes;
 
+import java.util.Map;
+
 /**
  * @author Lukas Krejci
  */
-public class JacocoConfigurator
+public class JaCoCoConfigurator
 {
 
    private static final String EXTENSION_NAME = "jacoco";
 
    @Inject
    @ApplicationScoped
-   private InstanceProducer<JacocoConfiguration> configurationProvider;
+   private InstanceProducer<JaCoCoConfiguration> configurationProvider;
 
    public void configure(@Observes ArquillianDescriptor desc)
    {
       Map<String, String> config = desc.extension(EXTENSION_NAME)
             .getExtensionProperties();
 
-      configurationProvider.set(JacocoConfiguration.fromMap(config));
+      configurationProvider.set(JaCoCoConfiguration.fromMap(config));
    }
 }

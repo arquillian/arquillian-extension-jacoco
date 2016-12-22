@@ -1,5 +1,6 @@
-package org.jboss.arquillian.extension.jacoco.client;
+package org.jboss.arquillian.extension.jacoco.client.instrumentation;
 
+import org.jboss.arquillian.extension.jacoco.client.JaCoCoApplicationArchiveProcessor;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ArchivePath;
 import org.jboss.shrinkwrap.api.Filter;

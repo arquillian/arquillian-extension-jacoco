@@ -16,8 +16,6 @@
  */
 package org.jboss.arquillian.extension.jacoco.test.integration;
 
-import javax.ejb.EJB;
-
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.extension.jacoco.test.included.CoverageBean;
 import org.jboss.arquillian.junit.Arquillian;
@@ -27,20 +25,20 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import javax.ejb.EJB;
+
 /**
- * JacocoInegrationTestCase
- *
  * @author <a href="mailto:aslak@redhat.com">Aslak Knutsen</a>
  * @version $Revision: $
  */
 @RunWith(Arquillian.class)
-public class JacocoInegrationTestCase
+public class JaCoCoIntegrationTestCase
 {
    @Deployment
    public static JavaArchive createDeployment() throws Exception
    {
 	   return ShrinkWrap.create(JavaArchive.class, "test.jar")
-                     .addClasses(CoverageBean.class, JacocoInegrationTestCase.class);
+                     .addClasses(CoverageBean.class, JaCoCoIntegrationTestCase.class);
    }
    
    @EJB
