@@ -23,13 +23,13 @@ public class ArchiveComposedFilterTest
    {
       // given
       final JavaArchive jar = ShrinkWrap.create(JavaArchive.class, "simple.jar").addClasses(CoverageDataCommand.class, ManifestAsset.class);
-      final Filter<ArchivePath> filter = FilterComposerTestCase.createComposedFilter(null, "org.jboss.arquillian.extension.jacoco.CoverageDataCommand");
+      final Filter<ArchivePath> filter = FilterTestUtils.createComposedFilter(null, "org.jboss.arquillian.extension.jacoco.CoverageDataCommand");
 
       // when
       final Map<ArchivePath, Node> filteredContent = jar.getContent(filter);
 
       // then
-      assertThat(filteredContent.keySet()).doesNotContain(convertFromClass(CoverageDataCommand.class));
+      assertThat(filteredContent.keySet()).doesNotContain(FilterTestUtils.convertFromClass(CoverageDataCommand.class));
    }
 
    @Test
@@ -37,14 +37,14 @@ public class ArchiveComposedFilterTest
    {
       // given
       final JavaArchive jar = ShrinkWrap.create(JavaArchive.class, "simple.jar").addClasses(CoverageDataCommand.class, ManifestAsset.class);
-      final Filter<ArchivePath> filter = FilterComposerTestCase.createComposedFilter(null, "org.jboss.arquillian.extension.jacoco.client.*");
+      final Filter<ArchivePath> filter = FilterTestUtils.createComposedFilter(null, "org.jboss.arquillian.extension.jacoco.client.*");
 
       // when
       final Map<ArchivePath, Node> filteredContent = jar.getContent(filter);
 
       // then
-      assertThat(filteredContent.keySet()).contains(convertFromClass(CoverageDataCommand.class))
-                                          .doesNotContain(convertFromClass(ManifestAsset.class));
+      assertThat(filteredContent.keySet()).contains(FilterTestUtils.convertFromClass(CoverageDataCommand.class))
+                                          .doesNotContain(FilterTestUtils.convertFromClass(ManifestAsset.class));
    }
 
    @Test
@@ -52,15 +52,15 @@ public class ArchiveComposedFilterTest
    {
       // given
       final JavaArchive jar = ShrinkWrap.create(JavaArchive.class, "simple.jar").addPackages(true, JaCoCoExtension.class.getPackage().getName());
-      final Filter<ArchivePath> filter = FilterComposerTestCase
+      final Filter<ArchivePath> filter = FilterTestUtils
               .createComposedFilter("org.jboss.arquillian.extension.jacoco.client.*", "org.jboss.arquillian.extension.jacoco.client.filter.*");
 
       // when
       final Map<ArchivePath, Node> filteredContent = jar.getContent(filter);
 
       // then
-      assertThat(filteredContent.keySet()).contains(convertFromClass(CoverageDataReceiver.class))
-              .doesNotContain(convertFromClass(FilterComposer.class), convertFromClass(AndFilter.class));
+      assertThat(filteredContent.keySet()).contains(FilterTestUtils.convertFromClass(CoverageDataReceiver.class))
+              .doesNotContain(FilterTestUtils.convertFromClass(FilterComposer.class), FilterTestUtils.convertFromClass(AndFilter.class));
 
    }
 
@@ -69,7 +69,7 @@ public class ArchiveComposedFilterTest
    {
       // given
       final JavaArchive jar = ShrinkWrap.create(JavaArchive.class, "simple.jar").addPackages(true, JaCoCoExtension.class.getPackage().getName());
-      final Filter<ArchivePath> filter = FilterComposerTestCase
+      final Filter<ArchivePath> filter = FilterTestUtils
               .createComposedFilter("org.jboss.arquillian.extension.jacoco.client.*,org.jboss.arquillian.extension.jacoco.client.filter.*", null);
 
       // when
@@ -77,7 +77,7 @@ public class ArchiveComposedFilterTest
 
       // then
       assertThat(filteredContent.keySet())
-              .contains(convertFromClass(ManifestAsset.class),convertFromClass(FilterComposer.class), convertFromClass(AndFilter.class));
+              .contains(FilterTestUtils.convertFromClass(ManifestAsset.class), FilterTestUtils.convertFromClass(FilterComposer.class), FilterTestUtils.convertFromClass(AndFilter.class));
 
    }
 
@@ -86,7 +86,7 @@ public class ArchiveComposedFilterTest
    {
       // given
       final JavaArchive jar = ShrinkWrap.create(JavaArchive.class, "simple.jar").addPackages(true, InstrumentedAsset.class.getPackage().getName());
-      final Filter<ArchivePath> filter = FilterComposerTestCase
+      final Filter<ArchivePath> filter = FilterTestUtils
               .createComposedFilter("org.jboss.arquillian.extension.jacoco.client.filter.*", "org.jboss.arquillian.extension.jacoco.client.*");
 
       // when
@@ -94,15 +94,9 @@ public class ArchiveComposedFilterTest
 
       // then
       assertThat(filteredContent.keySet())
-              .doesNotContain(convertFromClass(ManifestAsset.class),convertFromClass(FilterComposer.class), convertFromClass(AndFilter.class));
+              .doesNotContain(FilterTestUtils.convertFromClass(ManifestAsset.class), FilterTestUtils.convertFromClass(FilterComposer.class), FilterTestUtils.convertFromClass(AndFilter.class));
 
    }
 
-   private ArchivePath convertFromClass(Class<?> cls)
-   {
-      final StringBuilder builder = new StringBuilder();
-      final String pathToClass = builder.append("/").append(cls.getName().replace(".", "/")).append(".class").toString();
-      return ArchivePaths.create(pathToClass);
-   }
 
 }
