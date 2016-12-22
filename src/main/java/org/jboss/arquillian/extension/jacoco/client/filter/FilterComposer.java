@@ -5,6 +5,7 @@ import org.jboss.shrinkwrap.api.Filter;
 import org.jboss.shrinkwrap.api.Filters;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.jboss.arquillian.extension.jacoco.client.configuration.JaCoCoConfiguration.ALL_CLASSES;
@@ -12,13 +13,34 @@ import static org.jboss.arquillian.extension.jacoco.client.configuration.JaCoCoC
 public class FilterComposer
 {
 
+   private static final String SEPARATOR = "\\s*;\\s*|\\s*,\\s*";
+
    private final List<String> includes;
    private final List<String> excludes;
 
-   public FilterComposer(List<String> includes, List<String> excludes)
+   private FilterComposer(List<String> includes, List<String> excludes)
    {
       this.includes = includes;
       this.excludes = excludes;
+   }
+
+   public static FilterComposer create(String includePatterns, String excludePatterns)
+   {
+      return new FilterComposer(splitPattern(includePatterns), splitPattern(excludePatterns));
+   }
+
+   private static List<String> splitPattern(String patterns)
+   {
+      List<String> result = new ArrayList<String>();
+      if (patterns != null && patterns.length() > 0)
+      {
+         final List<String> splitPatterns = Arrays.asList(patterns.split(SEPARATOR));
+         for (String splitPattern : splitPatterns)
+         {
+            result.add(splitPattern.trim());
+         }
+      }
+      return result;
    }
 
    public List<String> getExcludes()

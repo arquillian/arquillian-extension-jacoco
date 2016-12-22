@@ -39,10 +39,6 @@ public class JaCoCoConfiguration {
     private static final String APPEND_ASM_LIBRARY_PROPERTY = "appendAsmLibrary";
 
     private static final String APPEND_ASM_LIBRARY_DEFAULT = "true";
-    private static final String SEPARATOR = "\\s*;\\s*";
-
-    private List<String> includes;
-    private List<String> excludes;
 
     private Filter<ArchivePath> composedFilter;
 
@@ -67,14 +63,9 @@ public class JaCoCoConfiguration {
         ConfigMap c = new ConfigMap(map);
 
         String incls = c.get(INCLUDES_PROPERTY, INCLUDES_DEFAULT_VALUE);
-        ret.includes = incls == null ? Collections.<String>emptyList() : Arrays
-                .asList(incls.split(SEPARATOR));
-
         String excls = c.get(EXCLUDES_PROPERTY, EXCLUDES_DEFAULT_VALUE);
-        ret.excludes = excls == null ? Collections.<String>emptyList() : Arrays
-                .asList(excls.split(SEPARATOR));
 
-        FilterComposer composer = new FilterComposer(ret.includes, ret.excludes);
+        FilterComposer composer = FilterComposer.create(incls, excls);
         ret.composedFilter = composer.composeFilter();
 
         String appendAsmLibrary = c.get(APPEND_ASM_LIBRARY_PROPERTY, APPEND_ASM_LIBRARY_DEFAULT);

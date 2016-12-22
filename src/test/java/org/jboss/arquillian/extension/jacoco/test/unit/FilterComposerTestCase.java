@@ -70,7 +70,8 @@ public class FilterComposerTestCase
    public void should_include_asset_matching_one_of_include_patterns() throws Exception
    {
       // given
-      final Filter<ArchivePath> filter = FilterTestUtils.createComposedFilter("org.jboss.arquillian.extension.jacoco.client.*, org.jboss.arquillian.extension.integration.*", null);
+      final Filter<ArchivePath> filter = FilterTestUtils.createComposedFilter("\norg.jboss.arquillian.extension.jacoco.client.*; \n" +
+            "org.jboss.arquillian.extension.integration.* ; \t\n", null);
 
       // when
       final boolean include = filter.include(FilterTestUtils.convertFromClass(ManifestAsset.class));
