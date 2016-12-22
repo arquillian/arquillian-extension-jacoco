@@ -18,7 +18,7 @@ Set the versions to use:
 ...
 <properties>
    <version.jacoco>0.7.7.201606060606</version.jacoco>
-   <version.arquillian_jacoco>1.0.0.Alpha9</version.arquillian_jacoco>
+   <version.arquillian_jacoco>1.0.0.Alpha8</version.arquillian_jacoco>
 </properties>
 ...
 ----
