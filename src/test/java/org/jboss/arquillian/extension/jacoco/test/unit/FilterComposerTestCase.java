@@ -68,6 +68,19 @@ public class FilterComposerTestCase
    }
 
    @Test
+   public void should_include_asset_matching_one_of_include_patterns() throws Exception
+   {
+      // given
+      final Filter<ArchivePath> filter = createComposedFilter("org.arquillian.extension.jacoco.client.*, org.arquillian.extension.integration.*", null);
+
+      // when
+      final boolean include = filter.include(ArchivePaths.create("org/arquillian/extension/jacoco/client/ManifestAsset.class"));
+
+      // then
+      assertThat(include).isTrue();
+   }
+
+   @Test
    public void should_include_asset_not_matching_exclude_pattern() throws Exception
    {
       // given
@@ -120,19 +133,6 @@ public class FilterComposerTestCase
    }
 
    @Test
-   public void should_include_asset_matching_one_of_include_patterns() throws Exception
-   {
-      // given
-      final Filter<ArchivePath> filter = createComposedFilter("org.arquillian.extension.jacoco.client.*, org.arquillian.extension.integration.*", null);
-
-      // when
-      final boolean include = filter.include(ArchivePaths.create("org/arquillian/extension/jacoco/client/ManifestAsset.class"));
-
-      // then
-      assertThat(include).isTrue();
-   }
-
-   @Test
    public void should_exclude_any_asset_when_exclude_pattern_defines_global_exclusion() throws Exception
    {
       // given
@@ -174,13 +174,42 @@ public class FilterComposerTestCase
    @Test
    public void should_exclude_asset_matching_one_of_the_exclude_patterns() throws Exception {
       // given
-      final Filter<ArchivePath> filter = createComposedFilter("org.arquillian.extension.jacoco.client.*", "org.arquillian.extension.jacoco.container.*,org.arquillian.extension.jacoco.client.filter.*" );
+      final Filter<ArchivePath> filter = createComposedFilter("org.arquillian.extension.jacoco.client.*",
+              "org.arquillian.extension.jacoco.container.*,org.arquillian.extension.jacoco.client.filter.*" );
 
       // when
       final boolean include = filter.include(ArchivePaths.create("org/arquillian/extension/jacoco/container/CoverageDataCommand.class"));
 
       // then
       assertThat(include).isFalse();
+
+   }
+
+   @Test
+   public void should_exclude_asset_in_case_of_any_conflict() throws Exception {
+      // given
+      final Filter<ArchivePath> filter = createComposedFilter("org.arquillian.extension.jacoco.*, org.arquillian.extension.jacoco.client.*, org.arquillian.extension.jacoco.container.CoverageDataCommand",
+              "org.arquillian.extension.jacoco.container.*,org.arquillian.extension.jacoco.client.filter.*" );
+
+      // when
+      final boolean include = filter.include(ArchivePaths.create("org/arquillian/extension/jacoco/container/CoverageDataCommand.class"));
+
+      // then
+      assertThat(include).isFalse();
+
+   }
+
+   @Test
+   public void should_include_asset_if_no_conflict_with_the_exclude_patterns() throws Exception {
+      // given
+      final Filter<ArchivePath> filter = createComposedFilter("org.arquillian.extension.jacoco.*, org.arquillian.extension.jacoco.client.*, org.arquillian.extension.jacoco.container.CoverageDataCommand" ,
+              "org.arquillian.extension.jacoco.container.*,org.arquillian.extension.jacoco.client.filter.*" );
+
+      // when
+      final boolean include = filter.include(ArchivePaths.create("org/arquillian/extension/jacoco/client/JaCoCoArchiveAppender.class"));
+
+      // then
+      assertThat(include).isTrue();
 
    }
 
