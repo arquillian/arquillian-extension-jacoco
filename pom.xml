@@ -19,7 +19,7 @@
   <description>Jacoco integration to add code coverage to Arquillian</description>
 
   <properties>
-    <version.arquillian_core>1.1.11.Final</version.arquillian_core>
+    <version.arquillian_core>1.1.12.Final</version.arquillian_core>
     <version.jacoco>0.7.7.201606060606</version.jacoco>
 
     <version.wildfly>8.2.1.Final</version.wildfly>
