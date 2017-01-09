@@ -13,7 +13,7 @@
 
   <groupId>org.jboss.arquillian.extension</groupId>
   <artifactId>arquillian-jacoco</artifactId>
-  <version>1.0.0.Alpha9</version>
+  <version>1.0.0.Final-SNAPSHOT</version>
   <name>Arquillian Extension Jacoco</name>
   <description>Jacoco integration to add code coverage to Arquillian</description>
 
@@ -288,8 +288,4 @@
       </plugin>
     </plugins>
   </build>
-
-  <scm>
-    <tag>1.0.0.Alpha9</tag>
-  </scm>
 </project>
