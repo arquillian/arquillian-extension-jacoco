@@ -16,12 +16,6 @@
  */
 package org.jboss.arquillian.extension.jacoco.test.unit;
 
-import java.io.InputStream;
-import java.io.PrintWriter;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.jar.Manifest;
-
 import org.jacoco.core.analysis.Analyzer;
 import org.jacoco.core.analysis.CoverageBuilder;
 import org.jacoco.core.analysis.IClassCoverage;
@@ -43,11 +37,18 @@ import org.jboss.shrinkwrap.resolver.api.maven.MavenResolvedArtifact;
 import org.jboss.shrinkwrap.resolver.api.maven.PomEquippedResolveStage;
 import org.jboss.shrinkwrap.resolver.api.maven.ScopeType;
 import org.jboss.shrinkwrap.resolver.api.maven.coordinate.MavenCoordinate;
-import org.junit.Ignore;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.objectweb.asm.ClassReader;
 import org.objectweb.asm.util.TraceClassVisitor;
+
+import java.io.File;
+import java.io.InputStream;
+import java.io.PrintWriter;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.jar.Manifest;
 
 /**
  * Verify that the instrumentation works as expected.
@@ -124,34 +125,21 @@ public class InstrumentTestCase
     @Test
     public void shouldRemoveJarSignatures() throws Exception
     {
-        PomEquippedResolveStage pomResolver = Maven.configureResolver().workOffline().loadPomFromFile("pom.xml");
-        MavenResolvedArtifact jacocoArtifact = null;
-
-        for (MavenResolvedArtifact artifact : pomResolver.importDependencies(ScopeType.PROVIDED).resolve().withoutTransitivity()
-                .asResolvedArtifact()) {
-            MavenCoordinate coord = artifact.getCoordinate();
-            if (coord.getGroupId().equals("org.jacoco") && //
-                    coord.getArtifactId().equals("org.jacoco.core")) {
-                jacocoArtifact = artifact;
-                break;
-            }
-        }
-        Assert.assertNotNull("Can't find Jacoco artifact from POM", jacocoArtifact);
-        JavaArchive jacocoArchive = ShrinkWrap.createFromZipFile(JavaArchive.class, jacocoArtifact.asFile());
+        final JavaArchive signedArtifact = ShrinkWrap.createFromZipFile(JavaArchive.class, new File("src/test/resources/signed.jar"));
         SignatureRemover signatureRemover = new SignatureRemover();
 
-        Map<ArchivePath, Node> signatureFiles = signatureRemover.getSignatureFiles(jacocoArchive);
+        Map<ArchivePath, Node> signatureFiles = signatureRemover.getSignatureFiles(signedArtifact);
         Assert.assertTrue("Original Jacoco archive should be signed. Signatures found: " + signatureFiles.size(),
                 signatureFiles.size() > 0);
         Manifest mf =
-                new Manifest(signatureRemover.getManifestFiles(jacocoArchive).values().iterator().next().getAsset().openStream());
+                new Manifest(signatureRemover.getManifestFiles(signedArtifact).values().iterator().next().getAsset().openStream());
         int originalEntries = mf.getEntries().size();
 
-        signatureRemover.removeSignatures(jacocoArchive);
-        signatureFiles = signatureRemover.getSignatureFiles(jacocoArchive);
+        signatureRemover.removeSignatures(signedArtifact);
+        signatureFiles = signatureRemover.getSignatureFiles(signedArtifact);
         Assert.assertTrue("Processed Jacoco archive should not be signed. Signatures found: " + signatureFiles.size(),
                 signatureFiles.size() == 0);
-        mf = new Manifest(signatureRemover.getManifestFiles(jacocoArchive).values().iterator().next().getAsset().openStream());
+        mf = new Manifest(signatureRemover.getManifestFiles(signedArtifact).values().iterator().next().getAsset().openStream());
         int processedEntries = mf.getEntries().size();
         Assert.assertTrue("Processed Jacoco archive should not have digests in Manifest", originalEntries != processedEntries);
     }
