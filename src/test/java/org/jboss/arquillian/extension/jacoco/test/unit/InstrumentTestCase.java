@@ -129,7 +129,7 @@ public class InstrumentTestCase
         SignatureRemover signatureRemover = new SignatureRemover();
 
         Map<ArchivePath, Node> signatureFiles = signatureRemover.getSignatureFiles(signedArtifact);
-        Assert.assertTrue("Original Jacoco archive should be signed. Signatures found: " + signatureFiles.size(),
+        Assert.assertTrue("Original archive should be signed. Signatures found: " + signatureFiles.size(),
                 signatureFiles.size() > 0);
         Manifest mf =
                 new Manifest(signatureRemover.getManifestFiles(signedArtifact).values().iterator().next().getAsset().openStream());
@@ -137,11 +137,11 @@ public class InstrumentTestCase
 
         signatureRemover.removeSignatures(signedArtifact);
         signatureFiles = signatureRemover.getSignatureFiles(signedArtifact);
-        Assert.assertTrue("Processed Jacoco archive should not be signed. Signatures found: " + signatureFiles.size(),
+        Assert.assertTrue("Processed archive should not be signed. Signatures found: " + signatureFiles.size(),
                 signatureFiles.size() == 0);
         mf = new Manifest(signatureRemover.getManifestFiles(signedArtifact).values().iterator().next().getAsset().openStream());
         int processedEntries = mf.getEntries().size();
-        Assert.assertTrue("Processed Jacoco archive should not have digests in Manifest", originalEntries != processedEntries);
+        Assert.assertTrue("Processed archive should not have digests in Manifest", originalEntries != processedEntries);
     }
    
    /**
