@@ -30,7 +30,7 @@ import org.jboss.arquillian.test.spi.event.suite.AfterSuite;
 
 /**
  * StartCoverageData
- * 
+ *
  * @author <a href="mailto:aslak@redhat.com">Aslak Knutsen</a>
  * @version $Revision: $
  */
@@ -64,18 +64,15 @@ public class ShutdownCoverageData {
         }
     }
 
-    private CommandService getCommandService()
-    {
-       ServiceLoader loader = serviceLoader.get();
-       if(loader == null)
-       {
-          throw new IllegalStateException("No " + ServiceLoader.class.getName() + " found in context");
-       }
-       CommandService service = loader.onlyOne(CommandService.class);
-       if(service == null)
-       {
-          throw new IllegalStateException("No " + CommandService.class.getName() + " found in context");
-       }
-       return service;
+    private CommandService getCommandService() {
+        ServiceLoader loader = serviceLoader.get();
+        if (loader == null) {
+            throw new IllegalStateException("No " + ServiceLoader.class.getName() + " found in context");
+        }
+        CommandService service = loader.onlyOne(CommandService.class);
+        if (service == null) {
+            throw new IllegalStateException("No " + CommandService.class.getName() + " found in context");
+        }
+        return service;
     }
 }

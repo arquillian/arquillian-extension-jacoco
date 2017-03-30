@@ -26,38 +26,32 @@ import java.io.InputStream;
 
 /**
  * Instrument the underlying Class using the Jacoco Runtime.
- * 
+ * <p>
  * Since the Class is instrumented before deployment, we remove the need for a JavaAgent at runtime.
  *
  * @author <a href="mailto:aslak@redhat.com">Aslak Knutsen</a>
  * @version $Revision: $
  */
-public class InstrumentedAsset implements Asset
-{
-   private final Asset asset;
-   
-   public static final String EX_STRING = "arquillian";
+public class InstrumentedAsset implements Asset {
+    private final Asset asset;
 
-   public InstrumentedAsset(Asset asset)
-   {
-      this.asset = asset;
-   }
-   
-   /* (non-Javadoc)
-    * @see org.jboss.shrinkwrap.api.asset.Asset#openStream()
-    */
-   public InputStream openStream()
-   {
-      try
-      {
-         final IRuntime runtime = ArquillianRuntime.getInstance();
-         final Instrumenter instrumenter = new Instrumenter(runtime);
-         final byte[] instrumented = instrumenter.instrument(asset.openStream(), EX_STRING);
-         return new ByteArrayInputStream(instrumented);
-      }
-      catch (Exception e) 
-      {
-         throw new RuntimeException("Could not instrument Asset " + asset, e);
-      }
-   }
+    public static final String EX_STRING = "arquillian";
+
+    public InstrumentedAsset(Asset asset) {
+        this.asset = asset;
+    }
+
+    /* (non-Javadoc)
+     * @see org.jboss.shrinkwrap.api.asset.Asset#openStream()
+     */
+    public InputStream openStream() {
+        try {
+            final IRuntime runtime = ArquillianRuntime.getInstance();
+            final Instrumenter instrumenter = new Instrumenter(runtime);
+            final byte[] instrumented = instrumenter.instrument(asset.openStream(), EX_STRING);
+            return new ByteArrayInputStream(instrumented);
+        } catch (Exception e) {
+            throw new RuntimeException("Could not instrument Asset " + asset, e);
+        }
+    }
 }

@@ -16,11 +16,9 @@
  */
 package org.jboss.arquillian.extension.jacoco.test.included;
 
-public class ImportedSubArchive
-{
+public class ImportedSubArchive {
 
-   public String getName()
-   {
-      return "A";
-   }
+    public String getName() {
+        return "A";
+    }
 }

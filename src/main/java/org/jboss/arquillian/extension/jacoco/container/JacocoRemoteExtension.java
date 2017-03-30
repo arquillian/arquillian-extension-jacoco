@@ -19,17 +19,13 @@ package org.jboss.arquillian.extension.jacoco.container;
 import org.jboss.arquillian.container.test.spi.RemoteLoadableExtension;
 
 /**
- * 
- *
  * @author <a href="mailto:aslak@redhat.com">Aslak Knutsen</a>
  * @version $Revision: $
  */
-public class JacocoRemoteExtension implements RemoteLoadableExtension
-{
-   @Override
-   public void register(ExtensionBuilder builder)
-   {
-      builder.observer(StartCoverageData.class)
-             .observer(ShutdownCoverageData.class);
-   }
+public class JacocoRemoteExtension implements RemoteLoadableExtension {
+    @Override
+    public void register(ExtensionBuilder builder) {
+        builder.observer(StartCoverageData.class)
+            .observer(ShutdownCoverageData.class);
+    }
 }

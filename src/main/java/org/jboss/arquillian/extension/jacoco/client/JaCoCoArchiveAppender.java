@@ -34,34 +34,32 @@ import org.jboss.shrinkwrap.api.spec.JavaArchive;
  * @author <a href="mailto:aslak@redhat.com">Aslak Knutsen</a>
  * @version $Revision: $
  */
-public class JaCoCoArchiveAppender implements AuxiliaryArchiveAppender
-{
+public class JaCoCoArchiveAppender implements AuxiliaryArchiveAppender {
 
-   @Inject
-   private Instance<JaCoCoConfiguration> config;
+    @Inject
+    private Instance<JaCoCoConfiguration> config;
 
-   // Test only...
-   public void setConfig(Instance<JaCoCoConfiguration> config) {
-      this.config = config;
-   }
+    // Test only...
+    public void setConfig(Instance<JaCoCoConfiguration> config) {
+        this.config = config;
+    }
 
-   @Override
-   public Archive<?> createAuxiliaryArchive()
-   {
-      final JavaArchive ret = ShrinkWrap.create(JavaArchive.class, "arquillian-jacoco.jar")
-                  .addPackages(
-                        true, 
-                        org.jacoco.core.JaCoCo.class.getPackage(),
-                        StartCoverageData.class.getPackage())
-                  .addPackage(CoverageDataCommand.class.getPackage())
-                  .addAsServiceProvider(
-                        RemoteLoadableExtension.class, 
-                        JacocoRemoteExtension.class);
+    @Override
+    public Archive<?> createAuxiliaryArchive() {
+        final JavaArchive ret = ShrinkWrap.create(JavaArchive.class, "arquillian-jacoco.jar")
+            .addPackages(
+                true,
+                org.jacoco.core.JaCoCo.class.getPackage(),
+                StartCoverageData.class.getPackage())
+            .addPackage(CoverageDataCommand.class.getPackage())
+            .addAsServiceProvider(
+                RemoteLoadableExtension.class,
+                JacocoRemoteExtension.class);
 
-      if (config.get().isAppendAsmLibrary()) {
-          ret.addPackages(true, org.objectweb.asm.ClassReader.class.getPackage());
-      }
+        if (config.get().isAppendAsmLibrary()) {
+            ret.addPackages(true, org.objectweb.asm.ClassReader.class.getPackage());
+        }
 
-      return ret;
-   }
+        return ret;
+    }
 }

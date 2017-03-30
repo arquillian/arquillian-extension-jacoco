@@ -13,7 +13,7 @@ public class OrFilter<T> implements Filter<T> {
         this.filters = filters;
     }
 
-    public static <F> Filter<F> or(Filter<F> ... filters) {
+    public static <F> Filter<F> or(Filter<F>... filters) {
         return new OrFilter<F>(Arrays.asList(filters));
     }
 

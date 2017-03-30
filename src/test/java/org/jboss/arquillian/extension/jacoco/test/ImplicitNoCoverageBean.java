@@ -23,26 +23,21 @@ import javax.ejb.Stateless;
  * This bean is not mentioned in the "includes" section of the jacoco
  * configuration in arquillian.xml and is therefore not considered for code
  * coverage instrumentation.
- * 
+ *
  * @author Lukas Krejci
  */
 @Stateless
-public class ImplicitNoCoverageBean
-{
-   public void test(Boolean value)
-   {
-      String test = "test";
-      if (value)
-      {
-         if (test.length() == 4)
-         {
+public class ImplicitNoCoverageBean {
+    public void test(Boolean value) {
+        String test = "test";
+        if (value) {
+            if (test.length() == 4) {
+                long start = System.currentTimeMillis();
+                test = String.valueOf(start);
+            }
+        } else {
             long start = System.currentTimeMillis();
             test = String.valueOf(start);
-         }
-      } else
-      {
-         long start = System.currentTimeMillis();
-         test = String.valueOf(start);
-      }
-   }
+        }
+    }
 }

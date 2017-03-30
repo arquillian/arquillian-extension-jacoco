@@ -16,7 +16,6 @@
  */
 package org.jboss.arquillian.extension.jacoco.container;
 
-
 import org.jacoco.core.runtime.IRuntime;
 import org.jboss.arquillian.core.api.InstanceProducer;
 import org.jboss.arquillian.core.api.annotation.Inject;
@@ -30,14 +29,12 @@ import org.jboss.arquillian.test.spi.event.suite.BeforeSuite;
  * @author <a href="mailto:aslak@redhat.com">Aslak Knutsen</a>
  * @version $Revision: $
  */
-public class StartCoverageData 
-{
+public class StartCoverageData {
     @Inject
     @SuiteScoped
     private InstanceProducer<IRuntime> runtimeInst;
 
-    public void createRuntime(@Observes BeforeSuite event)
-    {
+    public void createRuntime(@Observes BeforeSuite event) {
         IRuntime runtime = ArquillianRuntime.getInstance();
         runtimeInst.set(runtime);
     }

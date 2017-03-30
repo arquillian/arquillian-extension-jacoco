@@ -13,7 +13,7 @@ public class AndFilter<T> implements Filter<T> {
         this.filters = filters;
     }
 
-    public static <F> Filter<F> and(Filter<F> ... filters) {
+    public static <F> Filter<F> and(Filter<F>... filters) {
         return new AndFilter<F>(Arrays.asList(filters));
     }
 

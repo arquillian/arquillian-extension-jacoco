@@ -34,29 +34,27 @@ import org.junit.Test;
  * @author <a href="mailto:aslak@redhat.com">Aslak Knutsen</a>
  * @version $Revision: $
  */
-public class CoverageDataTestCase
-{
+public class CoverageDataTestCase {
 
-   @Test
-   @Ignore // not a test case, example usage
-   public void generateReport() throws Exception
-   {
-      ExecutionDataReader reader = new ExecutionDataReader(new FileInputStream(new File("target/coverage.data")));
-      ExecutionDataStore store = new ExecutionDataStore();
-      SessionInfoStore sessionStore = new SessionInfoStore();
+    @Test
+    @Ignore // not a test case, example usage
+    public void generateReport() throws Exception {
+        ExecutionDataReader reader = new ExecutionDataReader(new FileInputStream(new File("target/coverage.data")));
+        ExecutionDataStore store = new ExecutionDataStore();
+        SessionInfoStore sessionStore = new SessionInfoStore();
 
-      reader.setExecutionDataVisitor(store);
-      reader.setSessionInfoVisitor(sessionStore);
-      reader.read();
+        reader.setExecutionDataVisitor(store);
+        reader.setSessionInfoVisitor(sessionStore);
+        reader.read();
 
-      CoverageBuilder builder = new CoverageBuilder();
-      Analyzer analyzer = new Analyzer(store, builder);
-      
-      for(ExecutionData testData : store.getContents())
-      {
-         System.out.println("analyzingClasses " + analyzer.analyzeAll(new File("target/test-classes/" + testData.getName() + ".class")));         
-      }
-      System.out.println("analyzingClasses " + analyzer.analyzeAll(new File("target/classes")));
+        CoverageBuilder builder = new CoverageBuilder();
+        Analyzer analyzer = new Analyzer(store, builder);
+
+        for (ExecutionData testData : store.getContents()) {
+            System.out.println("analyzingClasses " + analyzer.analyzeAll(
+                new File("target/test-classes/" + testData.getName() + ".class")));
+        }
+        System.out.println("analyzingClasses " + analyzer.analyzeAll(new File("target/classes")));
 
       /* jacoco-report not found in repo
       
@@ -77,92 +75,92 @@ public class CoverageDataTestCase
       visitor.visitEnd(sourceFileLocator);
       
       */
-   }
-//   
-//   private class MultipleSourceFileLocator implements ISourceFileLocator 
-//   {
-//      private ISourceFileLocator[] sourceFileLocators;
-//      
-//      public MultipleSourceFileLocator(ISourceFileLocator... fileLocators)
-//      {
-//         this.sourceFileLocators = fileLocators;
-//      }
-//      
-//      /* (non-Javadoc)
-//       * @see org.jacoco.report.ISourceFileLocator#getSourceFile(java.lang.String, java.lang.String)
-//       */
-//      public Reader getSourceFile(String packageName, String fileName) throws IOException
-//      {
-//         for(ISourceFileLocator locator : sourceFileLocators)
-//         {
-//            Reader reader = locator.getSourceFile(packageName, fileName);
-//            if(reader != null)
-//            {
-//               return reader;
-//            }
-//         }
-//         return null;
-//      }
-//   }
-//
-//   private static void visitBundle(final IReportVisitor visitor, final BundleCoverage bundledata,
-//         final ISourceFileLocator sourceFileLocator) throws IOException
-//   {
-//      for (final PackageCoverage p : bundledata.getPackages())
-//      {
-//         visitPackage(visitor.visitChild(p), p, sourceFileLocator);
-//      }
-//   }
-//
-//   private static void visitPackage(final IReportVisitor visitor, final PackageCoverage packagedata,
-//         final ISourceFileLocator sourceFileLocator) throws IOException
-//   {
-//      visitLeafs(visitor, packagedata.getSourceFiles(), sourceFileLocator);
-//      for (final ClassCoverage c : packagedata.getClasses())
-//      {
-//         visitClass(visitor.visitChild(c), c, sourceFileLocator);
-//      }
-//      visitor.visitEnd(sourceFileLocator);
-//   }
-//
-//   private static void visitClass(final IReportVisitor visitor, final ClassCoverage classdata,
-//         final ISourceFileLocator sourceFileLocator) throws IOException
-//   {
-//      visitLeafs(visitor, classdata.getMethods(), sourceFileLocator);
-//      visitor.visitEnd(sourceFileLocator);
-//   }
-//
-//   private static void visitLeafs(final IReportVisitor visitor, final Collection<? extends ICoverageNode> leafs,
-//         final ISourceFileLocator sourceFileLocator) throws IOException
-//   {c
-//      for (final ICoverageNode l : leafs)
-//      {
-//         // Ignore Arquillian Client side methods
-//         if("createDeployment".equals(l.getName()))
-//         {
-//            continue;
-//         }
-//// Attempt to auto set line coverage for Arquillian Client side Methods         
-////         if (l instanceof MethodCoverage)
-////         {
-////            MethodCoverage methodCoverage = (MethodCoverage) l;
-////            if("createDeployment".equals(l.getName())) 
-////            {
-////               LinesImpl lineCoverage = (LinesImpl)methodCoverage.getLineCounter();
-////               ILines lines = methodCoverage.getLines();
-////               int[] autoCoveredLines = new int[(lines.getLastLine() - lines.getFirstLine()) + 1];
-////               int count = 0;
-////               for(int i = lines.getFirstLine(); i <= lines.getLastLine(); i++)
-////               {
-////                  autoCoveredLines[count++] = i;
-////               }
-////               
-////               lineCoverage.increment(autoCoveredLines, true);
-////            }
-////         }
-//         final IReportVisitor child = visitor.visitChild(l);
-//         child.visitEnd(sourceFileLocator);
-//      }
-//   }
-//  
+    }
+    //
+    //   private class MultipleSourceFileLocator implements ISourceFileLocator
+    //   {
+    //      private ISourceFileLocator[] sourceFileLocators;
+    //
+    //      public MultipleSourceFileLocator(ISourceFileLocator... fileLocators)
+    //      {
+    //         this.sourceFileLocators = fileLocators;
+    //      }
+    //
+    //      /* (non-Javadoc)
+    //       * @see org.jacoco.report.ISourceFileLocator#getSourceFile(java.lang.String, java.lang.String)
+    //       */
+    //      public Reader getSourceFile(String packageName, String fileName) throws IOException
+    //      {
+    //         for(ISourceFileLocator locator : sourceFileLocators)
+    //         {
+    //            Reader reader = locator.getSourceFile(packageName, fileName);
+    //            if(reader != null)
+    //            {
+    //               return reader;
+    //            }
+    //         }
+    //         return null;
+    //      }
+    //   }
+    //
+    //   private static void visitBundle(final IReportVisitor visitor, final BundleCoverage bundledata,
+    //         final ISourceFileLocator sourceFileLocator) throws IOException
+    //   {
+    //      for (final PackageCoverage p : bundledata.getPackages())
+    //      {
+    //         visitPackage(visitor.visitChild(p), p, sourceFileLocator);
+    //      }
+    //   }
+    //
+    //   private static void visitPackage(final IReportVisitor visitor, final PackageCoverage packagedata,
+    //         final ISourceFileLocator sourceFileLocator) throws IOException
+    //   {
+    //      visitLeafs(visitor, packagedata.getSourceFiles(), sourceFileLocator);
+    //      for (final ClassCoverage c : packagedata.getClasses())
+    //      {
+    //         visitClass(visitor.visitChild(c), c, sourceFileLocator);
+    //      }
+    //      visitor.visitEnd(sourceFileLocator);
+    //   }
+    //
+    //   private static void visitClass(final IReportVisitor visitor, final ClassCoverage classdata,
+    //         final ISourceFileLocator sourceFileLocator) throws IOException
+    //   {
+    //      visitLeafs(visitor, classdata.getMethods(), sourceFileLocator);
+    //      visitor.visitEnd(sourceFileLocator);
+    //   }
+    //
+    //   private static void visitLeafs(final IReportVisitor visitor, final Collection<? extends ICoverageNode> leafs,
+    //         final ISourceFileLocator sourceFileLocator) throws IOException
+    //   {c
+    //      for (final ICoverageNode l : leafs)
+    //      {
+    //         // Ignore Arquillian Client side methods
+    //         if("createDeployment".equals(l.getName()))
+    //         {
+    //            continue;
+    //         }
+    //// Attempt to auto set line coverage for Arquillian Client side Methods
+    ////         if (l instanceof MethodCoverage)
+    ////         {
+    ////            MethodCoverage methodCoverage = (MethodCoverage) l;
+    ////            if("createDeployment".equals(l.getName()))
+    ////            {
+    ////               LinesImpl lineCoverage = (LinesImpl)methodCoverage.getLineCounter();
+    ////               ILines lines = methodCoverage.getLines();
+    ////               int[] autoCoveredLines = new int[(lines.getLastLine() - lines.getFirstLine()) + 1];
+    ////               int count = 0;
+    ////               for(int i = lines.getFirstLine(); i <= lines.getLastLine(); i++)
+    ////               {
+    ////                  autoCoveredLines[count++] = i;
+    ////               }
+    ////
+    ////               lineCoverage.increment(autoCoveredLines, true);
+    ////            }
+    ////         }
+    //         final IReportVisitor child = visitor.visitChild(l);
+    //         child.visitEnd(sourceFileLocator);
+    //      }
+    //   }
+    //
 }

@@ -32,23 +32,20 @@ import javax.ejb.EJB;
  * @version $Revision: $
  */
 @RunWith(Arquillian.class)
-public class JaCoCoIntegrationTestCase
-{
-   @Deployment
-   public static JavaArchive createDeployment() throws Exception
-   {
-	   return ShrinkWrap.create(JavaArchive.class, "test.jar")
-                     .addClasses(CoverageBean.class, JaCoCoIntegrationTestCase.class);
-   }
-   
-   @EJB
-   private CoverageBean bean;
-   
-   @Test
-   public void shouldBeAbleToGenerateSomeTestCoverage() throws Exception
-   {
-      Assert.assertNotNull(bean);
-      
-      bean.test(true);
-   }
+public class JaCoCoIntegrationTestCase {
+    @Deployment
+    public static JavaArchive createDeployment() throws Exception {
+        return ShrinkWrap.create(JavaArchive.class, "test.jar")
+            .addClasses(CoverageBean.class, JaCoCoIntegrationTestCase.class);
+    }
+
+    @EJB
+    private CoverageBean bean;
+
+    @Test
+    public void shouldBeAbleToGenerateSomeTestCoverage() throws Exception {
+        Assert.assertNotNull(bean);
+
+        bean.test(true);
+    }
 }

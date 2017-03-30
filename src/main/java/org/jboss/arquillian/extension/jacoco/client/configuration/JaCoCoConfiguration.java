@@ -82,7 +82,6 @@ public class JaCoCoConfiguration {
         return appendAsmLibrary;
     }
 
-
     public static boolean isJacocoAgentActive() {
         try {
             UUID.class.getDeclaredField("$jacocoAccess");

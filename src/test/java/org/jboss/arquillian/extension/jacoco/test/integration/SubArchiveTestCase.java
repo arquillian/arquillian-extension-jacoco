@@ -34,25 +34,22 @@ import org.junit.runner.RunWith;
  * @author <a href="mailto:maschmid@redhat.com">Marek Schmidt</a>
  */
 @RunWith(Arquillian.class)
-public class SubArchiveTestCase
-{
-   @Deployment
-   public static WebArchive createDeployment()
-   {
-      return ShrinkWrap.create(WebArchive.class, "test.war")
-                  .addClass(SubArchiveTestCase.class)
-                  .addAsLibrary(
-                          ShrinkWrap.create(JavaArchive.class, "test.jar")
-                              .addClasses(SubCoverageBean.class));
-   }
+public class SubArchiveTestCase {
+    @Deployment
+    public static WebArchive createDeployment() {
+        return ShrinkWrap.create(WebArchive.class, "test.war")
+            .addClass(SubArchiveTestCase.class)
+            .addAsLibrary(
+                ShrinkWrap.create(JavaArchive.class, "test.jar")
+                    .addClasses(SubCoverageBean.class));
+    }
 
-   @EJB
-   private SubCoverageBean bean;
+    @EJB
+    private SubCoverageBean bean;
 
-   @Test
-   public void shouldBeAbleToGenerateSomeTestCoverage() throws Exception
-   {
-      Assert.assertNotNull(bean);
-      bean.test(false);
-   }
+    @Test
+    public void shouldBeAbleToGenerateSomeTestCoverage() throws Exception {
+        Assert.assertNotNull(bean);
+        bean.test(false);
+    }
 }

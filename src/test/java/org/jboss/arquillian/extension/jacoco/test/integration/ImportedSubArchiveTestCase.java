@@ -38,35 +38,32 @@ import java.io.ByteArrayOutputStream;
  * from a Zip file. Covergae verification is done in VerifyIntegrationCoverageTestCase
  */
 @RunWith(Arquillian.class)
-public class ImportedSubArchiveTestCase
-{
+public class ImportedSubArchiveTestCase {
 
-   @Deployment
-   public static WebArchive createImportedArchive() throws Exception
-   {
-      WebArchive war = ShrinkWrap.create(WebArchive.class)
+    @Deployment
+    public static WebArchive createImportedArchive() throws Exception {
+        WebArchive war = ShrinkWrap.create(WebArchive.class)
             .addAsWebInfResource(EmptyAsset.INSTANCE, "beans.xml")
             .addClasses(ImportedSubArchiveTestCase.class)
             .addAsLibraries(
-                  ShrinkWrap.create(JavaArchive.class)
-                        .addClass(ImportedSubArchive.class)
-                        .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml")
+                ShrinkWrap.create(JavaArchive.class)
+                    .addClass(ImportedSubArchive.class)
+                    .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml")
             );
 
-      ByteArrayOutputStream target = new ByteArrayOutputStream();
-      war.as(ZipExporter.class).exportTo(target);
-      target.flush();
+        ByteArrayOutputStream target = new ByteArrayOutputStream();
+        war.as(ZipExporter.class).exportTo(target);
+        target.flush();
 
-      ByteArrayInputStream source = new ByteArrayInputStream(target.toByteArray());
-      return ShrinkWrap.create(ZipImporter.class, war.getName()).importFrom(source).as(WebArchive.class);
-   }
+        ByteArrayInputStream source = new ByteArrayInputStream(target.toByteArray());
+        return ShrinkWrap.create(ZipImporter.class, war.getName()).importFrom(source).as(WebArchive.class);
+    }
 
-   @Inject
-   private ImportedSubArchive bean;
+    @Inject
+    private ImportedSubArchive bean;
 
-   @Test
-   public void shouldBeInvoked()
-   {
-      Assert.assertEquals("A", bean.getName());
-   }
+    @Test
+    public void shouldBeInvoked() {
+        Assert.assertEquals("A", bean.getName());
+    }
 }

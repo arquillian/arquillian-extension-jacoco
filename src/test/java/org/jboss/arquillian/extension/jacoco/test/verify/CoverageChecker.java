@@ -32,77 +32,64 @@ import org.jacoco.core.data.SessionInfo;
 /**
  * @author Lukas Krejci
  */
-public final class CoverageChecker
-{
-   private static final File DEFAULT_OUTPUT_FILE = new File("target" + File.separator + "jacoco.exec");
+public final class CoverageChecker {
+    private static final File DEFAULT_OUTPUT_FILE = new File("target" + File.separator + "jacoco.exec");
 
-   private CoverageChecker() { }
+    private CoverageChecker() {
+    }
 
-   public static boolean hasCoverageData(Class<?>... classes) throws IOException
-   {
-      return hasCoverageData(DEFAULT_OUTPUT_FILE, Arrays.asList(classes));
-   }
+    public static boolean hasCoverageData(Class<?>... classes) throws IOException {
+        return hasCoverageData(DEFAULT_OUTPUT_FILE, Arrays.asList(classes));
+    }
 
-   public static boolean hasCoverageData(File jacocoDataFile, Class<?>... classes) throws IOException
-   {
-      return hasCoverageData(jacocoDataFile, Arrays.asList(classes));
-   }
+    public static boolean hasCoverageData(File jacocoDataFile, Class<?>... classes) throws IOException {
+        return hasCoverageData(jacocoDataFile, Arrays.asList(classes));
+    }
 
-   private static boolean hasCoverageData(File jacocoDataFile, List<Class<?>> classes) throws IOException
-   {
-      FileInputStream fin = new FileInputStream(jacocoDataFile);
+    private static boolean hasCoverageData(File jacocoDataFile, List<Class<?>> classes) throws IOException {
+        FileInputStream fin = new FileInputStream(jacocoDataFile);
 
-      final List<String> visitedClasses = new ArrayList<String>();
+        final List<String> visitedClasses = new ArrayList<String>();
 
-      try
-      {
-         ExecutionDataReader reader = new ExecutionDataReader(fin);
+        try {
+            ExecutionDataReader reader = new ExecutionDataReader(fin);
 
-         reader.setExecutionDataVisitor(new IExecutionDataVisitor()
-         {
+            reader.setExecutionDataVisitor(new IExecutionDataVisitor() {
 
-            @Override
-            public void visitClassExecution(ExecutionData data)
-            {
-               String binaryName = convertToBinaryName(data.getName());
-               for(boolean hit : data.getProbes())
-               {
-                  if(hit) // make sure the Bean has recorded a hit
-                  {
-                     visitedClasses.add(binaryName);
-                     break;
-                  }
-               }
+                @Override
+                public void visitClassExecution(ExecutionData data) {
+                    String binaryName = convertToBinaryName(data.getName());
+                    for (boolean hit : data.getProbes()) {
+                        if (hit) // make sure the Bean has recorded a hit
+                        {
+                            visitedClasses.add(binaryName);
+                            break;
+                        }
+                    }
+                }
+            });
+
+            reader.setSessionInfoVisitor(new ISessionInfoVisitor() {
+                @Override
+                public void visitSessionInfo(SessionInfo info) {
+                }
+            });
+
+            reader.read();
+
+            for (Class<?> cls : classes) {
+                if (!visitedClasses.contains(cls.getName())) {
+                    return false;
+                }
             }
-         });
 
-         reader.setSessionInfoVisitor(new ISessionInfoVisitor()
-         {
-            @Override
-            public void visitSessionInfo(SessionInfo info)
-            {
-            }
-         });
+            return true;
+        } finally {
+            fin.close();
+        }
+    }
 
-         reader.read();
-
-         for (Class<?> cls : classes)
-         {
-            if (!visitedClasses.contains(cls.getName()))
-            {
-               return false;
-            }
-         }
-
-         return true;
-      } finally
-      {
-         fin.close();
-      }
-   }
-
-   private static String convertToBinaryName(String vmName)
-   {
-      return vmName.replace('/', '.');
-   }
+    private static String convertToBinaryName(String vmName) {
+        return vmName.replace('/', '.');
+    }
 }

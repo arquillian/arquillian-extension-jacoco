@@ -29,20 +29,18 @@ import java.util.Map;
 /**
  * @author Lukas Krejci
  */
-public class JaCoCoConfigurator
-{
+public class JaCoCoConfigurator {
 
-   private static final String EXTENSION_NAME = "jacoco";
+    private static final String EXTENSION_NAME = "jacoco";
 
-   @Inject
-   @ApplicationScoped
-   private InstanceProducer<JaCoCoConfiguration> configurationProvider;
+    @Inject
+    @ApplicationScoped
+    private InstanceProducer<JaCoCoConfiguration> configurationProvider;
 
-   public void configure(@Observes ArquillianDescriptor desc)
-   {
-      Map<String, String> config = desc.extension(EXTENSION_NAME)
+    public void configure(@Observes ArquillianDescriptor desc) {
+        Map<String, String> config = desc.extension(EXTENSION_NAME)
             .getExtensionProperties();
 
-      configurationProvider.set(JaCoCoConfiguration.fromMap(config));
-   }
+        configurationProvider.set(JaCoCoConfiguration.fromMap(config));
+    }
 }

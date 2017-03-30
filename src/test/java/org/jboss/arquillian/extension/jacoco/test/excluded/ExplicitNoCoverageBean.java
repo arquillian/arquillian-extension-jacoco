@@ -22,27 +22,21 @@ import javax.ejb.Stateless;
  * This bean is mentioned in the "excludes" of the jacoco configuration in
  * arquillian.xml and therefore is explicitly not included in the code coverage
  * instrumentation.
- * 
+ *
  * @author Lukas Krejci
  */
 @Stateless
-public class ExplicitNoCoverageBean
-{
-   public void test(Boolean value)
-   {
-      String test = "test";
-      if (value)
-      {
-         if (test.length() == 4)
-         {
+public class ExplicitNoCoverageBean {
+    public void test(Boolean value) {
+        String test = "test";
+        if (value) {
+            if (test.length() == 4) {
+                long start = System.currentTimeMillis();
+                test = String.valueOf(start);
+            }
+        } else {
             long start = System.currentTimeMillis();
             test = String.valueOf(start);
-         }
-      } else
-      {
-         long start = System.currentTimeMillis();
-         test = String.valueOf(start);
-      }
-   }
-
+        }
+    }
 }

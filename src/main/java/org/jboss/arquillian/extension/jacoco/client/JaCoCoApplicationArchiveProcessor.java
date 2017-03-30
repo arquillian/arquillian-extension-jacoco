@@ -33,15 +33,12 @@ import org.jboss.shrinkwrap.api.Archive;
  * @version $Revision: $
  * @Deployment.
  */
-public class JaCoCoApplicationArchiveProcessor implements ApplicationArchiveProcessor
-{
+public class JaCoCoApplicationArchiveProcessor implements ApplicationArchiveProcessor {
 
-   @Inject
-   private Instance<JaCoCoConfiguration> config;
+    @Inject
+    private Instance<JaCoCoConfiguration> config;
 
-   public void process(Archive<?> applicationArchive, TestClass testClass)
-   {
-      new ArchiveInstrumenter(new SignatureRemover()).processArchive(applicationArchive, config.get().getClassFilter());
-   }
-
+    public void process(Archive<?> applicationArchive, TestClass testClass) {
+        new ArchiveInstrumenter(new SignatureRemover()).processArchive(applicationArchive, config.get().getClassFilter());
+    }
 }

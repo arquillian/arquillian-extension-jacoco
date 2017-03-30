@@ -33,29 +33,26 @@ import org.junit.runner.RunWith;
  * @author Lukas Krejci
  */
 @RunWith(Arquillian.class)
-public class IncludeExcludeTestCase
-{
-   @Deployment
-   public static JavaArchive createDeployment()
-   {
-      return ShrinkWrap.create(JavaArchive.class, "test.jar").addClasses(
+public class IncludeExcludeTestCase {
+    @Deployment
+    public static JavaArchive createDeployment() {
+        return ShrinkWrap.create(JavaArchive.class, "test.jar").addClasses(
             CoverageBean.class, ExplicitNoCoverageBean.class,
             ImplicitNoCoverageBean.class, IncludeExcludeTestCase.class);
-   }
+    }
 
-   @EJB
-   private ExplicitNoCoverageBean noCoverageBean1;
+    @EJB
+    private ExplicitNoCoverageBean noCoverageBean1;
 
-   @EJB
-   private ImplicitNoCoverageBean noCoverageBean2;
+    @EJB
+    private ImplicitNoCoverageBean noCoverageBean2;
 
-   @Test
-   public void shouldBeAbleToGenerateSomeTestCoverage() throws Exception
-   {
-      Assert.assertNotNull(noCoverageBean1);
-      Assert.assertNotNull(noCoverageBean2);
+    @Test
+    public void shouldBeAbleToGenerateSomeTestCoverage() throws Exception {
+        Assert.assertNotNull(noCoverageBean1);
+        Assert.assertNotNull(noCoverageBean2);
 
-      noCoverageBean1.test(true);
-      noCoverageBean2.test(true);
-   }
+        noCoverageBean1.test(true);
+        noCoverageBean2.test(true);
+    }
 }

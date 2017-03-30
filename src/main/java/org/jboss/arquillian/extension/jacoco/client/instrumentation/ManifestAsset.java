@@ -14,30 +14,26 @@ import org.jboss.shrinkwrap.api.asset.Asset;
 /**
  * @author arcivanov
  */
-public class ManifestAsset implements Asset
-{
+public class ManifestAsset implements Asset {
     private static final org.jacoco.core.internal.instr.SignatureRemover JACOCO_SIG_REMOVER =
-            new org.jacoco.core.internal.instr.SignatureRemover();
+        new org.jacoco.core.internal.instr.SignatureRemover();
 
     private Asset asset;
 
-    public ManifestAsset(Asset asset)
-    {
+    public ManifestAsset(Asset asset) {
         this.asset = asset;
     }
 
     /* (non-Javadoc)
      * @see org.jboss.shrinkwrap.api.asset.Asset#openStream()
      */
-    public InputStream openStream()
-    {
+    public InputStream openStream() {
         try {
             ByteArrayOutputStream out = new ByteArrayOutputStream(1024);
             JACOCO_SIG_REMOVER.filterEntry("META-INF/MANIFEST.MF", asset.openStream(), out);
 
             return new ByteArrayInputStream(out.toByteArray());
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             throw new RuntimeException("Could not instrument MANIFEST.MF Asset " + asset, e);
         }
     }
