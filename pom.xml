@@ -38,6 +38,20 @@
     <wildfly_home>${project.build.directory}/wildfly-${version.wildfly}</wildfly_home>
   </properties>
 
+  <licenses>
+    <license>
+      <name>Apache License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+    </license>
+  </licenses>
+
+  <scm>
+    <connection>scm:git:git://git@github.com:arquillian/arquillian-extension-jacoco.git</connection>
+    <developerConnection>scm:git:ssh://github.com/arquillian/arquillian-extension-jacoco.git</developerConnection>
+    <url>git://github.com/arquillian/arquillian-extension-jacoco.git</url>
+    <tag>HEAD</tag>
+  </scm>
+
   <dependencyManagement>
     <dependencies>
       <dependency>
