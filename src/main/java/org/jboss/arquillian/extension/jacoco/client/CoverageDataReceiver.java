@@ -34,7 +34,13 @@ public class CoverageDataReceiver {
     }
 
     private void copyToAgentExecutionStore(ExecutionDataStore dataStore) throws Exception {
-        Field f = UUID.class.getDeclaredField("$jacocoAccess");
+        Field f = null;
+        try {
+            f = UUID.class.getDeclaredField("$jacocoAccess");
+        } catch(Exception e) {
+            f = UnknownError.class.getDeclaredField("$jacocoAccess");
+        }
+
         Object executor = f.get(null);
 
         Method m = executor.getClass().getDeclaredMethod("getProbes", Object[].class);

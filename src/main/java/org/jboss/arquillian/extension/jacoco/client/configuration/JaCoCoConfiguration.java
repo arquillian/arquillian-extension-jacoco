@@ -83,8 +83,12 @@ public class JaCoCoConfiguration {
     }
 
     public static boolean isJacocoAgentActive() {
+        return hasClassJacocoAccessField(UUID.class) || hasClassJacocoAccessField(UnknownError.class);
+    }
+
+    private static boolean hasClassJacocoAccessField(Class<?> clazz) {
         try {
-            UUID.class.getDeclaredField("$jacocoAccess");
+            clazz.getDeclaredField("$jacocoAccess");
         } catch (Exception e) {
             return false;
         }
