@@ -8,8 +8,8 @@
 
   <container qualifier="wildfy" default="true">
     <configuration>
-      <property name="jbossHome">${env.test_container:target/wildfly-8.2.0.Final}</property>
-      <property name="javaVmArguments">-Xmx1024m -XX:PermSize=256m -XX:MaxPermSize=256m</property>
+      <property name="jbossHome">${env.test_container:target/wildfly-14.0.0.Final}</property>
+      <property name="javaVmArguments">-server -Xmx512m</property>
     </configuration>
   </container>
 
