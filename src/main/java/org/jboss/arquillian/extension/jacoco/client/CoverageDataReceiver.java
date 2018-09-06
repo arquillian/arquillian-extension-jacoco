@@ -37,7 +37,7 @@ public class CoverageDataReceiver {
         Field f = null;
         try {
             f = UUID.class.getDeclaredField("$jacocoAccess");
-        } catch(Exception e) {
+        } catch (Exception e) {
             f = UnknownError.class.getDeclaredField("$jacocoAccess");
         }
 
