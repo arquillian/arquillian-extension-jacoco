@@ -20,7 +20,7 @@
 
   <properties>
     <version.arquillian_core>1.1.13.Final</version.arquillian_core>
-    <version.jacoco>0.7.9</version.jacoco>
+    <version.jacoco>0.8.2</version.jacoco>
 
     <version.wildfly>8.2.1.Final</version.wildfly>
     <version.cdi-api>1.2</version.cdi-api>
