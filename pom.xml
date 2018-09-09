@@ -13,7 +13,7 @@
 
   <groupId>org.jboss.arquillian.extension</groupId>
   <artifactId>arquillian-jacoco</artifactId>
-  <version>1.0.0-kifj-1</version>
+  <version>1.0.0.Final-SNAPSHOT</version>
   <name>Arquillian Extension Jacoco</name>
   <description>Jacoco integration to add code coverage to Arquillian</description>
 
@@ -47,7 +47,7 @@
     <connection>scm:git:git://git@github.com:arquillian/arquillian-extension-jacoco.git</connection>
     <developerConnection>scm:git:ssh://github.com/arquillian/arquillian-extension-jacoco.git</developerConnection>
     <url>git://github.com/arquillian/arquillian-extension-jacoco.git</url>
-    <tag>arquillian-jacoco-1.0.0-kifj-1</tag>
+    <tag>HEAD</tag>
   </scm>
 
   <dependencyManagement>
