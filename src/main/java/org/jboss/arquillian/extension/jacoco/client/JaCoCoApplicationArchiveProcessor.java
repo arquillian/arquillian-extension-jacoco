@@ -31,7 +31,6 @@ import org.jboss.shrinkwrap.api.Archive;
  * @author <a href="mailto:aslak@redhat.com">Aslak Knutsen</a>
  * @author <a href="mailto:lkrejci@redhat.com">Lukas Krejci</a>
  * @version $Revision: $
- * @Deployment.
  */
 public class JaCoCoApplicationArchiveProcessor implements ApplicationArchiveProcessor {
 
