@@ -297,6 +297,7 @@
   </profiles>
 
   <build>
+    <defaultGoal>clean verify</defaultGoal>
     <plugins>
       <plugin>
         <artifactId>maven-release-plugin</artifactId>
