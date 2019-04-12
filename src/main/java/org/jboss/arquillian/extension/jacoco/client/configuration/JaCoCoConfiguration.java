@@ -98,7 +98,7 @@ public class JaCoCoConfiguration {
     private static boolean hasClass(String className) {
         try {
             Class.forName(className);
-        } catch (Exception e) {
+        } catch (ClassNotFoundException e) {
             return false;
         }
         return true;
