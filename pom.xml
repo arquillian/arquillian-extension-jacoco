@@ -26,7 +26,7 @@
     <version.wildfly.arquillian>2.2.0.Final</version.wildfly.arquillian>
     <version.cdi-api>2.0</version.cdi-api>
 
-    <version.ejb3>1.0.1.Final</version.ejb3>
+    <version.ejb3>1.0.2.Final</version.ejb3>
 
     <version.mockito>1.10.19</version.mockito>
     <version.assertj>2.6.0</version.assertj>
