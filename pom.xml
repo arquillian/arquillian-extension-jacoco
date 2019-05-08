@@ -22,7 +22,7 @@
     <version.jacoco>0.8.3</version.jacoco>
     <version.asm-util>7.0</version.asm-util> <!-- Should be aligned with ASM version JaCoCo is relying on to avoid failures in tests -->
 
-    <version.wildfly>14.0.0.Final</version.wildfly>
+    <version.wildfly>16.0.0.Final</version.wildfly>
     <version.wildfly.arquillian>2.2.0.Final</version.wildfly.arquillian>
     <version.cdi-api>2.0</version.cdi-api>
 
