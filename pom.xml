@@ -19,7 +19,7 @@
 
   <properties>
     <version.arquillian_core>1.4.1.Final</version.arquillian_core>
-    <version.jacoco>0.8.3</version.jacoco>
+    <version.jacoco>0.8.4</version.jacoco>
     <version.asm-util>7.0</version.asm-util> <!-- Should be aligned with ASM version JaCoCo is relying on to avoid failures in tests -->
 
     <version.wildfly>16.0.0.Final</version.wildfly>
