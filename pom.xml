@@ -29,7 +29,7 @@
     <version.ejb3>1.0.2.Final</version.ejb3>
 
     <version.mockito>1.10.19</version.mockito>
-    <version.assertj>2.6.0</version.assertj>
+    <version.assertj>3.13.2</version.assertj>
 
     <!-- Overridden from parent -->
     <jdk.min.version>1.5</jdk.min.version>
