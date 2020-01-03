@@ -11,12 +11,13 @@
 
 # Maven
 target/
+dependency-reduced-pom.xml
 
 # TestNG
 test-output/
 
-# JBoss AS
-transaction.log
+# Misc
+*.log
 
 # Floobits configuration
 .floo*
