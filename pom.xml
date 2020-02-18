@@ -12,13 +12,14 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>org.jboss.arquillian.extension</groupId>
-  <artifactId>arquillian-jacoco</artifactId>
+  <artifactId>arquillian-jacoco-parent</artifactId>
   <version>1.0.1-SNAPSHOT</version>
-  <name>Arquillian Extension Jacoco</name>
+  <packaging>pom</packaging>
+  <name>Arquillian Extension Jacoco Parent</name>
   <description>Jacoco integration to add code coverage to Arquillian</description>
 
   <properties>
-    <version.arquillian_core>1.4.1.Final</version.arquillian_core>
+    <version.arquillian_core>1.6.0.Final</version.arquillian_core>
     <version.jacoco>0.8.5</version.jacoco>
     <version.asm-util>7.0</version.asm-util> <!-- Should be aligned with ASM version JaCoCo is relying on to avoid failures in tests -->
 
@@ -30,6 +31,8 @@
 
     <version.mockito>1.10.19</version.mockito>
     <version.assertj>2.6.0</version.assertj>
+
+    <version.maven-shade-plugin>3.2.2</version.maven-shade-plugin>
 
     <!-- Overridden from parent -->
     <jdk.min.version>1.5</jdk.min.version>
@@ -67,10 +70,17 @@
         <type>pom</type>
         <scope>import</scope>
       </dependency>
+      <dependency>
+        <groupId>org.jacoco</groupId>
+        <artifactId>org.jacoco.core</artifactId>
+        <version>${version.jacoco}</version>
+      </dependency>
     </dependencies>
   </dependencyManagement>
 
   <!-- Dependencies -->
+  <!-- Defined here to avoid repetition in arquillian-jacoco-with-asm module due to limitations of maven-shade-plugin.
+       Scopes must be as required by arquillian-jacoco, arquillian-jacoco-with-asm will adjust as needed. -->
   <dependencies>
     <dependency>
       <groupId>org.jboss.arquillian.container</groupId>
@@ -91,210 +101,14 @@
     <dependency>
       <groupId>org.jacoco</groupId>
       <artifactId>org.jacoco.core</artifactId>
-      <version>${version.jacoco}</version>
       <scope>provided</scope>
-    </dependency>
-
-    <!-- Test -->
-    <dependency>
-      <groupId>org.jboss.arquillian.junit</groupId>
-      <artifactId>arquillian-junit-container</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.jboss.arquillian.protocol</groupId>
-      <artifactId>arquillian-protocol-servlet</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.jboss.shrinkwrap.resolver</groupId>
-      <artifactId>shrinkwrap-resolver-depchain</artifactId>
-      <type>pom</type>
-      <scope>test</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>junit</groupId>
-      <artifactId>junit</artifactId>
-      <scope>test</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>javax.enterprise</groupId>
-      <artifactId>cdi-api</artifactId>
-      <version>${version.cdi-api}</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.jboss.spec.javax.ejb</groupId>
-      <artifactId>jboss-ejb-api_3.2_spec</artifactId>
-      <version>${version.ejb3}</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.mockito</groupId>
-      <artifactId>mockito-all</artifactId>
-      <version>${version.mockito}</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.assertj</groupId>
-      <artifactId>assertj-core</artifactId>
-      <version>${version.assertj}</version>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.ow2.asm</groupId>
-      <artifactId>asm-util</artifactId>
-      <version>${version.asm-util}</version>
-      <scope>test</scope>
     </dependency>
   </dependencies>
 
-  <profiles>
-    <profile>
-      <id>unit</id>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-surefire-plugin</artifactId>
-            <configuration>
-              <includes>
-                <include>org/jboss/arquillian/extension/jacoco/test/unit/*</include>
-              </includes>
-            </configuration>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-    <profile>
-      <id>managed</id>
-      <activation>
-        <activeByDefault>true</activeByDefault>
-      </activation>
-      <dependencies>
-        <dependency>
-          <groupId>org.wildfly.arquillian</groupId>
-          <artifactId>wildfly-arquillian-container-managed</artifactId>
-          <version>${version.wildfly.arquillian}</version>
-          <scope>test</scope>
-        </dependency>
-      </dependencies>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-dependency-plugin</artifactId>
-            <executions>
-              <execution>
-                <id>unpack</id>
-                <phase>process-test-classes</phase>
-                <goals>
-                  <goal>unpack</goal>
-                </goals>
-                <configuration>
-                  <artifactItems>
-                    <artifactItem>
-                      <groupId>org.wildfly</groupId>
-                      <artifactId>wildfly-dist</artifactId>
-                      <version>${version.wildfly}</version>
-                      <type>zip</type>
-                      <overWrite>false</overWrite>
-                      <outputDirectory>${project.build.directory}</outputDirectory>
-                    </artifactItem>
-                  </artifactItems>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-    <profile>
-      <id>remote</id>
-      <dependencies>
-        <dependency>
-          <groupId>org.wildfly.arquillian</groupId>
-          <artifactId>wildfly-arquillian-container-remote</artifactId>
-          <version>${version.wildfly.arquillian}</version>
-          <scope>test</scope>
-        </dependency>
-      </dependencies>
-    </profile>
-    <profile>
-      <id>integration</id>
-      <activation>
-        <activeByDefault>true</activeByDefault>
-      </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.jacoco</groupId>
-            <artifactId>jacoco-maven-plugin</artifactId>
-            <version>${version.jacoco}</version>
-            <executions>
-              <execution>
-                <goals>
-                  <goal>prepare-agent</goal>
-                </goals>
-              </execution>
-              <execution>
-                <id>report</id>
-                <phase>prepare-package</phase>
-                <goals>
-                  <goal>report</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-surefire-plugin</artifactId>
-            <configuration>
-              <skip>true</skip>
-            </configuration>
-            <executions>
-              <execution>
-                <id>integration-tests</id>
-                <phase>test</phase>
-                <goals>
-                  <goal>test</goal>
-                </goals>
-                <configuration>
-                  <environmentVariables>
-                    <test_container>${wildfly_home}</test_container>
-                  </environmentVariables>
-                  <skip>false</skip>
-                  <includes>
-                    <include>org/jboss/arquillian/extension/jacoco/test/unit/*</include>
-                    <include>org/jboss/arquillian/extension/jacoco/test/integration/*</include>
-                  </includes>
-                </configuration>
-              </execution>
-              <execution>
-                <!--
-                    We need to verify the content of jacoco.exec after the 'test' JVM has
-                    shutdown and flushed the data to disk.
-                 -->
-                <id>verify-output-tests</id>
-                <phase>test</phase>
-                <goals>
-                  <goal>test</goal>
-                </goals>
-                <configuration>
-                  <skip>false</skip>
-                  <includes>
-                    <include>org/jboss/arquillian/extension/jacoco/test/verify/*</include>
-                  </includes>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-  </profiles>
+  <modules>
+    <module>arquillian-jacoco</module>
+    <module>arquillian-jacoco-with-asm</module>
+  </modules>
 
   <build>
     <defaultGoal>clean verify</defaultGoal>

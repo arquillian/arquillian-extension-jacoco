@@ -1,8 +1,11 @@
 language: java
 
-jdk:
-  - oraclejdk8
-  - oraclejdk11
+matrix:
+  include:
+  - jdk: oraclejdk8
+    dist: trusty    # see https://travis-ci.community/t/install-of-oracle-jdk-8-failing/3038/9
+  - jdk: oraclejdk11
+    dist: bionic
 
 before_install:
   - sed -i.bak -e 's|http://repo.maven.apache.org/maven2|https://repo.maven.apache.org/maven2|g' $HOME/.m2/settings.xml
