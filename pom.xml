@@ -13,7 +13,7 @@
 
   <groupId>org.jboss.arquillian.extension</groupId>
   <artifactId>arquillian-jacoco-parent</artifactId>
-  <version>1.0.1-SNAPSHOT</version>
+  <version>1.1.0</version>
   <packaging>pom</packaging>
   <name>Arquillian Extension Jacoco Parent</name>
   <description>Jacoco integration to add code coverage to Arquillian</description>
@@ -51,7 +51,7 @@
     <connection>scm:git:git://git@github.com:arquillian/arquillian-extension-jacoco.git</connection>
     <developerConnection>scm:git:ssh://github.com/arquillian/arquillian-extension-jacoco.git</developerConnection>
     <url>git://github.com/arquillian/arquillian-extension-jacoco.git</url>
-    <tag>HEAD</tag>
+    <tag>1.1.0</tag>
   </scm>
 
   <dependencyManagement>
