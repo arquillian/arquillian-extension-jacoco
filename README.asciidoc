@@ -19,8 +19,8 @@ Set the versions to use:
 ----
 ...
 <properties>
-   <version.jacoco>0.8.3</version.jacoco>
-   <version.arquillian_jacoco>1.0.0</version.arquillian_jacoco>
+   <version.jacoco>0.8.5</version.jacoco>
+   <version.arquillian_jacoco>1.1.0</version.arquillian_jacoco>
 </properties>
 ...
 ----
@@ -103,7 +103,7 @@ You only need a single dependency for this setup:
    </dependencies>
 ----
 
-Please note the absence of the `jacoco-core` dependency.
+Please note the absence of the `jacoco-core` dependency. This also means that it is _not_ possible to choose a custom JaCoCo version.
 
 ==== (Optional) arquillian.xml
 
