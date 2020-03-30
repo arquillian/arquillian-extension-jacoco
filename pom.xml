@@ -21,7 +21,7 @@
   <properties>
     <version.arquillian_core>1.6.0.Final</version.arquillian_core>
     <version.jacoco>0.8.5</version.jacoco>
-    <version.asm-util>7.2</version.asm-util> <!-- Should be aligned with ASM version JaCoCo is relying on to avoid failures in tests -->
+    <version.asm-util>8.0</version.asm-util> <!-- Should be aligned with ASM version JaCoCo is relying on to avoid failures in tests -->
 
     <version.wildfly>16.0.0.Final</version.wildfly>
     <version.wildfly.arquillian>2.2.0.Final</version.wildfly.arquillian>
