@@ -32,7 +32,7 @@
     <version.mockito>1.10.19</version.mockito>
     <version.assertj>3.15.0</version.assertj>
 
-    <version.maven-shade-plugin>3.2.2</version.maven-shade-plugin>
+    <version.maven-shade-plugin>3.2.3</version.maven-shade-plugin>
 
     <!-- Overridden from parent -->
     <jdk.min.version>1.5</jdk.min.version>
